@@ -61,19 +61,36 @@ public:
 	void open(void) {
 		vehicles = std::vector<SimpleVehicle*>();
 
-		// Create a demo environment
-		//environment.walls.push_back(Wall(-10,10,10,10));
-		//environment.walls.push_back(Wall(10,10,-,10,10));
-		//environment.walls.push_back(Wall(0,0,10,10));
 
-    } 
+
+		OpenSteerDemo::camera.reset();
+        OpenSteerDemo::camera.setPosition (10, OpenSteerDemo::camera2dElevation, 10);
+        OpenSteerDemo::camera.fixedPosition.set (40, 40, 40);
+        OpenSteerDemo::camera.mode = Camera::cmFixed;
+
+		// Create a demo environment
+		environment.walls.push_back(Wall(-10, 10, 10, 10));
+		environment.walls.push_back(Wall( 10, 10, 10,-10));
+		environment.walls.push_back(Wall( 10,-10,-10,-10));
+		environment.walls.push_back(Wall(-10,-10,-10, 10));
+    }
 
     void update(const float currentTime, const float elapsedTime) {
 		// TODO
     }
 
     void redraw(const float currentTime, const float elapsedTime) {
-		// TODO
+		for(int i=0; i<environment.walls.size(); ++i) {
+			Wall& wall = environment.walls[i];
+			Vec3 color(1,1,0);
+			drawLineAlpha(Vec3(wall.x1, 0, wall.y1), Vec3(wall.x2, 0, wall.y2), color, 1.0);
+		}
+
+		// update camera, tracking test vehicle
+        OpenSteerDemo::updateCamera (currentTime, elapsedTime, *OpenSteerDemo::selectedVehicle);
+
+        // draw "ground plane"
+        OpenSteerDemo::gridUtility(Vec3(0,0,0));
     }
 
     void reset(void) {

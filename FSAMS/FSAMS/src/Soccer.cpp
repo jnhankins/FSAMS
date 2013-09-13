@@ -72,6 +72,7 @@ public:
         b = Vec3(m_min.x, 0, m_max.z);
         c = Vec3(m_max.x, 0, m_min.z);
         Vec3 color(1,1,0);
+		std::cout << m_min.x << " " << m_max.z << "\n";
         drawLineAlpha(m_min, b, color, 1.0f);
         drawLineAlpha(b, m_max, color, 1.0f);
         drawLineAlpha(m_max, c, color, 1.0f);
