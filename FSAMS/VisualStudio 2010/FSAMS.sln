@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenSteer", "OpenSteer.vcxproj", "{24F74686-7413-49A2-BA30-D7DF4F5549CA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FSAMS", "FSAMS.vcxproj", "{61A168E5-2B90-42F0-9520-D2584499291B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{24F74686-7413-49A2-BA30-D7DF4F5549CA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{24F74686-7413-49A2-BA30-D7DF4F5549CA}.Debug|Win32.Build.0 = Debug|Win32
+		{24F74686-7413-49A2-BA30-D7DF4F5549CA}.Release|Win32.ActiveCfg = Release|Win32
+		{24F74686-7413-49A2-BA30-D7DF4F5549CA}.Release|Win32.Build.0 = Release|Win32
+		{61A168E5-2B90-42F0-9520-D2584499291B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{61A168E5-2B90-42F0-9520-D2584499291B}.Debug|Win32.Build.0 = Debug|Win32
+		{61A168E5-2B90-42F0-9520-D2584499291B}.Release|Win32.ActiveCfg = Release|Win32
+		{61A168E5-2B90-42F0-9520-D2584499291B}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

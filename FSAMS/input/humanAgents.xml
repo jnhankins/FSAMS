@@ -1,0 +1,102 @@
+<humanAgents>
+	<person id="1">
+		<type>faculty</type>
+		<preferred_temp>72.0</preferred_temp>
+		<schedule>	
+			<appointment id="1">
+				<room>1</room>
+				<startTime>800</startTime>	
+			<exitTime>1400</exitTime>
+		</schedule>
+	</person>
+	<person id="2">
+		<type>faculty</type>
+		<preferred_temp>65.0</preferred_temp>
+		<schedule>	
+			<appointment id="1">
+				<room>1</room>
+				<startTime>800</startTime>	
+			<exitTime>1200</exitTime>
+		</schedule>
+	</person>
+	<person id="3">
+		<type>faculty</type>
+		<preferred_temp>75.0</preferred_temp>
+		<schedule>	
+			<appointment id="1">
+				<room>1</room>
+				<startTime>800</startTime>	
+			<exitTime>1000</exitTime>
+		</schedule>
+	</person>
+	<person id="4">
+		<type>student</type>
+		<preferred_temp>70.0</preferred_temp>
+		<schedule>	
+			<appointment id="1">
+				<room>2</room>
+				<startTime>900</startTime>	
+			<exitTime>1000</exitTime>
+		</schedule>
+	</person>
+	<person id="5">
+		<type>student</type>
+		<preferred_temp>68.0</preferred_temp>
+		<schedule>	
+			<appointment id="1">
+				<room>2</room>
+				<startTime>900</startTime>	
+			<exitTime>1100</exitTime>
+		</schedule>
+	</person>
+	<person id="6">
+		<type>student</type>
+		<preferred_temp>85.0</preferred_temp>
+		<schedule>	
+			<appointment id="1">
+				<room>3</room>
+				<startTime>1000</startTime>	
+			<exitTime>1400</exitTime>
+		</schedule>
+	</person>
+	<person id="7">
+		<type>student</type>
+		<preferred_temp>70.0</preferred_temp>
+		<schedule>	
+			<appointment id="1">
+				<room>3</room>
+				<startTime>1000</startTime>	
+			<exitTime>1400</exitTime>
+		</schedule>
+	</person>
+	<person id="8">
+		<type>faculty</type>
+		<preferred_temp>72.0</preferred_temp>
+		<schedule>	
+			<appointment id="1">
+				<room>2</room>
+				<startTime>900</startTime>	
+			<exitTime>1400</exitTime>
+		</schedule>
+	</person>
+	<person id="9">
+		<type>faculty</type>
+		<preferred_temp>80.0</preferred_temp>
+		<schedule>	
+			<appointment id="1">
+				<room>3</room>
+				<startTime>1000</startTime>	
+			<exitTime>1400</exitTime>
+		</schedule>
+	</person>
+	<person id="10">
+		<type>faculty</type>
+		<preferred_temp>72.0</preferred_temp>
+		<schedule>	
+			<appointment id="1">
+				<room>4</room>
+				<startTime>800</startTime>	
+			<exitTime>1400</exitTime>
+		</schedule>
+	</person>
+</humanAgents>
