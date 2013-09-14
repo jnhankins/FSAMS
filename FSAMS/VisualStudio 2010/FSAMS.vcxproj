@@ -67,14 +67,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\FSAMS\inc\Boundary.hpp" />
     <ClInclude Include="..\FSAMS\inc\Environment.h" />
+    <ClInclude Include="..\FSAMS\inc\Vec2.hpp" />
     <ClInclude Include="..\RapidXML 1.13\rapidxml.hpp" />
     <ClInclude Include="..\RapidXML 1.13\rapidxml_iterators.hpp" />
     <ClInclude Include="..\RapidXML 1.13\rapidxml_print.hpp" />
     <ClInclude Include="..\RapidXML 1.13\rapidxml_utils.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\FSAMS\src\FSAMS.cpp" />
+    <ClCompile Include="..\FSAMS\src\FSAMSPlugIn.cpp" />
     <ClCompile Include="..\FSAMS\src\main.cpp" />
     <ClCompile Include="..\FSAMS\src\Soccer.cpp" />
     <ClCompile Include="..\OpenSteer 0.8.2\src\OpenSteerDemo.cpp" />

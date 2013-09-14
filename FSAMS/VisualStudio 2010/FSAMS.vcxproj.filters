@@ -39,6 +39,12 @@
     <ClInclude Include="..\FSAMS\inc\Environment.h">
       <Filter>Header Files\Environment</Filter>
     </ClInclude>
+    <ClInclude Include="..\FSAMS\inc\Vec2.hpp">
+      <Filter>Header Files\Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\FSAMS\inc\Boundary.hpp">
+      <Filter>Header Files\Environment</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\FSAMS\src\main.cpp">
@@ -47,10 +53,10 @@
     <ClCompile Include="..\FSAMS\src\Soccer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\FSAMS\src\FSAMS.cpp">
+    <ClCompile Include="..\OpenSteer 0.8.2\src\OpenSteerDemo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\OpenSteer 0.8.2\src\OpenSteerDemo.cpp">
+    <ClCompile Include="..\FSAMS\src\FSAMSPlugIn.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

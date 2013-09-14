@@ -45,34 +45,38 @@
 #include "OpenSteer/Draw.h"
 
 #include "Environment.h"
+#include "Vec2.hpp"
 
-using namespace OpenSteer;
+using OpenSteer::OpenSteerDemo;
+using OpenSteer::PlugIn;
 
-// PlugIn for OpenSteerDemo
-class FSAMS : public PlugIn {
+class FSAMSPlugIn : public OpenSteer::PlugIn {
 public:
-	Environment environment;
-	std::vector<SimpleVehicle*> vehicles;
+	FSAMSPlugIn() {
+
+	}
 
 	const char* name (void) {
 		return "Fire and Security Alarm Monitoring Simulation System";
 	}
 	
 	void open(void) {
-		vehicles = std::vector<SimpleVehicle*>();
-
-
+		// No vehicles Yet.
+		vehicles = std::vector<OpenSteer::SimpleVehicle*>();
+		
+		FSAMS::Environment::Vec2 p = FSAMS::Environment::Vec2(2,3);
+		p.set(3,4);
 
 		OpenSteerDemo::camera.reset();
         OpenSteerDemo::camera.setPosition (10, OpenSteerDemo::camera2dElevation, 10);
         OpenSteerDemo::camera.fixedPosition.set (40, 40, 40);
-        OpenSteerDemo::camera.mode = Camera::cmFixed;
+        OpenSteerDemo::camera.mode = OpenSteer::Camera::cmFixed;
 
 		// Create a demo environment
-		environment.walls.push_back(Wall(-10, 10, 10, 10));
-		environment.walls.push_back(Wall( 10, 10, 10,-10));
-		environment.walls.push_back(Wall( 10,-10,-10,-10));
-		environment.walls.push_back(Wall(-10,-10,-10, 10));
+		environment.walls.push_back(FSAMS::Environment::Boundary(-10, 10, 10, 10));
+		environment.walls.push_back(FSAMS::Environment::Boundary( 10, 10, 10,-10));
+		environment.walls.push_back(FSAMS::Environment::Boundary( 10,-10,-10,-10));
+		environment.walls.push_back(FSAMS::Environment::Boundary(-10,-10,-10, 10));
     }
 
     void update(const float currentTime, const float elapsedTime) {
@@ -80,17 +84,17 @@ public:
     }
 
     void redraw(const float currentTime, const float elapsedTime) {
-		for(int i=0; i<environment.walls.size(); ++i) {
-			Wall& wall = environment.walls[i];
-			Vec3 color(1,1,0);
-			drawLineAlpha(Vec3(wall.x1, 0, wall.y1), Vec3(wall.x2, 0, wall.y2), color, 1.0);
+		for(std::size_t i=0; i<environment.walls.size(); ++i) {
+			FSAMS::Environment::Boundary& wall = environment.walls[i];
+			OpenSteer::Vec3 color(1,1,0);
+			drawLineAlpha(OpenSteer::Vec3(wall.p1.x, 0, wall.p1.z), OpenSteer::Vec3(wall.p2.x, 0, wall.p2.z), color, 1.0);
 		}
 
 		// update camera, tracking test vehicle
         OpenSteerDemo::updateCamera (currentTime, elapsedTime, *OpenSteerDemo::selectedVehicle);
 
         // draw "ground plane"
-        OpenSteerDemo::gridUtility(Vec3(0,0,0));
+        OpenSteerDemo::gridUtility(OpenSteer::Vec3(0,0,0));
     }
 
     void reset(void) {
@@ -101,9 +105,13 @@ public:
 		// TODO
     }
 
-    const AVGroup& allVehicles(void) {
-		return (const AVGroup&) vehicles;
+    const OpenSteer::AVGroup& allVehicles(void) {
+		return (const OpenSteer::AVGroup&) vehicles;
 	}
+	
+private:
+	FSAMS::Environment::Environment environment;
+	std::vector<OpenSteer::SimpleVehicle*> vehicles;
 };
 
-FSAMS pFSAMS;
+FSAMSPlugIn pFSAMS;
