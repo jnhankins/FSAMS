@@ -1,31 +1,20 @@
-#ifndef ENVIRONMENT_H
-#define ENVIRONMENT_H
+#ifndef FSAMS_ENVIRONMENT_ENVIRONMENT_H
+#define FSAMS_ENVIRONMENT_ENVIRONMENT_H
 
+#include "Boundary.hpp"
 #include <vector>
 
-
-class Wall {
-public:
-	float x1, y1, x2, y2;
-
-	Wall(float x1, float y1, float x2, float y2) :
-		x1(x1), y1(y1), x2(x2), y2(y2) {}
-};
-
-typedef std::vector<Wall> Room;
-
-class AlarmSystemComponent {
-public:
-	virtual int getID();
-	virtual int getType();
-	virtual std::pair<int,int> getCoordinates();
-};
+namespace FSAMS { namespace Environment {
 
 class Environment {
 public:
-	std::vector<Wall> walls;
-	std::vector<Room> rooms;
-	std::vector<AlarmSystemComponent> ascomps;
+	std::vector<Boundary> walls;
+
+	Environment() {}
+	Environment(Environment& environment) : walls(environment.walls) {}
+	Environment(std::vector<Boundary>& walls) : walls(walls) {}
 };
+
+} }
 
 #endif
