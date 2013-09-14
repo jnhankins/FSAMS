@@ -36,13 +36,13 @@
     <ClInclude Include="..\RapidXML 1.13\rapidxml_utils.hpp">
       <Filter>Header Files\RapidXML</Filter>
     </ClInclude>
-    <ClInclude Include="..\FSAMS\inc\Environment.h">
-      <Filter>Header Files\Environment</Filter>
-    </ClInclude>
     <ClInclude Include="..\FSAMS\inc\Vec2.hpp">
       <Filter>Header Files\Environment</Filter>
     </ClInclude>
     <ClInclude Include="..\FSAMS\inc\Boundary.hpp">
+      <Filter>Header Files\Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="..\FSAMS\inc\Environment.hpp">
       <Filter>Header Files\Environment</Filter>
     </ClInclude>
   </ItemGroup>

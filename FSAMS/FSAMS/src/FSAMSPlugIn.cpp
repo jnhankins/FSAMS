@@ -44,7 +44,7 @@
 #include "OpenSteer/OpenSteerDemo.h"
 #include "OpenSteer/Draw.h"
 
-#include "Environment.h"
+#include "Environment.hpp"
 #include "Vec2.hpp"
 
 using OpenSteer::OpenSteerDemo;
@@ -84,11 +84,7 @@ public:
     }
 
     void redraw(const float currentTime, const float elapsedTime) {
-		for(std::size_t i=0; i<environment.walls.size(); ++i) {
-			FSAMS::Environment::Boundary& wall = environment.walls[i];
-			OpenSteer::Vec3 color(1,1,0);
-			drawLineAlpha(OpenSteer::Vec3(wall.p1.x, 0, wall.p1.z), OpenSteer::Vec3(wall.p2.x, 0, wall.p2.z), color, 1.0);
-		}
+		environment.draw();
 
 		// update camera, tracking test vehicle
         OpenSteerDemo::updateCamera (currentTime, elapsedTime, *OpenSteerDemo::selectedVehicle);
