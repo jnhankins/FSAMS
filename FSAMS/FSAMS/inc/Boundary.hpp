@@ -8,18 +8,17 @@ namespace FSAMS { namespace Environment {
 typedef struct Boundary {
 	Vec2 p1, p2;
 
-	Boundary(Vec2 p1, Vec2 p2) : p1(p1), p2(p2) {}
-	Boundary(float x1, float y1, float x2, float y2) : p1(Vec2(x1,y1)), p2(Vec2(x2,y2)) {}
+	Boundary(float x1, float y1, float x2, float y2) : p1(x1,y1), p2(x2,y2) {}
+	Boundary(const Vec2& p1, const Vec2& p2) : p1(p1), p2(p2) {}
+	Boundary(const Boundary& boundary) : p1(boundary.p1), p2(boundary.p2) {}
 	
-	void set(Vec2 p1, Vec2 p2) {
-		this->p1 = p1;
-		this->p2 = p2;
+	inline void set(const Vec2& p1, const Vec2& p2) {
+		this->p1.set(p1);
+		this->p2.set(p2);
 	}
-	void set(float x1, float z1, float x2, float z2) {
-		this->p1.x = x1;
-		this->p1.z = z1;
-		this->p2.x = x2;
-		this->p2.z = z2;
+	inline void set(float x1, float z1, float x2, float z2) {
+		this->p1.set(x1,z1);
+		this->p2.set(x2,z2);
 	}
 } Boundary;
 

@@ -13,8 +13,8 @@ public:
 	std::vector<Boundary> walls;
 
 	Environment() {}
-	Environment(Environment& environment) : walls(environment.walls) {}
-	Environment(std::vector<Boundary>& walls) : walls(walls) {}
+	Environment(const Environment& environment) : walls(environment.walls) {}
+	Environment(const std::vector<Boundary>& walls) : walls(walls) {}
 
 	void draw() {
 		for(std::size_t i=0; i<walls.size(); ++i) {
