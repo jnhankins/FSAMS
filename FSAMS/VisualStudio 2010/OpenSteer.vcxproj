@@ -70,7 +70,6 @@
     <ClCompile Include="..\OpenSteer 0.8.2\src\Clock.cpp" />
     <ClCompile Include="..\OpenSteer 0.8.2\src\Draw.cpp" />
     <ClCompile Include="..\OpenSteer 0.8.2\src\lq.c" />
-    <ClCompile Include="..\OpenSteer 0.8.2\src\OpenSteerDemo.cpp" />
     <ClCompile Include="..\OpenSteer 0.8.2\src\Pathway.cpp" />
     <ClCompile Include="..\OpenSteer 0.8.2\src\PlugIn.cpp" />
     <ClCompile Include="..\OpenSteer 0.8.2\src\SimpleVehicle.cpp" />

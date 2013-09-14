@@ -44,5 +44,8 @@
     <ClCompile Include="..\FSAMS\src\FSAMS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\OpenSteer 0.8.2\src\OpenSteerDemo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

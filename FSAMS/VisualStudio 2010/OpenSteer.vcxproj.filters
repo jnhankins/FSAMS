@@ -27,9 +27,6 @@
     <ClCompile Include="..\OpenSteer 0.8.2\src\lq.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\OpenSteer 0.8.2\src\OpenSteerDemo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\OpenSteer 0.8.2\src\Pathway.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
