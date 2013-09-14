@@ -16,7 +16,7 @@ public:
 	Environment(const Environment& environment) : walls(environment.walls) {}
 	Environment(const std::vector<Boundary>& walls) : walls(walls) {}
 
-	void draw() {
+	void draw() const {
 		for(std::size_t i=0; i<walls.size(); ++i) {
 			FSAMS::Environment::Boundary& wall = walls[i];
 			OpenSteer::Vec3 color(1,1,0);
