@@ -8,7 +8,7 @@ typedef struct Vec2 {
 
 	Vec2() : x(0), z(0) {}
 	Vec2(float x, float z) : x(x), z(z) {}
-	Vec2(const Vec2& p) : x(p.x), y(p.z) {}
+	Vec2(const Vec2& p) : x(p.x), z(p.z) {}
 	
 	inline void set(float x, float z) {
 		this->x = x;
