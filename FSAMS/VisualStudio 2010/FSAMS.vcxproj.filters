@@ -16,6 +16,12 @@
     <Filter Include="Header Files\RapidXML">
       <UniqueIdentifier>{080fe883-ee43-4aec-92b6-5adeeec4a515}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Environment">
+      <UniqueIdentifier>{45623c46-656a-4e0b-9954-219220324fcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Environment">
+      <UniqueIdentifier>{b0830eb8-8b96-4078-97e5-16eceae6975f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\RapidXML 1.13\rapidxml.hpp">
@@ -31,7 +37,7 @@
       <Filter>Header Files\RapidXML</Filter>
     </ClInclude>
     <ClInclude Include="..\FSAMS\inc\Environment.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Environment</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
