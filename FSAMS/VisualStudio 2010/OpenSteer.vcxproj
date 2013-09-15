@@ -70,6 +70,7 @@
     <ClCompile Include="..\OpenSteer 0.8.2\src\Clock.cpp" />
     <ClCompile Include="..\OpenSteer 0.8.2\src\Draw.cpp" />
     <ClCompile Include="..\OpenSteer 0.8.2\src\lq.c" />
+    <ClCompile Include="..\OpenSteer 0.8.2\src\OpenSteerDemo.cpp" />
     <ClCompile Include="..\OpenSteer 0.8.2\src\Pathway.cpp" />
     <ClCompile Include="..\OpenSteer 0.8.2\src\PlugIn.cpp" />
     <ClCompile Include="..\OpenSteer 0.8.2\src\SimpleVehicle.cpp" />
@@ -92,6 +93,9 @@
     <ClInclude Include="..\OpenSteer 0.8.2\include\OpenSteer\SteerLibrary.h" />
     <ClInclude Include="..\OpenSteer 0.8.2\include\OpenSteer\Utilities.h" />
     <ClInclude Include="..\OpenSteer 0.8.2\include\OpenSteer\Vec3.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

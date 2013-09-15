@@ -101,6 +101,13 @@ namespace OpenSteer {
         // allows a PlugIn to nominate itself as OpenSteerDemo's initially selected
         // (default) PlugIn, which is otherwise the first in "selection order"
         virtual bool requestInitialSelection (void) = 0;
+		
+        // handle keyboard keys
+		// implementing functions must return true if the key was handled by the plugin
+		// otherwise if false is returned the default opensteer actions will be taken
+		// Note: handleKeys includes function keys so be aware when using handleKeys
+		//  and handleFunctionKeys
+		virtual bool handleKeyboardFuncKey (int /*key*/, bool /*special*/, bool /*up*/, bool /*shift*/, bool /*ctrl*/, bool /*alt*/) = 0;
 
         // handle function keys (which are reserved by SterTest for PlugIns)
         virtual void handleFunctionKeys (int keyNumber) = 0;
@@ -137,6 +144,9 @@ namespace OpenSteer {
 
         // default is to NOT request to be initially selected
         bool requestInitialSelection (void) {return false;}
+
+		// default key handler: ignore all (false)
+		bool handleKeyboardFuncKey (int /*key*/, bool /*special*/, bool /*up*/, bool /*shift*/, bool /*ctrl*/, bool /*alt*/) { return false; }
 
         // default function key handler: ignore all
         // (parameter names commented out to prevent compiler warning from "-W")

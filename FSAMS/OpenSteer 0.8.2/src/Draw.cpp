@@ -511,6 +511,17 @@ namespace {
     void 
     keyboardFunc (unsigned char key, int /*x*/, int /*y*/) 
     {
+		{ // anonymous namespace
+			bool special  = false;
+			bool up = false;
+			int modifiers = glutGetModifiers();
+			bool shift = ((modifiers & GLUT_ACTIVE_SHIFT) != 0);
+			bool ctrl = ((modifiers & GLUT_ACTIVE_CTRL) != 0);
+			bool alt = ((modifiers & GLUT_ACTIVE_ALT) != 0);
+			if(OpenSteer::OpenSteerDemo::keyboardFuncForPlugIn(key,special,up,shift,ctrl,alt))
+				return;
+		}
+
         std::ostringstream message;
 
         // ascii codes
@@ -615,6 +626,17 @@ namespace {
     void 
     specialFunc (int key, int /*x*/, int /*y*/)
     {
+		{ // anonymous namespace
+			bool special  = true;
+			bool up = false;
+			int modifiers = glutGetModifiers();
+			bool shift = ((modifiers & GLUT_ACTIVE_SHIFT) != 0);
+			bool ctrl = ((modifiers & GLUT_ACTIVE_CTRL) != 0);
+			bool alt = ((modifiers & GLUT_ACTIVE_ALT) != 0);
+			if(OpenSteer::OpenSteerDemo::keyboardFuncForPlugIn(key,special,up,shift,ctrl,alt))
+				return;
+		}
+
         std::ostringstream message;
 
         switch (key)
@@ -642,6 +664,41 @@ namespace {
             break;
         }
     }
+	
+    // ------------------------------------------------------------------------
+    // handles key releases,
+    // function keys are handled by the PlugIn
+    //
+    // parameter names commented out to prevent compiler warning from "-W"
+
+	void
+	keyboardUpFunc(unsigned char key, int, int) {
+		bool special  = true;
+		bool up = true;
+		int modifiers = glutGetModifiers();
+		bool shift = ((modifiers & GLUT_ACTIVE_SHIFT) != 0);
+		bool ctrl = ((modifiers & GLUT_ACTIVE_CTRL) != 0);
+		bool alt = ((modifiers & GLUT_ACTIVE_ALT) != 0);
+		OpenSteer::OpenSteerDemo::keyboardFuncForPlugIn(key,special,up,shift,ctrl,alt);
+	}
+	
+	
+    // ------------------------------------------------------------------------
+    // handles "special" key releases,
+    // function keys are handled by the PlugIn
+    //
+    // parameter names commented out to prevent compiler warning from "-W"
+
+	void
+	specialUpFunc(int key, int, int) {
+		bool special  = true;
+		bool up = true;
+		int modifiers = glutGetModifiers();
+		bool shift = ((modifiers & GLUT_ACTIVE_SHIFT) != 0);
+		bool ctrl = ((modifiers & GLUT_ACTIVE_CTRL) != 0);
+		bool alt = ((modifiers & GLUT_ACTIVE_ALT) != 0);
+		OpenSteer::OpenSteerDemo::keyboardFuncForPlugIn(key,special,up,shift,ctrl,alt);
+	}
 
 
     // ------------------------------------------------------------------------
@@ -738,8 +795,11 @@ OpenSteer::initializeGraphics (int argc, char **argv)
     glutReshapeFunc (&reshapeFunc);
 
     // register handler for keyboard events
+	glutIgnoreKeyRepeat (true);
     glutKeyboardFunc (&keyboardFunc);
+	glutKeyboardUpFunc (&keyboardUpFunc);
     glutSpecialFunc (&specialFunc);
+	glutSpecialUpFunc (&specialUpFunc);
 
     // register handler for mouse button events
     glutMouseFunc (&mouseButtonFunc);

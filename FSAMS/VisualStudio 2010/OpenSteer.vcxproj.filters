@@ -21,9 +21,6 @@
     <ClCompile Include="..\OpenSteer 0.8.2\src\Clock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\OpenSteer 0.8.2\src\Draw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\OpenSteer 0.8.2\src\lq.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -37,6 +34,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\OpenSteer 0.8.2\src\Vec3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OpenSteer 0.8.2\src\Draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OpenSteer 0.8.2\src\OpenSteerDemo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -53,9 +56,6 @@
     <ClInclude Include="..\OpenSteer 0.8.2\include\OpenSteer\Clock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\OpenSteer 0.8.2\include\OpenSteer\Draw.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\OpenSteer 0.8.2\include\OpenSteer\LocalSpace.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -63,9 +63,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\OpenSteer 0.8.2\include\OpenSteer\Obstacle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\OpenSteer 0.8.2\include\OpenSteer\OpenSteerDemo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\OpenSteer 0.8.2\include\OpenSteer\Pathway.h">
@@ -89,5 +86,14 @@
     <ClInclude Include="..\OpenSteer 0.8.2\include\OpenSteer\Vec3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\OpenSteer 0.8.2\include\OpenSteer\Draw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OpenSteer 0.8.2\include\OpenSteer\OpenSteerDemo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
 </Project>

@@ -37,15 +37,18 @@
 //
 // ----------------------------------------------------------------------------
 
-
-#include <iomanip>
-#include <sstream>
+#include "Environment.hpp"
+#include "Vec2.hpp"
 #include "OpenSteer/SimpleVehicle.h"
 #include "OpenSteer/OpenSteerDemo.h"
 #include "OpenSteer/Draw.h"
-
-#include "Environment.hpp"
-#include "Vec2.hpp"
+#include <iomanip>
+#include <sstream>
+#if __APPLE__ && __MACH__
+#include <GLUT/glut.h>   // for Mac OS X
+#else
+#include <GL/glut.h>     // for Linux and Windows
+#endif
 
 using OpenSteer::OpenSteerDemo;
 using OpenSteer::PlugIn;
@@ -77,14 +80,19 @@ public:
 		camera_target.setPosition(0,0,0);
 		OpenSteerDemo::init2dCamera(camera_target,0,10);
 		OpenSteerDemo::camera.mode = OpenSteer::Camera::cmStraightDown;
+		OpenSteerDemo::camera.smoothMoveSpeed = 10000.0f;
     }
 
     void update(const float currentTime, const float elapsedTime) {
 		// TODO
-		camera_target.setPosition(camera_target.position().x,currentTime,camera_target.position().z);
+		//camera_target.setPosition(camera_target.position().x,currentTime,camera_target.position().z);
     }
 
     void redraw(const float currentTime, const float elapsedTime) {
+		// Draw the camera's target (for testing).
+		drawBasic2dCircularVehicle(camera_target, OpenSteer::Vec3(0,0,1));
+        camera_target.drawTrail();
+
 		// update camera, tracking test vehicle
         OpenSteerDemo::updateCamera(currentTime, elapsedTime, *OpenSteerDemo::selectedVehicle);
 
@@ -102,6 +110,57 @@ public:
 	void close(void) {
 		// TODO
     }
+
+	bool handleKeyboardFuncKey (int key, bool special, bool up, bool shift, bool ctrl, bool alt) {
+		const float camera_translate_step = 1;
+		const float camera_rotate_step = 3.14159265359f/32.0f; // 11.25 deg
+		const float camera_rotate_step_sin = std::sin(camera_rotate_step);
+		const float camera_rotate_step_cos = std::cos(camera_rotate_step);
+
+		if(special) {
+			switch(key) {
+			case GLUT_KEY_LEFT:
+				camera_target.setPosition(camera_target.position().x+camera_translate_step,camera_target.position().y,camera_target.position().z);
+				break;
+			case GLUT_KEY_RIGHT: 
+				camera_target.setPosition(camera_target.position().x-camera_translate_step,camera_target.position().y,camera_target.position().z);
+				break;
+			case GLUT_KEY_UP: 
+				camera_target.setPosition(camera_target.position().x,camera_target.position().y,camera_target.position().z+camera_translate_step);
+				break;
+			case GLUT_KEY_DOWN: 
+				camera_target.setPosition(camera_target.position().x,camera_target.position().y,camera_target.position().z-camera_translate_step);
+				break;
+			default:
+				break;
+			}
+		} else {
+			switch(key) {
+			case '-':
+			case '_':
+				camera_target.setPosition(camera_target.position().x,camera_target.position().y+camera_translate_step,camera_target.position().z);
+				break;
+			case '=':
+			case '+':
+				camera_target.setPosition(camera_target.position().x,camera_target.position().y-camera_translate_step,camera_target.position().z);
+				break;
+			case '[': {
+				float nx = camera_target.forward().x*camera_rotate_step_cos-camera_target.forward().z*camera_rotate_step_sin;
+				float nz = camera_target.forward().z*camera_rotate_step_cos+camera_target.forward().x*camera_rotate_step_sin;
+				camera_target.setForward( nx, 0, nz );
+				} break;
+			case ']': {
+				float nx = camera_target.forward().x*camera_rotate_step_cos+camera_target.forward().z*camera_rotate_step_sin;
+				float nz = camera_target.forward().z*camera_rotate_step_cos-camera_target.forward().x*camera_rotate_step_sin;
+				camera_target.setForward( nx, 0, nz );
+				} break;
+			default:
+				break;
+			}
+		}
+
+		return true;
+	}
 
     const OpenSteer::AVGroup& allVehicles(void) {
 		return (const OpenSteer::AVGroup&) vehicles;

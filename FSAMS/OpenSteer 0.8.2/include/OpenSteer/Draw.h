@@ -51,10 +51,9 @@
 #ifndef OPENSTEER_DRAW_H
 #define OPENSTEER_DRAW_H
 
-
-#include "Vec3.h"
+#include "OpenSteerDemo.h"
 #include "AbstractVehicle.h"
-
+#include "Vec3.h"
 
 // ------------------------------------------------------------------------
 // for convenience, names of a few common RGB colors as Vec3 values

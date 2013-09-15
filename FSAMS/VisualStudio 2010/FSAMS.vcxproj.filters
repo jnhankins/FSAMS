@@ -53,9 +53,6 @@
     <ClCompile Include="..\FSAMS\src\Soccer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\OpenSteer 0.8.2\src\OpenSteerDemo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\FSAMS\src\FSAMSPlugIn.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

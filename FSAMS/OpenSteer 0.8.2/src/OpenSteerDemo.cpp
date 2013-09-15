@@ -208,6 +208,16 @@ OpenSteer::OpenSteerDemo::selectNextPlugIn (void)
 
 
 // ----------------------------------------------------------------------------
+// give plugins the option to overide keyboard keys
+
+bool 
+OpenSteer::OpenSteerDemo::keyboardFuncForPlugIn (int keyNumber, bool special, bool up, bool shift, bool ctrl, bool alt)
+{
+    return selectedPlugIn->handleKeyboardFuncKey (keyNumber, special, up, shift, ctrl, alt);
+}
+
+
+// ----------------------------------------------------------------------------
 // handle function keys an a per-plug-in basis
 
 

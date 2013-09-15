@@ -97,6 +97,9 @@ namespace OpenSteer {
         
         // select the "next" plug-in, cycling through "plug-in selection order"
         static void selectNextPlugIn (void);
+		
+		// handle GLUT keyboard function keys
+		static bool keyboardFuncForPlugIn (int keyNumber, bool special, bool up, bool shift, bool ctrl, bool alt);
 
         // handle function keys an a per-plug-in basis
         static void functionKeyForPlugIn (int keyNumber);
