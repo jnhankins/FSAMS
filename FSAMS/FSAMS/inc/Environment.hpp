@@ -18,7 +18,7 @@ public:
 
 	void draw() const {
 		for(std::size_t i=0; i<walls.size(); ++i) {
-			FSAMS::Environment::Boundary& wall = walls[i];
+			const FSAMS::Environment::Boundary& wall = walls[i];
 			OpenSteer::Vec3 color(1,1,0);
 			drawLineAlpha(OpenSteer::Vec3(wall.p1.x, 0, wall.p1.z), OpenSteer::Vec3(wall.p2.x, 0, wall.p2.z), color, 1.0);
 		}
