@@ -51,46 +51,48 @@ using OpenSteer::OpenSteerDemo;
 using OpenSteer::PlugIn;
 
 class FSAMSPlugIn : public OpenSteer::PlugIn {
+private:
+	FSAMS::Environment::Environment environment;
+	OpenSteer::SimpleVehicle camera_target;
+	std::vector<OpenSteer::SimpleVehicle*> vehicles;
 public:
-	FSAMSPlugIn() {
-
-	}
+	FSAMSPlugIn() {}
 
 	const char* name (void) {
 		return "Fire and Security Alarm Monitoring Simulation System";
 	}
 	
 	void open(void) {
-		// No vehicles Yet.
+		// Create a list of all of the vehicles.
 		vehicles = std::vector<OpenSteer::SimpleVehicle*>();
+		vehicles.push_back(&camera_target);
 		
-		FSAMS::Environment::Vec2 p = FSAMS::Environment::Vec2(2,3);
-		p.set(3,4);
-
-		OpenSteerDemo::camera.reset();
-        OpenSteerDemo::camera.setPosition (10, OpenSteerDemo::camera2dElevation, 10);
-        OpenSteerDemo::camera.fixedPosition.set (40, 40, 40);
-        OpenSteerDemo::camera.mode = OpenSteer::Camera::cmFixed;
-
 		// Create a demo environment
 		environment.walls.push_back(FSAMS::Environment::Boundary(-10, 10, 10, 10));
 		environment.walls.push_back(FSAMS::Environment::Boundary( 10, 10, 10,-10));
 		environment.walls.push_back(FSAMS::Environment::Boundary( 10,-10,-10,-10));
 		environment.walls.push_back(FSAMS::Environment::Boundary(-10,-10,-10, 10));
+
+		// Initialize the camera.
+		camera_target.setPosition(0,0,0);
+		OpenSteerDemo::init2dCamera(camera_target,0,10);
+		OpenSteerDemo::camera.mode = OpenSteer::Camera::cmStraightDown;
     }
 
     void update(const float currentTime, const float elapsedTime) {
 		// TODO
+		camera_target.setPosition(camera_target.position().x,currentTime,camera_target.position().z);
     }
 
     void redraw(const float currentTime, const float elapsedTime) {
-		environment.draw();
-
 		// update camera, tracking test vehicle
-        OpenSteerDemo::updateCamera (currentTime, elapsedTime, *OpenSteerDemo::selectedVehicle);
+        OpenSteerDemo::updateCamera(currentTime, elapsedTime, *OpenSteerDemo::selectedVehicle);
 
         // draw "ground plane"
         OpenSteerDemo::gridUtility(OpenSteer::Vec3(0,0,0));
+
+		// draw the environment
+		environment.draw();
     }
 
     void reset(void) {
@@ -104,10 +106,6 @@ public:
     const OpenSteer::AVGroup& allVehicles(void) {
 		return (const OpenSteer::AVGroup&) vehicles;
 	}
-	
-private:
-	FSAMS::Environment::Environment environment;
-	std::vector<OpenSteer::SimpleVehicle*> vehicles;
 };
 
 FSAMSPlugIn pFSAMS;
