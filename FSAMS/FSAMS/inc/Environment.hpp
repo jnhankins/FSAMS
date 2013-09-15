@@ -25,7 +25,7 @@ public:
 		const OpenSteer::Vec3 wall_color(1,1,0);
 		for(std::size_t i=0; i<walls.size(); ++i) {
 			const FSAMS::Environment::Boundary& wall = walls[i];
-			drawLineAlpha(OpenSteer::Vec3(wall.p1.x, 0, wall.p1.z), OpenSteer::Vec3(wall.p2.x, 0, wall.p2.z), wall_color, 1.0);
+			drawLineAlpha(OpenSteer::Vec3(-wall.p1.x, 0, wall.p1.z), OpenSteer::Vec3(-wall.p2.x, 0, wall.p2.z), wall_color, 1.0);
 		}
 	}
 
@@ -36,23 +36,14 @@ public:
 		ofs.close();
 	}
 	static std::string fileToString(const std::string& xml_file_name)  {
-		std::ifstream ifs;
-		ifs.open(xml_file_name);
-		if(ifs.is_open()) {
-			std::string text;
-			ifs.seekg(0, std::ios::end);   
-			text.reserve((unsigned int)ifs.tellg());
-			ifs.seekg(0, std::ios::beg);
-			text.assign((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
-			ifs.close();
-			return text;
-		} else {
+		std::ifstream ifs(xml_file_name);
+		if(!ifs.is_open()) {
 			std::cerr << "Error: " << xml_file_name.c_str() << ": Could not open file." << std::endl;
 			return std::string();
 		}
+		return std::string((std::istreambuf_iterator<char>(ifs)),
+						   (std::istreambuf_iterator<char>()  ));
 	}
-
-
 	static Environment* fromXMLFile(const std::string& xml_file_name) {
 		std::string text = fileToString(xml_file_name);
 		if(text.length() == 0)

@@ -55,11 +55,15 @@ using OpenSteer::PlugIn;
 
 class FSAMSPlugIn : public OpenSteer::PlugIn {
 private:
-	FSAMS::Environment::Environment environment;
+	FSAMS::Environment::Environment* environment;
 	OpenSteer::SimpleVehicle camera_target;
 	std::vector<OpenSteer::SimpleVehicle*> vehicles;
 public:
 	FSAMSPlugIn() {}
+	~FSAMSPlugIn() {
+		if(environment)
+			delete environment;
+	}
 
 	const char* name (void) {
 		return "Fire and Security Alarm Monitoring Simulation System";
@@ -71,12 +75,7 @@ public:
 		vehicles.push_back(&camera_target);
 		
 		// Create a demo environment
-		environment.fromXMLFile("C:/Users/Jeremiah/Documents/GitHub/FSAMS/FSAMS/input/floor_layout.xml");
-
-		environment.walls.push_back(FSAMS::Environment::Boundary(-10, 10, 10, 10));
-		environment.walls.push_back(FSAMS::Environment::Boundary( 10, 10, 10,-10));
-		environment.walls.push_back(FSAMS::Environment::Boundary( 10,-10,-10,-10));
-		environment.walls.push_back(FSAMS::Environment::Boundary(-10,-10,-10, 10));
+		environment = environment->fromXMLFile("C:/Users/Jeremiah/Documents/GitHub/FSAMS/FSAMS/input/floor_layout.xml");
 
 		// Initialize the camera.
 		camera_target.setPosition(0,0,0);
@@ -102,7 +101,7 @@ public:
         OpenSteerDemo::gridUtility(OpenSteer::Vec3(0,0,0));
 
 		// draw the environment
-		environment.draw();
+		environment->draw();
     }
 
     void reset(void) {
