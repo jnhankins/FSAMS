@@ -71,6 +71,8 @@ public:
 		vehicles.push_back(&camera_target);
 		
 		// Create a demo environment
+		environment.fromXMLFile("C:/Users/Jeremiah/Documents/GitHub/FSAMS/FSAMS/input/floor_layout.xml");
+
 		environment.walls.push_back(FSAMS::Environment::Boundary(-10, 10, 10, 10));
 		environment.walls.push_back(FSAMS::Environment::Boundary( 10, 10, 10,-10));
 		environment.walls.push_back(FSAMS::Environment::Boundary( 10,-10,-10,-10));
