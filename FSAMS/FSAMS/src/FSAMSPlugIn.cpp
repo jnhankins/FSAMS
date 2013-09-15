@@ -112,7 +112,7 @@ public:
 		// TODO
     }
 
-	bool handleKeyboardFuncKey (int key, bool special, bool up, bool shift, bool ctrl, bool alt) {
+	bool handleKeyboardKey (int key, bool special, bool up, bool shift, bool ctrl, bool alt) {
 		const float camera_translate_step = 1;
 		const float camera_rotate_step = 3.14159265359f/32.0f; // 11.25 deg
 		const float camera_rotate_step_sin = std::sin(camera_rotate_step);
@@ -160,6 +160,15 @@ public:
 			}
 		}
 
+		return true;
+	}
+
+	bool handleMouseButton(int x, int y, bool mouseL, bool mouseM, bool mouseR, bool up, bool shift, bool ctrl, bool alt) {
+		std::cout << x << " " << y << std::endl;
+		return true;
+	}
+	bool handleMouseMotion(int x, int y, bool active) {
+		std::cout << x << " " << y << " " << active << std::endl;
 		return true;
 	}
 

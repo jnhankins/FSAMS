@@ -103,11 +103,21 @@ namespace OpenSteer {
         virtual bool requestInitialSelection (void) = 0;
 		
         // handle keyboard keys
-		// implementing functions must return true if the key was handled by the plugin
-		// otherwise if false is returned the default opensteer actions will be taken
+		// implementing functions must return true if the key was handled by the plugin,
+		// otherwise, if false is returned, the default opensteer actions will be taken
 		// Note: handleKeys includes function keys so be aware when using handleKeys
 		//  and handleFunctionKeys
-		virtual bool handleKeyboardFuncKey (int /*key*/, bool /*special*/, bool /*up*/, bool /*shift*/, bool /*ctrl*/, bool /*alt*/) = 0;
+		virtual bool handleKeyboardKey (int /*key*/, bool /*special*/, bool /*up*/, bool /*shift*/, bool /*ctrl*/, bool /*alt*/) = 0;
+
+        // handle mouse buttons
+		// implementing functions must return true if the mouse event was handled by the plugin,
+		// otherwise, if false is returned, the default opensteer actions will be taken
+		virtual bool handleMouseButton (int /*x*/, int /*y*/, bool /*mouseL*/, bool /*mouseM*/, bool /*mouseR*/, bool /*up*/, bool /*shift*/, bool /*ctrl*/, bool /*alt*/) = 0;
+		        
+		// handle mouse motion
+		// implementing functions must return true if the mouse event was handled by the plugin,
+		// otherwise, if false is returned, the default opensteer actions will be taken
+		virtual bool handleMouseMotion (int /*x*/, int /*y*/, bool /*active*/) = 0;
 
         // handle function keys (which are reserved by SterTest for PlugIns)
         virtual void handleFunctionKeys (int keyNumber) = 0;
@@ -146,7 +156,13 @@ namespace OpenSteer {
         bool requestInitialSelection (void) {return false;}
 
 		// default key handler: ignore all (false)
-		bool handleKeyboardFuncKey (int /*key*/, bool /*special*/, bool /*up*/, bool /*shift*/, bool /*ctrl*/, bool /*alt*/) { return false; }
+		bool handleKeyboardKey (int /*key*/, bool /*special*/, bool /*up*/, bool /*shift*/, bool /*ctrl*/, bool /*alt*/) { return false; }
+		
+		// default mouse button handler: ignore all (false)
+		bool handleMouseButton (int /*x*/, int /*y*/, bool /*mouseL*/, bool /*mouseM*/, bool /*mouseR*/, bool /*up*/, bool /*shift*/, bool /*ctrl*/, bool /*alt*/)  { return false; }
+
+		// default mouse motion handler: ignore all (false)
+		bool handleMouseMotion (int /*x*/, int /*y*/, bool /*active*/) { return false; }
 
         // default function key handler: ignore all
         // (parameter names commented out to prevent compiler warning from "-W")

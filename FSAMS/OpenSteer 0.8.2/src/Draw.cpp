@@ -157,6 +157,20 @@ namespace {
     void 
     mouseButtonFunc (int button, int state, int x, int y)
     {
+		{ // anonymous namespace
+            const bool mouseL = (button == GLUT_LEFT_BUTTON);
+            const bool mouseM = (button == GLUT_MIDDLE_BUTTON);
+            const bool mouseR = (button == GLUT_RIGHT_BUTTON);
+			const bool up = (state == GLUT_UP);
+			const int modifiers = glutGetModifiers();
+			const bool shift = ((modifiers & GLUT_ACTIVE_SHIFT) != 0);
+			const bool ctrl = ((modifiers & GLUT_ACTIVE_CTRL) != 0);
+			const bool alt = ((modifiers & GLUT_ACTIVE_ALT) != 0);
+			if(OpenSteer::OpenSteerDemo::mouseButtonFuncForPlugIn(x,y,mouseL,mouseM,mouseR,up,shift,ctrl,alt))
+				return;
+		}
+
+
         // if the mouse button has just been released
         if (state == GLUT_UP)
         {
@@ -225,6 +239,9 @@ namespace {
     void 
     mouseMotionFunc (int x, int y)
     {
+		if(OpenSteer::OpenSteerDemo::mouseMotionForPlugIn(x,y,true))
+			return;
+
         // are we currently in the process of mouse-adjusting the camera?
         if (gMouseAdjustingCameraAngle || gMouseAdjustingCameraRadius)
         {
@@ -266,6 +283,8 @@ namespace {
     void 
     mousePassiveMotionFunc (int x, int y)
     {
+		if(OpenSteer::OpenSteerDemo::mouseMotionForPlugIn(x,y,false))
+			return;
         OpenSteer::OpenSteerDemo::mouseX = x;
         OpenSteer::OpenSteerDemo::mouseY = y;
     }
@@ -512,12 +531,12 @@ namespace {
     keyboardFunc (unsigned char key, int /*x*/, int /*y*/) 
     {
 		{ // anonymous namespace
-			bool special  = false;
-			bool up = false;
-			int modifiers = glutGetModifiers();
-			bool shift = ((modifiers & GLUT_ACTIVE_SHIFT) != 0);
-			bool ctrl = ((modifiers & GLUT_ACTIVE_CTRL) != 0);
-			bool alt = ((modifiers & GLUT_ACTIVE_ALT) != 0);
+			const bool special  = false;
+			const bool up = false;
+			const int modifiers = glutGetModifiers();
+			const bool shift = ((modifiers & GLUT_ACTIVE_SHIFT) != 0);
+			const bool ctrl = ((modifiers & GLUT_ACTIVE_CTRL) != 0);
+			const bool alt = ((modifiers & GLUT_ACTIVE_ALT) != 0);
 			if(OpenSteer::OpenSteerDemo::keyboardFuncForPlugIn(key,special,up,shift,ctrl,alt))
 				return;
 		}
@@ -627,12 +646,12 @@ namespace {
     specialFunc (int key, int /*x*/, int /*y*/)
     {
 		{ // anonymous namespace
-			bool special  = true;
-			bool up = false;
-			int modifiers = glutGetModifiers();
-			bool shift = ((modifiers & GLUT_ACTIVE_SHIFT) != 0);
-			bool ctrl = ((modifiers & GLUT_ACTIVE_CTRL) != 0);
-			bool alt = ((modifiers & GLUT_ACTIVE_ALT) != 0);
+			const bool special  = true;
+			const bool up = false;
+			const int modifiers = glutGetModifiers();
+			const bool shift = ((modifiers & GLUT_ACTIVE_SHIFT) != 0);
+			const bool ctrl = ((modifiers & GLUT_ACTIVE_CTRL) != 0);
+			const bool alt = ((modifiers & GLUT_ACTIVE_ALT) != 0);
 			if(OpenSteer::OpenSteerDemo::keyboardFuncForPlugIn(key,special,up,shift,ctrl,alt))
 				return;
 		}

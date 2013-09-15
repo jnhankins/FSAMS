@@ -101,6 +101,12 @@ namespace OpenSteer {
 		// handle GLUT keyboard function keys
 		static bool keyboardFuncForPlugIn (int keyNumber, bool special, bool up, bool shift, bool ctrl, bool alt);
 
+		// handle GLUT mouse button keys
+		static bool mouseButtonFuncForPlugIn (int x, int y, bool mouseL, bool mouseM, bool mouseR, bool up, bool shift, bool ctrl, bool alt);
+
+		// handle GLUT mouse motion events
+		static bool mouseMotionForPlugIn (int x, int y, bool active);
+
         // handle function keys an a per-plug-in basis
         static void functionKeyForPlugIn (int keyNumber);
 

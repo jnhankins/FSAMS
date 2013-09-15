@@ -213,7 +213,25 @@ OpenSteer::OpenSteerDemo::selectNextPlugIn (void)
 bool 
 OpenSteer::OpenSteerDemo::keyboardFuncForPlugIn (int keyNumber, bool special, bool up, bool shift, bool ctrl, bool alt)
 {
-    return selectedPlugIn->handleKeyboardFuncKey (keyNumber, special, up, shift, ctrl, alt);
+    return selectedPlugIn->handleKeyboardKey (keyNumber, special, up, shift, ctrl, alt);
+}
+
+// ----------------------------------------------------------------------------
+// give plugins the option to overide mouse button keys
+
+bool 
+OpenSteer::OpenSteerDemo::mouseButtonFuncForPlugIn (int x, int y, bool mouseL, bool mouseM, bool mouseR, bool up, bool shift, bool ctrl, bool alt)
+{
+    return selectedPlugIn->handleMouseButton (x,y,mouseL,mouseM,mouseR,up,shift,ctrl,alt);
+}
+
+// ----------------------------------------------------------------------------
+// give plugins the option to overide mouse motion events
+
+bool 
+OpenSteer::OpenSteerDemo::mouseMotionForPlugIn (int x, int y, bool active)
+{
+    return selectedPlugIn->handleMouseMotion (x,y,active);
 }
 
 
