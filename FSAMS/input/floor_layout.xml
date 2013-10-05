@@ -1,0 +1,113 @@
+<floor>
+	<walls>
+		<wall> 0    0  24    0 </wall>
+		<wall> 0   18  24   18 </wall>
+		<wall> 0    0   0    8 </wall>
+		<wall> 0   10   0   18 </wall>
+		<wall> 8    0   8    8 </wall>
+		<wall> 8   10   8   18 </wall>
+		<wall>16    0  16    8 </wall>
+		<wall>16   10  16   18 </wall>
+		<wall>24    0  24    8 </wall>
+		<wall>24   10  24   18 </wall>
+		<wall> 0    8   3.5  8 </wall>
+		<wall> 0   10   3.5 10 </wall>
+		<wall> 4.5  8  11.5  8 </wall>
+		<wall> 4.5 10  11.5 10 </wall>
+		<wall>12.5  8  19.5  8 </wall>
+		<wall>12.5 10  19.5 10 </wall>
+		<wall>20.5  8  24    8 </wall>
+		<wall>20.5 10  24   10 </wall>
+	</walls>
+	<rooms>
+		<room id="0">
+			<bounds>
+				<bound>0 8 0 10</bound>
+				<bound>0 10 24 10</bound>
+				<bound>24 20 24 8</bound>
+				<bound>24 8 0 8</bound>
+			</bounds>
+			<doors>
+				<door>0 8 0 10 -1</door>
+				<door>24 8 24 10 -1</door>
+				<door>3.5 8 4.5 8 1</door>
+				<door>11.5 8 12.5 8 2</door>
+				<door>19.5 8 20.5 8 3</door>
+				<door>3.5 10 4.5 10 4</door>
+				<door>11.5 10 12.5 10 5</door>
+				<door>19.5 10 20.5 10 6</door>				
+			</doors>
+		</room>
+		<room id="1">
+			<bounds>
+				<bound>0 0 0 8</bound>
+				<bound>0 8 8 8 </bound>
+				<bound>8 8 8 0</bound>
+				<bound>8 0 0 0</bound>
+			</bounds>
+			<doors>
+				<door>3.5 8 4.5 8 0</door>				
+			</doors>
+		</room>
+		<room id="2">
+			<bounds>
+				<bound>8 0 8 8</bound>
+				<bound>8 8 16 8</bound>
+				<bound>16 8 16 0</bound>
+				<bound>16 0 8 0</bound>
+			</bounds>
+			<doors>
+				<door>11.5 8 12.5 8 0</door>				
+			</doors>
+		</room>
+		<room id="3">
+			<bounds>
+				<bound>16 0 16 8</bound>
+				<bound>16 8 24 8</bound>
+				<bound>24 8 24 0</bound>
+				<bound>24 0 16 0</bound>
+			</bounds>
+			<doors>
+				<door>19.5 8 20.5 8 0</door>				
+			</doors>
+		</room>
+		<room id="4">
+			<bounds>
+				<bound>0 10 0 18</bound>
+				<bound>0 18 8 18</bound>
+				<bound>8 18 8 10</bound>
+				<bound>8 10 0 10</bound>
+			</bounds>
+			<doors>
+				<door>3.5 10 4.5 10 0</door>				
+			</doors>
+		</room>
+		<room id="5">
+			<bounds>
+				<bound>8 10 8 18</bound>
+				<bound>8 18 16 18</bound>
+				<bound>16 18 16 10</bound>
+				<bound>16 10 8 10</bound>
+			</bounds>
+			<doors>
+				<door>11.5 10 12.5 10 0</door>				
+			</doors>
+		</room>
+		<room id="6">
+			<bounds>
+				<bound>16 10 16 18</bound>
+				<bound>16 18 24 18</bound>
+				<bound>24 18 24 10</bound>
+				<bound>24 10 16 10</bound>
+			</bounds>
+			<doors>
+				<door>19.5 10 20.5 10 0</door>				
+			</doors>
+		</room>
+	</rooms>
+	<zones>
+		<zone id="0">0</zone>
+		<zone id="1">1 2 3</zone>
+		<zone id="2">4 5 6</zone>
+	</zones>
+</floor>
