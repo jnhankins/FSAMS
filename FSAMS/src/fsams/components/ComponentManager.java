@@ -4,6 +4,8 @@
  */
 package fsams.components;
 
+import fsams.FSAMS;
+import fsams.gui.View;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -13,31 +15,49 @@ import java.util.ArrayList;
  */
 public class ComponentManager {
     private ArrayList<FSAMSComponent1D> components = new ArrayList();
+    private FSAMSComponent1D selectedComponent = null;
     
-    public ComponentManager(){
+    public ComponentManager() {
         
     }
     
-    public void addComponent(FSAMSComponent1D component){
+    public void addComponent(FSAMSComponent1D component) {
         components.add(component);
     }
     
-    public void removeComponent(FSAMSComponent1D component){
+    public void removeComponent(FSAMSComponent1D component) {
         components.remove(component);
     }
     
-    public FSAMSComponent1D selectComponent(int x, int y) throws Exception{
-        for(FSAMSComponent1D component : components){
-            if(component.isSelected(x, y))
+    public FSAMSComponent1D getComponent(int x, int y, int width, int height) {
+        double worldX = FSAMS.view.toWorldCoordinateX(x, width, height);
+        double worldY = FSAMS.view.toWorldCoordinateY(y, width, height);
+        for(FSAMSComponent1D component : components)
+            if(component.isSelected(worldX, worldY))
                 return component;
-        }
-        
-        throw new Exception("no component selected");
+        return null;
     }
     
-    public void paint(Graphics g){
+    public void selectComponent(FSAMSComponent1D newSelectedComponent) {
+        if(selectedComponent!=null)
+            selectedComponent.setSelected(false);
+        selectedComponent = newSelectedComponent;
+        if(selectedComponent!=null)
+            selectedComponent.setSelected(true);
+        FSAMS.mainWindow.repaint();
+    }
+    
+    public void deleteSelectedComponent() {
+        if(selectedComponent!=null) {
+            components.remove(selectedComponent);
+            selectedComponent = null;
+            FSAMS.mainWindow.repaint();
+        }
+    }
+    
+    public void paint(Graphics g) {
         for(FSAMSComponent1D component : components){
-            component.paint(g);
+            component.paint(g, FSAMS.view);
         }
     }
 }

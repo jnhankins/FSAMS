@@ -50,19 +50,27 @@ public abstract class FSAMSComponent2D extends FSAMSComponent1D {
     // Returns true if the distance from the clicked point to the center of this
     // component is less than or equal to this component's selection radius.
     @Override
-    public boolean isSelected(int x, int y) {
+    public boolean isSelected(double x, double y) {
         if((x1-x)*(x1-x)+(y1-y)*(y1-y) <= selectionRadius*selectionRadius ||
            (x2-x)*(x2-x)+(y2-y)*(y2-y) <= selectionRadius*selectionRadius)
             return true;
-        double d = Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
-        double sine = (y2 - y1)/d;
-        double cosine = (x2 - x1)/d;
-        double x1p = x1 * sine + y1 * cosine;
-        double y1p = x1 * cosine - y1 * sine;
-        double x2p = x2 * sine + y2 * cosine;
-        //double y2p = x2 * cosine - y2 * sine;
-        double xp = x * sine + y * cosine;
-        double yp = x * cosine - y * sine;
-        return x1p <= xp && xp <=x2p && Math.abs(yp - y1p) <= selectionRadius;
+        
+        // Translate the coordinates to be centered arround (x1,y1)
+        double xp = x-x1;
+        double yp = y-y1;
+        double x2p = x2-x1;
+        double y2p = y2-y1;
+        
+        // Rotate the coordinates so that (x2,y2) is on the positive x-axis
+        double theta = Math.atan2(x2p,y2p);
+        double c = Math.cos(theta);
+        double s = Math.sin(theta);
+        double xpp = xp*s+yp*c;
+        double ypp = xp*c-yp*s;
+        double x2pp = x2p*s+y2p*c;
+        double y2pp = x2p*c-y2p*s;
+        
+        // Check to see if the mouse click occured within the selection rectangle
+        return 0<=xpp && xpp<=x2pp && Math.abs(ypp)<=selectionRadius;
     }
 }
