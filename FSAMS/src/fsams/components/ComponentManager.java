@@ -1,10 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package fsams.components;
 
-import fsams.FSAMS;
 import fsams.gui.View;
 import java.awt.Graphics;
 import java.util.ArrayList;
@@ -14,11 +9,15 @@ import java.util.ArrayList;
  * @author FSAMS Team
  */
 public class ComponentManager {
-    private ArrayList<FSAMSComponent1D> components = new ArrayList();
-    private FSAMSComponent1D selectedComponent = null;
+    private ArrayList<FSAMSComponent1D> components;
+    
+    public static enum ComponentType {
+        Wall,
+        Sensor
+    }
     
     public ComponentManager() {
-        
+        components = new ArrayList();
     }
     
     public void addComponent(FSAMSComponent1D component) {
@@ -29,35 +28,16 @@ public class ComponentManager {
         components.remove(component);
     }
     
-    public FSAMSComponent1D getComponent(int x, int y, int width, int height) {
-        double worldX = FSAMS.view.toWorldCoordinateX(x, width, height);
-        double worldY = FSAMS.view.toWorldCoordinateY(y, width, height);
-        for(FSAMSComponent1D component : components)
-            if(component.isSelected(worldX, worldY))
-                return component;
+    public FSAMSComponent1D getComponent(double worldX, double worldY) {
+        for(int i=components.size()-1; i>=0; i--)
+            if(components.get(i).isSelected(worldX, worldY))
+                return components.get(i);
         return null;
     }
     
-    public void selectComponent(FSAMSComponent1D newSelectedComponent) {
-        if(selectedComponent!=null)
-            selectedComponent.setSelected(false);
-        selectedComponent = newSelectedComponent;
-        if(selectedComponent!=null)
-            selectedComponent.setSelected(true);
-        FSAMS.mainWindow.repaint();
-    }
-    
-    public void deleteSelectedComponent() {
-        if(selectedComponent!=null) {
-            components.remove(selectedComponent);
-            selectedComponent = null;
-            FSAMS.mainWindow.repaint();
-        }
-    }
-    
-    public void paint(Graphics g) {
-        for(FSAMSComponent1D component : components){
-            component.paint(g, FSAMS.view);
+    public void draw(Graphics g, View v) {
+        for(FSAMSComponent1D component : components) {
+            component.draw(g,v);
         }
     }
 }

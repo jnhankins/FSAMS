@@ -1,6 +1,3 @@
-/*
- * TODO
- */
 package fsams.components;
 
 import fsams.gui.View;
@@ -11,54 +8,51 @@ import java.awt.Graphics;
  * @author FSAMS Team
  */
 public abstract class FSAMSComponent1D {
-    protected int x1, y1; //center of components
-    protected int selectionRadius; //how far from point?
+    protected double x1, y1; //center of components
+    protected double selectionRadius = 2; //how far from point?
     protected boolean isSelected;
     
     //constructors
     public FSAMSComponent1D() {
         x1 = 0;
         y1 = 0;
-        selectionRadius = 10;
         isSelected = false;
     }
-    public FSAMSComponent1D(int x, int y, int radius) {
+    public FSAMSComponent1D(double x, double y) {
         x1 = x;
         y1 = y;
-        selectionRadius = radius;
         isSelected = false;
     }
     public FSAMSComponent1D(FSAMSComponent1D component) {
         x1 = component.x1;
         y1 = component.y1;
-        selectionRadius = component.selectionRadius;
         isSelected = false;
     }
     //setters
-    public void setP1(int x, int y) {
+    public void setP1(double x, double y) {
         x1 = x;
         y1 = y;
     }
-    public void setX1(int x) {
+    public void setX1(double x) {
         x1 = x;
     }    
-    public void setY1(int y) {
+    public void setY1(double y) {
         y1 = y;
     }
-    public void setSelectionRadius(int radius) {
+    public void setSelectionRadius(double radius) {
         selectionRadius = radius;
     }
     public void setSelected(boolean isSelected) {
         this.isSelected = isSelected;
     }
     //getters
-    public int getX1() {
+    public double getX1() {
         return x1;
     } 
-    public int getY1() {
+    public double getY1() {
         return y1;
     }
-    public int getSelectionRadius(){
+    public double getSelectionRadius(){
         return selectionRadius;
     }
     public boolean isSelected() {
@@ -71,5 +65,5 @@ public abstract class FSAMSComponent1D {
         return (x1-x)*(x1-x)+(y1-y)*(y1-y) <= selectionRadius*selectionRadius;
     }
     public abstract String getType();
-    public abstract void paint(Graphics g, View v);
+    public abstract void draw(Graphics g, View v);
 }

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package fsams.components;
 
 import fsams.gui.View;
@@ -16,20 +12,20 @@ public class Wall extends FSAMSComponent2D{
     public Wall() {
         super();
     }
-    public Wall(int x1, int y1, int x2, int y2) {
-        super(x1, y1, x2, y2, 1);
+    public Wall(double x1, double y1, double x2, double y2) {
+        super(x1, y1, x2, y2);
     }
     public Wall(Wall wall) {
         super(wall);
-
     }
+    
     @Override
     public String getType() {
         return "Wall";
     }
 
     @Override
-    public void paint(Graphics g, View v) {
+    public void draw(Graphics g, View v) {
         double width = g.getClipBounds().width;
         double height = g.getClipBounds().height;
         double screenX1 = v.toScreenCoordinateX(getX1(), width, height);

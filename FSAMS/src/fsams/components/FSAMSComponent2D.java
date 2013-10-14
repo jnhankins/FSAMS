@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package fsams.components;
 
 /**
@@ -9,15 +5,15 @@ package fsams.components;
  * @author FSAMS Team
  */
 public abstract class FSAMSComponent2D extends FSAMSComponent1D {
-    private int x2, y2;
+    private double x2, y2;
     //constructors
     public FSAMSComponent2D() {
         super();
         x2 = 0;
         y2 = 0;
     }
-    public FSAMSComponent2D(int x1, int y1, int x2, int y2, int radius) {
-        super(x1, y1, radius);
+    public FSAMSComponent2D(double x1, double y1, double x2, double y2) {
+        super(x1, y1);
         this.x2 = x2;
         this.y2 = y2;
     }
@@ -27,22 +23,22 @@ public abstract class FSAMSComponent2D extends FSAMSComponent1D {
         y2 = component.y2;
     }
     //setters
-    public void setP2(int x, int y) {
+    public void setP2(double x, double y) {
         x2 = x;
         y2 = y;
     }
-    public void setX2(int x) {
+    public void setX2(double x) {
         x2 = x;
     }    
-    public void setY2(int y) {
+    public void setY2(double y) {
         y2 = y;
     }
     
     //getters
-    public int getX2() {
+    public double getX2() {
         return x2;
     } 
-    public int getY2() {
+    public double getY2() {
         return y2;
     }
 
