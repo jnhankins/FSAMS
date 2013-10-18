@@ -52,7 +52,7 @@ public final class FSAMS  extends JFrame {
         initMainWindow();
     }
     
-    public void initMainWindow() {
+    private void initMainWindow() {
         JSplitPane split1 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         JSplitPane split2 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         split2.add(editP, JSplitPane.RIGHT);
@@ -72,7 +72,7 @@ public final class FSAMS  extends JFrame {
         selectComponent(comp);
     }
     
-    public void selectComponent(FSAMSComponent1D newSelectedComponent) {
+    private void selectComponent(FSAMSComponent1D newSelectedComponent) {
         if(selectedComponent!=null)
             selectedComponent.setSelected(false);
         selectedComponent = newSelectedComponent;
@@ -90,7 +90,7 @@ public final class FSAMS  extends JFrame {
     }
     
     public void draw(Graphics g) {
-        components.draw(g, view);
+        components.drawComponents(g, view);
     }
     
     public void setNextComponentType(ComponentType type) {

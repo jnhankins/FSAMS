@@ -35,7 +35,7 @@ public class ComponentManager {
         return null;
     }
     
-    public void draw(Graphics g, View v) {
+    public void drawComponents(Graphics g, View v) {
         for(FSAMSComponent1D component : components) {
             component.draw(g,v);
         }
