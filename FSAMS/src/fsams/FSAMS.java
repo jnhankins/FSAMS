@@ -7,11 +7,16 @@ import fsams.components.Sensor;
 import fsams.components.Wall;
 import fsams.gui.ComponentsPanel;
 import fsams.gui.EditPanel;
+import fsams.gui.PropertiesPanel;
 import fsams.gui.View;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JRadioButton;
 import javax.swing.JSplitPane;
+import javax.swing.JToolBar;
 
 /**
  *
@@ -21,9 +26,11 @@ public final class FSAMS  extends JFrame {
     // Model/Data
     private ComponentManager components;
     // GUI/View
+    private JToolBar toolBar;
     private EditPanel editP;
     private ComponentsPanel compP;
     private View view;
+    private PropertiesPanel propertiesP;
     // State
     private FSAMSComponent1D selectedComponent;
     private ComponentType nextComponentType;
@@ -34,8 +41,10 @@ public final class FSAMS  extends JFrame {
         // Model/Data
         components = new ComponentManager();
         // GUI/View
+        toolBar = new JToolBar();
         editP = new EditPanel(this);
         compP = new ComponentsPanel(this);
+        propertiesP = new PropertiesPanel();
         view = new View();
         // State
         nextComponentType = null;
@@ -58,7 +67,15 @@ public final class FSAMS  extends JFrame {
         split2.add(editP, JSplitPane.RIGHT);
         split2.add(compP, JSplitPane.LEFT);
         split1.add(split2, JSplitPane.LEFT);
+        split1.add(propertiesP, JSplitPane.RIGHT);
+        propertiesP.setPreferredSize(new Dimension(200, 800));
+        //split1.setResizeWeight(0.2);
         add(split1, BorderLayout.CENTER);
+        toolBar.add(new JRadioButton("Building Components"));
+        toolBar.add(new JRadioButton("Security Features"));
+        toolBar.add(new JButton("Start"));
+        toolBar.add(new JButton("Play"));
+        add(toolBar, BorderLayout.NORTH);
         setSize(800, 600);
         setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
