@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JRadioButton;
 import javax.swing.JSplitPane;
+import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 
 /**
@@ -73,7 +74,7 @@ public final class FSAMS  extends JFrame {
         add(split1, BorderLayout.CENTER);
         toolBar.add(new JRadioButton("Building Components"));
         toolBar.add(new JRadioButton("Security Features"));
-        toolBar.add(new JButton("Start"));
+        toolBar.add(new JToggleButton("Start"));
         toolBar.add(new JButton("Play"));
         add(toolBar, BorderLayout.NORTH);
         setSize(800, 600);
