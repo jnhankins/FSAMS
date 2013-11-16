@@ -46,4 +46,14 @@ public class Wall extends FSAMSComponent2D{
     public String toString() {
         return "Wall("+getX1()+","+getY1()+","+getX2()+","+getY2()+")";
     }
+
+    @Override
+    public FSAMSComponent1D copy() {
+        return new Wall(this);
+    }
+
+    @Override
+    public void update(ComponentManager components, double dTime) {
+        
+    }
 }

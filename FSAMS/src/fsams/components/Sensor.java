@@ -45,4 +45,14 @@ public class Sensor extends FSAMSComponent1D {
                     (int)screenW,
                     (int)screenW);
     }
+
+    @Override
+    public FSAMSComponent1D copy() {
+        return new Sensor(this);
+    }
+
+    @Override
+    public void update(ComponentManager components, double dTime) {
+        
+    }
 }

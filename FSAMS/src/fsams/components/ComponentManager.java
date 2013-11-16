@@ -19,6 +19,12 @@ public class ComponentManager {
     public ComponentManager() {
         components = new ArrayList();
     }
+    public ComponentManager(ComponentManager componentManager) {
+        components = new ArrayList();
+        for(FSAMSComponent1D component: componentManager.components) {
+            components.add(component.copy());
+        }
+    }
     
     public void addComponent(FSAMSComponent1D component) {
         components.add(component);
@@ -33,6 +39,12 @@ public class ComponentManager {
             if(components.get(i).isSelected(worldX, worldY))
                 return components.get(i);
         return null;
+    }
+    
+    public void update(double dTime){
+        for(FSAMSComponent1D component : components) {
+            component.update(this, dTime);
+        }
     }
     
     public void drawComponents(Graphics g, View v) {

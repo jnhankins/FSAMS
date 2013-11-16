@@ -66,4 +66,6 @@ public abstract class FSAMSComponent1D {
     }
     public abstract String getType();
     public abstract void draw(Graphics g, View v);
+    public abstract FSAMSComponent1D copy();
+    public abstract void update(ComponentManager components, double dTime);
 }
