@@ -21,8 +21,8 @@ public class ComponentsPanel extends JPanel implements ActionListener {
     private JButton elevatorB;
     private JButton sensorB;
     private JButton fireAlarm;
-    private JButton jButton6;
-    private JButton jButton7;
+    private JButton fire;
+    private JButton humanAgent;
     private JButton jButton8;
     private JButton jButton9;
     private JButton cancelB;
@@ -43,9 +43,9 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         JLabel jLabel2 = new JLabel();
         sensorB = new JButton();
         fireAlarm = new JButton();
-        jButton6 = new JButton();
+        fire = new JButton();
         JLabel jLabel3 = new JLabel();
-        jButton7 = new JButton();
+        humanAgent = new JButton();
         jButton8 = new JButton();
         jButton9 = new JButton();
         JLabel cancelL = new JLabel();
@@ -58,7 +58,8 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         elevatorB.addActionListener(this);
         sensorB.addActionListener(this);
         fireAlarm.addActionListener(this);
-        jButton6.addActionListener(this);
+        fire.addActionListener(this);
+        humanAgent.addActionListener(this);
         cancelB.addActionListener(this);
         
         setLayout(new java.awt.GridBagLayout());
@@ -124,12 +125,12 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(fireAlarm, gridBagConstraints);
 
-        jButton6.setText("jButton6");
+        fire.setText("Fire");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        add(jButton6, gridBagConstraints);
+        add(fire, gridBagConstraints);
         
         
         jLabel3.setText("Sensors");
@@ -141,12 +142,12 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         gridBagConstraints.insets = new java.awt.Insets(0, 7, 0, 0);
         add(jLabel3, gridBagConstraints);
 
-        jButton7.setText("Wall");
+        humanAgent.setText("Human Agent");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = ++row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        add(jButton7, gridBagConstraints);
+        add(humanAgent, gridBagConstraints);
 
         jButton8.setText("Door");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -209,8 +210,10 @@ public class ComponentsPanel extends JPanel implements ActionListener {
             fsams.setNextComponentType(ComponentType.Sensor);
         } else if(src == fireAlarm) {
             
-        } else if(src == jButton6) {
-            
+        } else if(src == fire) {
+            fsams.setNextComponentType(ComponentType.Fire);
+        } else if(src == humanAgent) {
+            fsams.setNextComponentType(ComponentType.HumanAgent);
         } else if(src == cancelB) {
             fsams.setNextComponentType(null);
         }

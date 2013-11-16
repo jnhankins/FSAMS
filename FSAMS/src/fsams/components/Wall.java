@@ -36,7 +36,7 @@ public class Wall extends FSAMSComponent2D{
         if(isSelected) {
             g.setColor(Color.yellow);
         } else {
-            g.setColor(Color.red);
+            g.setColor(Color.orange);
         }
         
         g.drawLine((int)screenX1, (int)screenY1, (int)screenX2, (int)screenY2);

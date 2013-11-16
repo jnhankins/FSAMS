@@ -13,7 +13,9 @@ public class ComponentManager {
     
     public static enum ComponentType {
         Wall,
-        Sensor
+        Sensor, 
+        Fire,
+        HumanAgent
     }
     
     public ComponentManager() {
@@ -28,6 +30,7 @@ public class ComponentManager {
     
     public void addComponent(FSAMSComponent1D component) {
         components.add(component);
+        System.out.println("me");
     }
     
     public void removeComponent(FSAMSComponent1D component) {
@@ -39,6 +42,10 @@ public class ComponentManager {
             if(components.get(i).isSelected(worldX, worldY))
                 return components.get(i);
         return null;
+    }
+    
+    public ArrayList<FSAMSComponent1D> getComponents(){
+        return components;
     }
     
     public void update(double dTime){

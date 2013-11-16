@@ -156,18 +156,29 @@ public final class FSAMS extends JFrame implements ActionListener {
     
     public void addComponent(int mouseX, int mouseY, int width, int height) {
         if(!simulation.isSimRunning()){
-            if(nextComponentType==null)
+            
+            if(nextComponentType==null) {
+                System.out.println("oops");
                 return;
+            }
 
             double worldX = view.toWorldCoordinateX(mouseX, width, height);
             double worldY = view.toWorldCoordinateY(mouseY, width, height);
 
+            System.out.println("switch"+nextComponentType.name());
             switch(nextComponentType) {
                 case Wall: 
                     components.addComponent(new Wall(worldX-0.5, worldY, worldX+0.5, worldY));
                     break;
                 case Sensor: 
                     components.addComponent(new Sensor(worldX, worldY));
+                    break;
+                case Fire:
+                    components.addComponent(new Fire(worldX, worldY));
+                    break;
+                case HumanAgent:
+                    System.out.println("humanAgent");
+                    components.addComponent(new HumanAgent(worldX, worldY, 0, 0));
                     break;
                 default: break;
             }
