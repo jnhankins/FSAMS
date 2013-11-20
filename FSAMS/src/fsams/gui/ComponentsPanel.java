@@ -60,6 +60,8 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         fireAlarm.addActionListener(this);
         fire.addActionListener(this);
         humanAgent.addActionListener(this);
+        jButton8.addActionListener(this);
+        jButton9.addActionListener(this);
         cancelB.addActionListener(this);
         
         setLayout(new java.awt.GridBagLayout());
@@ -214,6 +216,10 @@ public class ComponentsPanel extends JPanel implements ActionListener {
             fsams.setNextComponentType(ComponentType.Fire);
         } else if(src == humanAgent) {
             fsams.setNextComponentType(ComponentType.HumanAgent);
+        } else if(src == jButton8) {
+            
+        } else if(src == jButton9) {
+            
         } else if(src == cancelB) {
             fsams.setNextComponentType(null);
         }
