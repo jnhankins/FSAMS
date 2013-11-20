@@ -139,10 +139,12 @@ public final class FSAMS extends JFrame implements ActionListener {
     
     public void draw(Graphics g) {
         if(simulation.isSimRunning()){
-            simulation.getComponents().drawComponents(g, view);
+            //simulation.getComponents().drawComponents(g, view);
+            view.drawWorld(components, g, WIDTH, HEIGHT);
         }
         else{
             components.drawComponents(g, view);
+            view.drawWorld(components, g, WIDTH, HEIGHT);
         }
     }
     
@@ -209,5 +211,9 @@ public final class FSAMS extends JFrame implements ActionListener {
             default:
                 System.out.println("warning unknown action: "+ae.getActionCommand());
         }
+    }
+    
+    public ComponentManager getComponentManager() {
+        return components;
     }
 }

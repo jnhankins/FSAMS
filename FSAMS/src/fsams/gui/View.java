@@ -1,5 +1,14 @@
 package fsams.gui;
 
+import fsams.components.ComponentManager;
+import fsams.components.FSAMSComponent1D;
+import fsams.components.FSAMSComponent2D;
+import fsams.components.HumanAgent;
+import fsams.components.Sensor;
+import fsams.components.Wall;
+import java.awt.Color;
+import java.awt.Graphics;
+
 /**
  *
  * @author Jeremiah
@@ -98,5 +107,86 @@ public class View {
     @Override
     public String toString() {
         return "View("+centerX+","+centerY + ","+scale+")";
+    }
+    
+    
+    public void updateWorld(ComponentManager componentManager, double dTime) {
+        for (FSAMSComponent1D c : componentManager.getComponents()) {
+            if (c instanceof HumanAgent) {
+                HumanAgent cHA = (HumanAgent)c;
+                c.setX1(cHA.getX1() + cHA.getVX()*dTime);
+                c.setY1(cHA.getY1() + cHA.getVY()*dTime);
+            }
+        }
+    }
+    
+    
+    public void drawWorld(ComponentManager componentManager, Graphics g, double width, double height) {
+        for (FSAMSComponent1D c : componentManager.getComponents()) {
+            if (c instanceof Wall) {
+                FSAMSComponent2D c2D = (FSAMSComponent2D)c;
+                width = g.getClipBounds().width;
+                height = g.getClipBounds().height;
+                double screenX1 = toScreenCoordinateX(c2D.getX1(), width, height);
+                double screenY1 = toScreenCoordinateY(c2D.getY1(), width, height);
+                double screenX2 = toScreenCoordinateX(c2D.getX2(), width, height);
+                double screenY2 = toScreenCoordinateY(c2D.getY2(), width, height);
+
+                if(c2D.isSelected()) {
+                    g.setColor(Color.yellow);
+                } else {
+                    g.setColor(Color.orange);
+                }
+
+                g.drawLine((int)screenX1, (int)screenY1, (int)screenX2, (int)screenY2);
+            }
+            else if (c instanceof Sensor) {
+                width = g.getClipBounds().width;
+                height = g.getClipBounds().height;
+                
+                final double radius = 0.5;
+                double screenX1 = toScreenCoordinateX(c.getX1()-radius/2.0, width, height);
+                double screenY1 = toScreenCoordinateY(c.getY1()+radius/2.0, width, height);
+                double screenW = radius*getScale()* Math.min(width, height)/2.0;
+        
+                if(c.isSelected()) {
+                    g.setColor(Color.yellow);
+                } else {
+                    g.setColor(Color.pink);
+                }
+
+                g.drawOval( (int)screenX1,
+                            (int)screenY1,
+                            (int)screenW,
+                            (int)screenW);
+            }
+            else if (c instanceof HumanAgent) {
+                HumanAgent cHA = (HumanAgent)c;
+                width = g.getClipBounds().width;
+                height = g.getClipBounds().height;
+        
+                final double radius = 1;
+                double screenX1 = toScreenCoordinateX(c.getX1()-radius/2.0, width, height);
+                double screenY1 = toScreenCoordinateY(c.getY1()+radius/2.0, width, height);
+                double screenW = radius*getScale()* Math.min(width, height)/2.0;
+
+                if(c.isSelected()) {
+                    g.setColor(Color.orange);
+                } else {
+                    g.setColor(Color.magenta);
+                }
+
+                g.drawOval( (int)screenX1,
+                            (int)screenY1,
+                            (int)screenW,
+                            (int)screenW);
+                g.setColor(Color.yellow);
+
+                g.drawLine((int)toScreenCoordinateX(c.getX1(), width, height),
+                        (int)toScreenCoordinateY(c.getY1(), width, height),
+                        (int)toScreenCoordinateX(c.getX1()+cHA.getVX(), width, height),
+                        (int)toScreenCoordinateY(c.getY1()+cHA.getVY(), width, height));
+            }
+        }
     }
 }
