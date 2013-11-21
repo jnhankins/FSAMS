@@ -15,7 +15,6 @@ public class ComponentsPanel extends JPanel implements ActionListener {
     
     private int row=0;
     private int column=0;
-    private JComboBox componentCB;
     private JButton wallB;
     private JButton doorB;
     private JButton elevatorB;
@@ -35,7 +34,6 @@ public class ComponentsPanel extends JPanel implements ActionListener {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        componentCB = new JComboBox();
         JLabel buildingL = new JLabel();
         wallB = new JButton();
         doorB = new JButton();
@@ -52,7 +50,6 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         cancelB = new JButton();
         Box.Filler bottomFiller = new Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0));
         
-        componentCB.addActionListener(this);
         wallB.addActionListener(this);
         doorB.addActionListener(this);
         elevatorB.addActionListener(this);
@@ -66,13 +63,11 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         
         setLayout(new java.awt.GridBagLayout());
         
-        componentCB.setModel(new DefaultComboBoxModel(new String[] { "Wall", "Sensor", "Door" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = row;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        add(componentCB, gridBagConstraints);
 
         buildingL.setText("Building");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -189,23 +184,11 @@ public class ComponentsPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        Object src = ae.getSource();
-        if(src == componentCB) {
-            String cbSelected = (String)componentCB.getSelectedItem();
-            switch(cbSelected) {
-                case "Wall": 
-                    fsams.setNextComponentType(ComponentType.Wall);
-                    break;
-                case "Sensor": 
-                    fsams.setNextComponentType(ComponentType.Sensor);
-                    break;
-                default: break;
-            }
-            
-        } else if(src == wallB) {
+        Object src = ae.getSource();  
+        if(src == wallB) {
             fsams.setNextComponentType(ComponentType.Wall);
         } else if(src == doorB) {
-            
+            fsams.setNextComponentType(ComponentType.Door);            
         } else if(src == elevatorB) {
             
         } else if(src == sensorB) {
