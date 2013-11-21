@@ -13,7 +13,7 @@ import java.util.TreeSet;
  * @author FSAMS Team
  */
 public class Fire extends FSAMSComponent1D {
-    protected class Square implements Comparable<Square> {
+    public class Square implements Comparable<Square> {
         public static final double size = 0.5;
         public int x, y;
         public Square(int x, int y) {
@@ -41,7 +41,7 @@ public class Fire extends FSAMSComponent1D {
         }
     }
     protected Set<Square> innert = new TreeSet<>();
-    protected Set<Square> occupied = new TreeSet<>();
+    public Set<Square> occupied = new TreeSet<>();
     protected Set<Square> contiguous = new TreeSet<>();
     
     public Fire() {
@@ -61,30 +61,6 @@ public class Fire extends FSAMSComponent1D {
 
     @Override
     public void draw(Graphics g, View v) {
-        double width = g.getClipBounds().width;
-        double height = g.getClipBounds().height;
-        
-        final double radius = 0.5;
-        double screenX1 = v.toScreenCoordinateX(getX1()-radius/2.0, width, height);
-        double screenY1 = v.toScreenCoordinateY(getY1()+radius/2.0, width, height);
-        double screenW = radius*v.getScale()* Math.min(width, height)/2.0;
-        
-        if(isSelected) {
-            g.setColor(Color.yellow);
-        } else {
-            g.setColor(Color.red);
-        }
-        
-        g.drawOval( (int)screenX1,
-                    (int)screenY1,
-                    (int)screenW,
-                    (int)screenW);
-        
-        g.setColor(Color.red);
-        for(Square s: occupied) {
-            g.drawRect((int)(s.x*Square.size),(int)(s.y*Square.size),(int)((s.x+1)*Square.size),(int)((s.y+1)*Square.size));
-        }
-        
     }
 
     @Override
@@ -178,9 +154,11 @@ public class Fire extends FSAMSComponent1D {
 
     @Override
     public void update(ComponentManager components, double dTime) {
+        System.out.println("Update Fire");
         contiguous.add(new Square((int)Math.floor(getX1()/Square.size),(int)Math.floor(getY1()/Square.size)));
         
         for(Square cont: contiguous) {
+            System.out.println("Update Fire foreach");
             contiguous.remove(cont);
             occupied.add(cont);
             // light the square on fire

@@ -56,7 +56,7 @@ public class ComponentManager {
     
     public void drawComponents(Graphics g, View v) {
         for(FSAMSComponent1D component : components) {
-            component.draw(g,v);
+            v.drawWorld(this, g, g.getClipBounds().getWidth(), g.getClipBounds().getHeight());
         }
     }
 }

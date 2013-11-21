@@ -18,6 +18,7 @@ public class EditPanel extends JPanel implements MouseListener, MouseMotionListe
     private final FSAMS fsams;
     private boolean justSelected = false;
     private int clickedMouseX, clickedMouseY;
+    private View view;
     
     public EditPanel(FSAMS fsams) {
         this.fsams = fsams;
@@ -29,7 +30,7 @@ public class EditPanel extends JPanel implements MouseListener, MouseMotionListe
     public void paint(Graphics g) {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
-        fsams.draw(g);
+        fsams.draw(g, getWidth(), getHeight());
     }
 
     // MouseListener
@@ -71,7 +72,7 @@ public class EditPanel extends JPanel implements MouseListener, MouseMotionListe
         if(justSelected == true){
             int width = getWidth();
             int height = getHeight();
-            View view = fsams.getView();
+            view = fsams.getView();
             double dX = view.toWorldCoordinateX(e.getX(), width, height) - view.toWorldCoordinateX(clickedMouseX, width, height);
             double dY = view.toWorldCoordinateY(e.getY(), width, height) - view.toWorldCoordinateY(clickedMouseY, width, height);
             FSAMSComponent1D comp = fsams.getSelectedComponent();

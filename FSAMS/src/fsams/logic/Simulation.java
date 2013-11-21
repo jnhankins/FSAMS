@@ -6,6 +6,7 @@ package fsams.logic;
 
 import fsams.components.ComponentManager;
 import fsams.components.FSAMSComponent1D;
+import fsams.gui.View;
 import javax.swing.JPanel;
 
 public class Simulation extends Thread{
@@ -14,6 +15,7 @@ public class Simulation extends Thread{
     private boolean isProgRunning;
     private boolean isSimRunning;
 
+    private View view = new View();
     private ComponentManager components;
     private JPanel panel;
     
