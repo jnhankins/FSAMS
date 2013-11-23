@@ -13,15 +13,13 @@ import javax.swing.*;
 public class ComponentsPanel extends JPanel implements ActionListener {
     private final FSAMS fsams;
     
-    private int row=0;
-    private int column=0;
     private JButton wallB;
     private JButton doorB;
-    private JButton elevatorB;
+    private JButton exitB;
     private JButton sensorB;
-    private JButton fireAlarm;
-    private JButton fire;
-    private JButton humanAgent;
+    private JButton fireAlarmB;
+    private JButton fireB;
+    private JButton humanAgentB;
     private JButton jButton8;
     private JButton jButton9;
     private JButton cancelB;
@@ -32,18 +30,17 @@ public class ComponentsPanel extends JPanel implements ActionListener {
     }
     
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         JLabel buildingL = new JLabel();
         wallB = new JButton();
         doorB = new JButton();
-        elevatorB = new JButton();
+        exitB = new JButton();
         JLabel jLabel2 = new JLabel();
         sensorB = new JButton();
-        fireAlarm = new JButton();
-        fire = new JButton();
+        fireAlarmB = new JButton();
+        fireB = new JButton();
         JLabel jLabel3 = new JLabel();
-        humanAgent = new JButton();
+        humanAgentB = new JButton();
         jButton8 = new JButton();
         jButton9 = new JButton();
         JLabel cancelL = new JLabel();
@@ -52,22 +49,19 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         
         wallB.addActionListener(this);
         doorB.addActionListener(this);
-        elevatorB.addActionListener(this);
+        exitB.addActionListener(this);
         sensorB.addActionListener(this);
-        fireAlarm.addActionListener(this);
-        fire.addActionListener(this);
-        humanAgent.addActionListener(this);
+        fireAlarmB.addActionListener(this);
+        fireB.addActionListener(this);
+        humanAgentB.addActionListener(this);
         jButton8.addActionListener(this);
         jButton9.addActionListener(this);
         cancelB.addActionListener(this);
         
         setLayout(new java.awt.GridBagLayout());
+        java.awt.GridBagConstraints gridBagConstraints;
+        int row=0;
         
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = row;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
 
         buildingL.setText("Building");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -92,12 +86,12 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(doorB, gridBagConstraints);
 
-        elevatorB.setText("Elevator");
+        exitB.setText("Exit");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        add(elevatorB, gridBagConstraints);
+        add(exitB, gridBagConstraints);
 
         jLabel2.setText("Sensors");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -115,19 +109,19 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(sensorB, gridBagConstraints);
 
-        fireAlarm.setText("Fire Alarm");
+        fireAlarmB.setText("Fire Alarm");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        add(fireAlarm, gridBagConstraints);
+        add(fireAlarmB, gridBagConstraints);
 
-        fire.setText("Fire");
+        fireB.setText("Fire");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        add(fire, gridBagConstraints);
+        add(fireB, gridBagConstraints);
         
         
         jLabel3.setText("Sensors");
@@ -139,12 +133,12 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         gridBagConstraints.insets = new java.awt.Insets(0, 7, 0, 0);
         add(jLabel3, gridBagConstraints);
 
-        humanAgent.setText("Human Agent");
+        humanAgentB.setText("Human Agent");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = ++row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        add(humanAgent, gridBagConstraints);
+        add(humanAgentB, gridBagConstraints);
 
         jButton8.setText("Door");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -184,41 +178,21 @@ public class ComponentsPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-<<<<<<< HEAD
         Object src = ae.getSource();
-        if(src == componentCB) {
-            String cbSelected = (String)componentCB.getSelectedItem();
-            switch(cbSelected) {
-                case "Wall": 
-                    fsams.setNextComponentType(Component.Type.Wall);
-                    break;
-                case "Sensor": 
-                    fsams.setNextComponentType(Component.Type.Sensor);
-                    break;
-                case "Fire":
-                    fsams.setNextComponentType(Component.Type.Fire);
-                    break;
-                default: break;
-            }
-            
-        } else if(src == wallB) {
-            fsams.setNextComponentType(Component.Type.Wall);
-=======
-        Object src = ae.getSource();  
+        
         if(src == wallB) {
-            fsams.setNextComponentType(ComponentType.Wall);
->>>>>>> b72c66f2afe9897a0af81dd59b3bd302ce22155f
+            fsams.setNextComponentType(Component.Type.Wall);
         } else if(src == doorB) {
-            fsams.setNextComponentType(ComponentType.Door);            
-        } else if(src == elevatorB) {
             
+        } else if(src == exitB) {
+            fsams.setNextComponentType(Component.Type.Exit);
         } else if(src == sensorB) {
             fsams.setNextComponentType(Component.Type.Sensor);
-        } else if(src == fireAlarm) {
+        } else if(src == fireAlarmB) {
             
-        } else if(src == fire) {
+        } else if(src == fireB) {
             fsams.setNextComponentType(Component.Type.Fire);
-        } else if(src == humanAgent) {
+        } else if(src == humanAgentB) {
             fsams.setNextComponentType(Component.Type.HumanAgent);
         } else if(src == jButton8) {
             

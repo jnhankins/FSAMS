@@ -5,6 +5,8 @@
 package fsams;
 
 import fsams.grid.*;
+import fsams.grid.Component.*;
+import fsams.grid.Grid.Tile;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
@@ -53,17 +55,24 @@ public class Simulation extends Thread{
                     long currTime = System.currentTimeMillis();
                     double elapTime = (currTime - lastTime)/1000.0;
                     
-                    Grid.Tile[][] tiles = grid.getTiles();
-                    // Draw components
-                    for(int grid_x=0; grid_x<tiles.length; grid_x++) {
-                        for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
-                            // Get the tile
-                            Grid.Tile tile = tiles[grid_x][grid_y];
-                            // Get the components
-                            ArrayList<Component> components = tile.getComponents();
-                            for(Component component: components) {
-                                if(component instanceof Fire) {
-                                    simFire(grid_x,grid_y);
+                    synchronized(grid) {
+                        Grid.Tile[][] tiles = grid.getTiles();
+                        // Draw components
+                        for(int grid_x=0; grid_x<tiles.length; grid_x++) {
+                            for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
+                                // Get the tile
+                                Grid.Tile tile = tiles[grid_x][grid_y];
+                                // Get the components
+                                ArrayList<Component> components = tile.getComponents();
+                                for(int comp_i=0; comp_i<components.size(); comp_i++) {
+                                    Component component = components.get(comp_i);
+                                    if(component instanceof Fire) {
+                                        simFire(grid_x,grid_y,elapTime);
+                                    }
+                                    else if(component instanceof HumanAgent){
+                                        if(simHumanAgent((HumanAgent)component, grid_x,grid_y,elapTime))
+                                            comp_i--;
+                                    }
                                 }
                             }
                         }
@@ -82,35 +91,144 @@ public class Simulation extends Thread{
         }
     }
     
-    public void simFire(int grid_x, int grid_y) {
-        final double spread_probability = 0.5;
+    public void simFire(int grid_x, int grid_y, double elapTime) {
+        // Left
         if(grid_x-1>=0 && !grid.getTiles()[grid_x][grid_y].getWallL()) {
             int x = grid_x-1;
             int y = grid_y;
-            if(Math.random()<spread_probability) {
-                
-            }
+            simBurnTile(x,y,elapTime);
         }
-        if(grid_y-1>=0) {
+        // Down
+        if(grid_y-1>=0 && !grid.getTiles()[grid_x][grid_y].getWallD()) {
             int x = grid_x;
             int y = grid_y-1;
-            if(Math.random()<spread_probability) {
-                
-            }
+            simBurnTile(x,y,elapTime);
         }
-        if(grid_x+1<Grid.grid_width) {
+        // Right
+        if(grid_x+1<Grid.grid_width && !grid.getTiles()[grid_x][grid_y].getWallR()) {
             int x = grid_x+1;
             int y = grid_y;
-            if(Math.random()<spread_probability) {
-                
-            }
+            simBurnTile(x,y,elapTime);
         }
-        if(grid_y+1<Grid.grid_height) {
+        // Up
+        if(grid_y+1<Grid.grid_height && !grid.getTiles()[grid_x][grid_y].getWallU()) {
             int x = grid_x;
             int y = grid_y+1;
-            if(Math.random()<spread_probability) {
-                
-            }
+            simBurnTile(x,y,elapTime);
         }
     }
+    
+    public void simBurnTile(int grid_x, int grid_y, double elapTime) {
+        // There is a burn_probability % chance of the tile catching fire in burn_timeframe seconds.
+        final double burn_probability = 0.75;
+        final double burn_timeframe = 10.0;
+        double prob = 1 - Math.pow(1.0-burn_probability,elapTime/burn_timeframe); // p'=1-(1-p)^(t'/t)
+        if(Math.random()<prob) {
+            Tile tile = grid.getTiles()[grid_x][grid_y];
+            ArrayList<Component> components = tile.getComponents();
+            for(Component component: components) {
+                if(component instanceof Fire) {
+                    return;
+                }
+                // TODO check for other types of components.
+            }
+            components.add(new Fire());
+        }
+    }
+    
+    boolean simHumanAgent(HumanAgent human, int grid_x, int grid_y, double elapTime) {
+        Tile tiles[][] = grid.getTiles();
+        //cannot reach exit - no exit in building
+        if(true){
+            boolean fireU, fireD, fireL, fireR;
+            boolean openU, openD, openL, openR;
+            fireU = fireD = fireL = fireR = false;
+            openU = openD = openL = openR = false;
+            // Left
+            if(grid_x-1>=0 && !tiles[grid_x][grid_y].getWallL()) {
+                openL = true;
+                int x = grid_x-1;
+                int y = grid_y;
+                for(Component component: tiles[x][y].getComponents()) {
+                    if(component instanceof Fire) {
+                        fireL = true;
+                        openL = false;
+                        break;
+                    }
+                }
+            }
+            // Down
+            if(grid_y-1>=0 && !tiles[grid_x][grid_y].getWallD()) {
+                openD = true;
+                int x = grid_x;
+                int y = grid_y-1;
+                for(Component component: tiles[x][y].getComponents()) {
+                    if(component instanceof Fire) {
+                        fireD = true;
+                        openD = false;
+                        break;
+                    }
+                }
+            }
+            // Right
+            if(grid_x+1<Grid.grid_width && !tiles[grid_x][grid_y].getWallR()) {
+                openR = true;
+                int x = grid_x+1;
+                int y = grid_y;
+                for(Component component: tiles[x][y].getComponents()) {
+                    if(component instanceof Fire) {
+                        fireR = true;
+                        openR = false;
+                        break;
+                    }
+                }
+            }
+            // Up
+            if(grid_y+1<Grid.grid_height && !tiles[grid_x][grid_y].getWallU()) {
+                openU = true;
+                int x = grid_x;
+                int y = grid_y+1;
+                for(Component component: tiles[x][y].getComponents()) {
+                    if(component instanceof Fire) {
+                        fireU = true;
+                        openU = false;
+                        break;
+                    }
+                }
+            }
+            
+            //if all on fire or non on fire do nothing
+            if(!fireU && !fireD && !fireL && !fireR) {
+                return false;
+            }
+            
+            int numOpen = (openU ? 1:0) + (openD ? 1:0) + (openL ? 1:0) + (openR ? 1:0);
+            switch(numOpen){
+                case 0:
+                    return false;
+                case 1:
+                    tiles[grid_x][grid_y].getComponents().remove(human);
+                    if(openU) tiles[grid_x][grid_y+1].getComponents().add(human);
+                    else if(openD) tiles[grid_x][grid_y-1].getComponents().add(human);
+                    else if(openL) tiles[grid_x-1][grid_y].getComponents().add(human);
+                    else if(openR) tiles[grid_x+1][grid_y].getComponents().add(human);
+                    return true;
+                case 2:
+                    tiles[grid_x][grid_y].getComponents().remove(human);
+                    if(openU) tiles[grid_x][grid_y+1].getComponents().add(human);
+                    else if(openD) tiles[grid_x][grid_y-1].getComponents().add(human);
+                    else if(openL) tiles[grid_x-1][grid_y].getComponents().add(human);
+                    else if(openR) tiles[grid_x+1][grid_y].getComponents().add(human);
+                    return true;
+                case 3:
+                    tiles[grid_x][grid_y].getComponents().remove(human);
+                    if(fireD) tiles[grid_x][grid_y+1].getComponents().add(human);
+                    if(fireU) tiles[grid_x][grid_y-1].getComponents().add(human);
+                    if(fireR) tiles[grid_x-1][grid_y].getComponents().add(human);
+                    if(fireL) tiles[grid_x+1][grid_y].getComponents().add(human);
+                    return true;
+            }
+        }
+        return false;
+    }   
 }

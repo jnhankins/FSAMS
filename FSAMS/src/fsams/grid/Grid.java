@@ -1,5 +1,6 @@
 package fsams.grid;
 
+import fsams.grid.Component.*;
 import java.util.ArrayList;
 
 public class Grid {
@@ -10,15 +11,24 @@ public class Grid {
     
     
     public Grid() {
-        tiles = new Tile[grid_width][grid_height];    
+        tiles = new Tile[grid_width][grid_height];
         for(int grid_x=0; grid_x<tiles.length; grid_x++) {
             for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
                 tiles[grid_x][grid_y] = new Tile();
             }
         }
     }
+    public Grid(Grid grid) {
+        tiles = new Tile[grid_width][grid_height];
+        for(int grid_x=0; grid_x<tiles.length; grid_x++) {
+            for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
+                tiles[grid_x][grid_y] = new Tile(grid.getTiles()[grid_x][grid_y]);
+            }
+        }
+    }
     
     public class Tile {
+        //TODO replace ArrayList with boolean values
         ArrayList<Component> components;
         boolean wallU, wallD, wallL, wallR;
         
@@ -28,6 +38,24 @@ public class Grid {
             wallD = false;
             wallL = false;
             wallR = false;
+        }
+        public Tile(Tile tile) {
+            components = new ArrayList<>();
+            for(Component component: tile.getComponents()) {
+                if(component instanceof Sensor) {
+                    components.add(new Sensor());
+                } else if(component instanceof Fire) {
+                    components.add(new Fire());
+                } else if(component instanceof HumanAgent){
+                    components.add(new HumanAgent());
+                } else if(component instanceof Exit){
+                    components.add(new Exit());
+                }
+            }
+            wallU = tile.wallU;
+            wallD = tile.wallD;
+            wallL = tile.wallL;
+            wallR = tile.wallR;
         }
         
         public ArrayList<Component> getComponents() {

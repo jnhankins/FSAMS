@@ -13,10 +13,12 @@ public class Component {
         Wall,
         Sensor, 
         Fire,
-        HumanAgent
+        HumanAgent,
+        Exit
     }
     
     public static class Sensor extends Component {}
     public static class Fire extends Component {}
-    
+    public static class HumanAgent extends Component{}
+    public static class Exit extends Component{}
 }
