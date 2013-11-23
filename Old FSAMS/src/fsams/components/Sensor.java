@@ -26,6 +26,7 @@ public class Sensor extends FSAMSComponent1D {
 
     @Override
     public void draw(Graphics g, View v) {
+        
     }
 
     @Override

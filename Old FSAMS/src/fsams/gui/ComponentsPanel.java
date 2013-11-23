@@ -1,7 +1,7 @@
 package fsams.gui;
 
 import fsams.FSAMS;
-import fsams.grid.Component;
+import fsams.components.ComponentManager.ComponentType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
@@ -194,31 +194,28 @@ public class ComponentsPanel extends JPanel implements ActionListener {
             String cbSelected = (String)componentCB.getSelectedItem();
             switch(cbSelected) {
                 case "Wall": 
-                    fsams.setNextComponentType(Component.Type.Wall);
+                    fsams.setNextComponentType(ComponentType.Wall);
                     break;
                 case "Sensor": 
-                    fsams.setNextComponentType(Component.Type.Sensor);
-                    break;
-                case "Fire":
-                    fsams.setNextComponentType(Component.Type.Fire);
+                    fsams.setNextComponentType(ComponentType.Sensor);
                     break;
                 default: break;
             }
             
         } else if(src == wallB) {
-            fsams.setNextComponentType(Component.Type.Wall);
+            fsams.setNextComponentType(ComponentType.Wall);
         } else if(src == doorB) {
             
         } else if(src == elevatorB) {
             
         } else if(src == sensorB) {
-            fsams.setNextComponentType(Component.Type.Sensor);
+            fsams.setNextComponentType(ComponentType.Sensor);
         } else if(src == fireAlarm) {
             
         } else if(src == fire) {
-            fsams.setNextComponentType(Component.Type.Fire);
+            fsams.setNextComponentType(ComponentType.Fire);
         } else if(src == humanAgent) {
-            fsams.setNextComponentType(Component.Type.HumanAgent);
+            fsams.setNextComponentType(ComponentType.HumanAgent);
         } else if(src == jButton8) {
             
         } else if(src == jButton9) {

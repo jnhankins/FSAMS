@@ -1,78 +1,209 @@
 package fsams.gui;
 
 import fsams.FSAMS;
-import fsams.components.FSAMSComponent1D;
-import fsams.components.FSAMSComponent2D;
+import fsams.grid.Component;
+import fsams.grid.Component.Fire;
+import fsams.grid.Component.Sensor;
+import fsams.grid.Grid;
+import fsams.grid.Grid.Tile;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 import javax.swing.JPanel;
 
-/**
- *
- * @author FSAMS Team
- */
-public class EditPanel extends JPanel implements MouseListener, MouseMotionListener {
+public class EditPanel extends JPanel implements MouseListener {
     private final FSAMS fsams;
-    private boolean justSelected = false;
-    private int clickedMouseX, clickedMouseY;
-    private View view;
+    private double centerX;
+    private double centerY;
+    private double scale;
+    
+    private Grid grid;
+    
+    private Component.Type nextComponentType;
+    //private boolean justSelected;
+    //private int justSelectedX;
+    //private int justSelectedY;
     
     public EditPanel(FSAMS fsams) {
         this.fsams = fsams;
+        centerX = 0;
+        centerY = 0;
+        scale = 50.0;
+        nextComponentType = null;
+        //justSelected = false;
+        //justSelectedX = 0;
+        //justSelectedY = 0;
+        
         addMouseListener(this);
-        addMouseMotionListener(this);
+    }
+    
+    public void setGrid(Grid grid) {
+        this.grid = grid;
+    }
+    public void setNextComponentType(Component.Type type) {
+        nextComponentType = type;
+    }
+    
+    int toScreenXfromGridX(int grid_x, int grid_width) {
+        return (int)(grid_x*scale+getWidth()/2.0-centerX-grid_width*scale/2.0);
+    }
+    int toScreenYfromGridY(int grid_y, int grid_height) {
+        return (int)(-grid_y*scale+getHeight()/2.0-centerY+grid_height*scale/2.0);
+    }
+    int toGridXfromScreenX(int x, int grid_width) {
+        return (int)((x+grid_width*scale/2.0+centerX-getWidth()/2.0)/scale);
+    }
+    int toGridYfromScreenY(int y, int grid_height) {
+        return (int)((y-getHeight()/2.0+centerY-grid_height*scale/2.0)/(-scale));
     }
     
     @Override
     public void paint(Graphics g) {
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, getWidth(), getHeight());
-        fsams.draw(g, getWidth(), getHeight());
-    }
-
-    // MouseListener
-    @Override
-    public void mousePressed(MouseEvent me) {
-        //actionManager.selectComponent(me.getX(), me.getY());
-        if(fsams.getNextComponentType() != null) {
-            fsams.addComponent(me.getX(), me.getY(), getWidth(), getHeight());
-            fsams.selectComponent(me.getX(), me.getY(), getWidth(), getHeight());
-            justSelected = true;
-            clickedMouseX = me.getX();
-            clickedMouseY = me.getY();
+        // Clear the drawing area
+        g.setColor(Color.black);
+        g.fillRect(0,0,getWidth(),getHeight());
+        
+        // Draw the grid
+        g.setColor(Color.gray);
+        int left = toScreenXfromGridX(0,Grid.grid_width);
+        int right = toScreenXfromGridX(Grid.grid_width,Grid.grid_width);
+        int bottom = toScreenYfromGridY(0,Grid.grid_height);
+        int top = toScreenYfromGridY(Grid.grid_height,Grid.grid_height);
+        // Verticle
+        for(int grid_x=0; grid_x<=Grid.grid_width; grid_x++) {
+            int x = toScreenXfromGridX(grid_x,Grid.grid_width);
+            g.drawLine(x, top, x, bottom);
         }
-        else {
-            if(fsams.selectComponent(me.getX(), me.getY(), getWidth(), getHeight())){
-                justSelected = true;
-                clickedMouseX = me.getX();
-                clickedMouseY = me.getY();
+        // Horizontal
+        for(int grid_y=0; grid_y<=Grid.grid_height; grid_y++) {
+            int y = toScreenYfromGridY(grid_y,Grid.grid_height);
+            g.drawLine(left, y, right, y);
+        }
+        
+        // Get the tiles
+        Tile[][] tiles = grid.getTiles();
+        // Draw components
+        for(int grid_x=0; grid_x<tiles.length; grid_x++) {
+            for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
+                // Get the tile
+                Tile tile = tiles[grid_x][grid_y];
+                // Get the corners of the grid
+                int xL = toScreenXfromGridX(grid_x,Grid.grid_width);
+                int xR = toScreenXfromGridX(grid_x+1,Grid.grid_width);
+                int yD = toScreenYfromGridY(grid_y,Grid.grid_height);
+                int yU = toScreenYfromGridY(grid_y+1,Grid.grid_height);
+                // Draw Walls
+                g.setColor(Color.red);
+                if(tile.getWallD()) {
+                    g.drawLine(xL, yD, xR, yD);
+                }
+                if(tile.getWallU()) {
+                    g.drawLine(xL, yU, xR, yU);
+                }
+                if(tile.getWallR()) {
+                    g.drawLine(xR, yD, xR, yU);
+                }
+                if(tile.getWallL()) {
+                    g.drawLine(xL, yD, xL, yU);
+                }
+                // Draw Components
+                ArrayList<Component> components = tile.getComponents();
+                int x = (int)((xL+xR)/2.0);
+                int y = (int)((yU+yD)/2.0);
+                final double sensor_radius = 0.1*scale;
+                for(Component component: components) {
+                    // Draw Fires
+                    if(component instanceof Fire) {
+                        g.setColor(Color.red);
+                        g.drawLine(xL,yU,xR,yD);
+                        g.drawLine(xL,yD,xR,yU);
+                    }
+                    // Draw Sensors
+                    if(component instanceof Sensor) {
+                        g.setColor(Color.green);
+                        int x1 = (int)(x-sensor_radius);
+                        int y1 = (int)(y-sensor_radius);
+                        g.drawOval(x1,y1,(int)(2*sensor_radius),(int)(2*sensor_radius));
+                    }
+                }
             }
         }
     }
-    @Override
-    public void mouseClicked(MouseEvent me) {
-    }
-    @Override
-    public void mouseReleased(MouseEvent me) {
-        justSelected = false;
-        //System.out.println("release");
-        //System.out.println(me.getX());
-    }
-    @Override
-    public void mouseEntered(MouseEvent me) {}
-    @Override
-    public void mouseExited(MouseEvent me) {}
+    
 
     @Override
+    public void mousePressed(MouseEvent me) {
+        int grid_x = toGridXfromScreenX(me.getX(),Grid.grid_width);
+        int grid_y = toGridYfromScreenY(me.getY(),Grid.grid_height);
+        if(grid_x<0 || Grid.grid_width<=grid_x || grid_y<0 || Grid.grid_height<=grid_y)
+            return;
+        if(nextComponentType != null) {
+            Component comp;
+            switch(nextComponentType) {
+                case Wall:
+                    int xL = toScreenXfromGridX(grid_x,Grid.grid_width);
+                    int xR = toScreenXfromGridX(grid_x+1,Grid.grid_width);
+                    int yD = toScreenYfromGridY(grid_y,Grid.grid_height);
+                    int yU = toScreenYfromGridY(grid_y+1,Grid.grid_height);
+                    int mx = me.getX();
+                    int my = me.getY();
+                    int x1 = mx-xL;
+                    int y1 = my-yU;
+                    int x2 = xR-mx;
+                    int y2 = y1;
+                    if(x1>y1) { // up-right
+                        if(x2>y2) { // up-left
+                            grid.addWall(grid_x  ,grid_y+1,grid_x+1,grid_y+1); // Up
+                        } else { // down-right
+                            grid.addWall(grid_x+1,grid_y,  grid_x+1,grid_y+1); // Right
+                        }
+                    } else { // down-left
+                        if(x2>y2) { // up-left
+                            grid.addWall(grid_x,  grid_y,  grid_x,  grid_y+1); // Left
+                        } else { // down-right
+                            grid.addWall(grid_x,  grid_y,  grid_x+1,grid_y  ); // Down
+                        }
+                    }
+                    repaint();
+                    break;
+                case Sensor:
+                    grid.addComponent(new Sensor(), grid_x, grid_y);
+                    nextComponentType = null;
+                    repaint();
+                    break;
+                case Fire:
+                    grid.addComponent(new Fire(), grid_x, grid_y);
+                    nextComponentType = null;
+                    repaint();
+                    break;
+                /*
+                case HumanAgent:
+                    grid.addComponent(new HumanAgent(), grid_x, grid_y);
+                    nextComponentType = null;
+                    repaint();
+                    break;
+                */
+            }
+            //justSelected = true;
+            //justSelectedX = me.getX();
+            //justSelectedY = me.getY();
+        }
+        //else {
+        //    if(fsams.selectComponent(me.getX(), me.getY(), getWidth(), getHeight())){
+        //        justSelected = true;
+        //        clickedMouseX = me.getX();
+        //        clickedMouseY = me.getY();
+        //    }
+        //}
+    }
+/*
+    @Override
     public void mouseDragged(MouseEvent e) {
-        
         if(justSelected == true){
-            int width = getWidth();
+             int width = getWidth();
             int height = getHeight();
-            view = fsams.getView();
             double dX = view.toWorldCoordinateX(e.getX(), width, height) - view.toWorldCoordinateX(clickedMouseX, width, height);
             double dY = view.toWorldCoordinateY(e.getY(), width, height) - view.toWorldCoordinateY(clickedMouseY, width, height);
             FSAMSComponent1D comp = fsams.getSelectedComponent();
@@ -88,9 +219,14 @@ public class EditPanel extends JPanel implements MouseListener, MouseMotionListe
             repaint();
         }
     }
-
+    */
     @Override
-    public void mouseMoved(MouseEvent e) {
-        
-    }
+    public void mouseReleased(MouseEvent e) { }
+    @Override
+    public void mouseClicked(MouseEvent e) { }
+    @Override
+    public void mouseEntered(MouseEvent e) { }
+    @Override
+    public void mouseExited(MouseEvent e) {}
+    
 }
