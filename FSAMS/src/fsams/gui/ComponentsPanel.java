@@ -15,7 +15,6 @@ public class ComponentsPanel extends JPanel implements ActionListener {
     
     private int row=0;
     private int column=0;
-    private JComboBox componentCB;
     private JButton wallB;
     private JButton doorB;
     private JButton elevatorB;
@@ -35,7 +34,6 @@ public class ComponentsPanel extends JPanel implements ActionListener {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        componentCB = new JComboBox();
         JLabel buildingL = new JLabel();
         wallB = new JButton();
         doorB = new JButton();
@@ -52,7 +50,6 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         cancelB = new JButton();
         Box.Filler bottomFiller = new Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0));
         
-        componentCB.addActionListener(this);
         wallB.addActionListener(this);
         doorB.addActionListener(this);
         elevatorB.addActionListener(this);
@@ -66,13 +63,11 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         
         setLayout(new java.awt.GridBagLayout());
         
-        componentCB.setModel(new DefaultComboBoxModel(new String[] { "Wall", "Sensor", "Door" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = row;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        add(componentCB, gridBagConstraints);
 
         buildingL.setText("Building");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -189,6 +184,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
+<<<<<<< HEAD
         Object src = ae.getSource();
         if(src == componentCB) {
             String cbSelected = (String)componentCB.getSelectedItem();
@@ -207,8 +203,13 @@ public class ComponentsPanel extends JPanel implements ActionListener {
             
         } else if(src == wallB) {
             fsams.setNextComponentType(Component.Type.Wall);
+=======
+        Object src = ae.getSource();  
+        if(src == wallB) {
+            fsams.setNextComponentType(ComponentType.Wall);
+>>>>>>> b72c66f2afe9897a0af81dd59b3bd302ce22155f
         } else if(src == doorB) {
-            
+            fsams.setNextComponentType(ComponentType.Door);            
         } else if(src == elevatorB) {
             
         } else if(src == sensorB) {

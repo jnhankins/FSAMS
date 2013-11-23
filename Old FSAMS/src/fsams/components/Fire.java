@@ -157,7 +157,7 @@ public class Fire extends FSAMSComponent1D {
         System.out.println("Update Fire");
         contiguous.add(new Square((int)Math.floor(getX1()/Square.size),(int)Math.floor(getY1()/Square.size)));
         
-        for(Square cont: contiguous) {
+/*        for(Square cont: contiguous) {
             System.out.println("Update Fire foreach");
             contiguous.remove(cont);
             occupied.add(cont);
@@ -171,5 +171,6 @@ public class Fire extends FSAMSComponent1D {
             checkSquare(components, new Square(cont.x  ,cont.y-1));
             checkSquare(components, new Square(cont.x+1,cont.y-1));
         }
+        */
     }
 }

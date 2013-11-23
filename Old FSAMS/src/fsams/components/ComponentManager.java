@@ -15,7 +15,8 @@ public class ComponentManager {
         Wall,
         Sensor, 
         Fire,
-        HumanAgent
+        HumanAgent,
+        Door
     }
     
     public ComponentManager() {
