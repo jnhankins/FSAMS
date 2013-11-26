@@ -50,7 +50,9 @@ public class Grid {
                     components.add(new HumanAgent());
                 } else if(component instanceof Exit){
                     components.add(new Exit());
-                }
+                } else if(component instanceof Suppressor){
+					components.add(new Suppressor());
+				}
             }
             wallU = tile.wallU;
             wallD = tile.wallD;

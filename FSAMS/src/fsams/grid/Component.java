@@ -6,7 +6,7 @@ package fsams.grid;
 
 /**
  *
- * @author auv_lab3
+ * @author FSAMS Team
  */
 public class Component {
     public static enum Type {
@@ -14,11 +14,13 @@ public class Component {
         Sensor, 
         Fire,
         HumanAgent,
-        Exit
+        Exit,
+		Suppressor
     }
     
     public static class Sensor extends Component {}
     public static class Fire extends Component {}
     public static class HumanAgent extends Component{}
     public static class Exit extends Component{}
+	public static class Suppressor extends Component{}
 }
