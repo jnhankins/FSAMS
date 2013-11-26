@@ -30,5 +30,5 @@ public class Component {
     public static class Fire extends Component {}
     public static class HumanAgent extends Component{}
     public static class Exit extends Component{}
-	public static class Suppressor extends Component{}
+    public static class Suppressor extends Component{}
 }

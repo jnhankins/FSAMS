@@ -270,6 +270,5 @@ public class Simulation extends Thread{
             grid.addComponent(newHuman, human.path.getX(1), human.path.getY(1));
             tiles[x][y].getComponents().remove(human);
         }
- 
     }
 }
