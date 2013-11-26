@@ -8,6 +8,7 @@ package fsams.pathfinding;
 
 
 
+import fsams.grid.Grid;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -24,7 +25,7 @@ public class AStarPathFinder implements PathFinder {
 	private SortedList open = new SortedList();
 	
 	/** The map being searched */
-	private TileBasedMap map;
+	private Grid map;
 	/** The maximum depth of search we're willing to accept before giving up */
 	private int maxSearchDistance;
 	
@@ -42,7 +43,7 @@ public class AStarPathFinder implements PathFinder {
 	 * @param maxSearchDistance The maximum depth we'll search before giving up
 	 * @param allowDiagMovement True if the search should try diaganol movement
 	 */
-	public AStarPathFinder(TileBasedMap map, int maxSearchDistance, boolean allowDiagMovement) {
+	public AStarPathFinder(Grid map, int maxSearchDistance, boolean allowDiagMovement) {
 		this(map, maxSearchDistance, allowDiagMovement, new ClosestHeuristic());
 	}
 
@@ -54,7 +55,7 @@ public class AStarPathFinder implements PathFinder {
 	 * @param maxSearchDistance The maximum depth we'll search before giving up
 	 * @param allowDiagMovement True if the search should try diaganol movement
 	 */
-	public AStarPathFinder(TileBasedMap map, int maxSearchDistance, 
+	public AStarPathFinder(Grid map, int maxSearchDistance, 
 						   boolean allowDiagMovement, AStarHeuristic heuristic) {
 		this.heuristic = heuristic;
 		this.map = map;
@@ -74,9 +75,9 @@ public class AStarPathFinder implements PathFinder {
                 return 0;
             else if (sy > ty)
                 return 1;
-            else if (sx > ty)
+            else if (sx > tx)
                 return 2;
-            else if (sx < ty)
+            else if (sx < tx)
                 return 3;
             return 0;
         }
@@ -88,7 +89,10 @@ public class AStarPathFinder implements PathFinder {
 	public Path findPath(int sx, int sy, int tx, int ty) {
 		// easy first check, if the destination is blocked, we can't get there
 
-		if (map.wallBlocked(tx, ty, getDirection(sx, sy, tx, ty))) {
+		if (map.blocked(tx, ty) || (map.getTiles()[tx][ty].getWallU() 
+                        && map.getTiles()[tx][ty].getWallD()
+                        && map.getTiles()[tx][ty].getWallL()
+                        && map.getTiles()[tx][ty].getWallR())) {
 			return null;
 		}
 		
@@ -144,7 +148,19 @@ public class AStarPathFinder implements PathFinder {
 
 					int xp = x + current.x;
 					int yp = y + current.y;
-					
+                                        
+                                        int direction;
+                                        if (yp > current.y)
+                                            direction = 0;
+                                        if (yp < current.y)
+                                            direction = 1;
+                                        if (xp < current.x)
+                                            direction = 2;
+                                        if (xp > current.x)
+                                            direction = 3;
+                                        else
+                                            direction = 4;                                            
+                                        
 					if (isValidLocation(sx,sy,xp,yp)) {
 						// the cost to get to this node is cost the current plus the movement
 
@@ -294,20 +310,8 @@ public class AStarPathFinder implements PathFinder {
 	protected boolean isValidLocation(int sx, int sy, int x, int y) {
 		boolean invalid = (x < 0) || (y < 0) || (x >= map.getWidthInTiles()) || (y >= map.getHeightInTiles());
 		
-                int direction;
-                if (y > sy)
-                    direction = 0;
-                if (y < sy)
-                    direction = 1;
-                if (x < sx)
-                    direction = 2;
-                if (x > sx)
-                    direction = 3;
-                else
-                    direction = 4;
-                
 		if ((!invalid) && ((sx != x) || (sy != y))) {
-			invalid = (map.blocked(x, y) || map.wallBlocked(sx, sy, direction));
+			invalid = (map.blocked(x, y) || map.wallBlocked(x, y, getDirection(sx, sy, x, y)));
 		}
 		
 		return !invalid;

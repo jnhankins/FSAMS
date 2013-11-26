@@ -131,7 +131,7 @@ public class EditPanel extends JPanel implements MouseListener {
                             continue;
                         }
                         // Draw Sensors
-                        if(component instanceof Sensor) {
+                        if(component instanceof FireSensor) {
                             g.setColor(Color.green);
                             int x1 = (int)(x-sensor_radius);
                             int y1 = (int)(y-sensor_radius);
@@ -187,8 +187,8 @@ public class EditPanel extends JPanel implements MouseListener {
                         }
                         repaint();
                         break;
-                    case Sensor:
-                        grid.addComponent(new Sensor(), grid_x, grid_y);
+                    case FireSensor:
+                        grid.addComponent(new FireSensor(), grid_x, grid_y);
                         nextComponentType = null;
                         repaint();
                         break;

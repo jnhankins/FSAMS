@@ -19,14 +19,14 @@ public class Component {
     
     public static enum Type {
         Wall,
-        Sensor, 
+        FireSensor, 
         Fire,
         HumanAgent,
         Exit,
         Suppressor
     }
     
-    public static class Sensor extends Component {}
+    public static class FireSensor extends Component {}
     public static class Fire extends Component {}
     public static class HumanAgent extends Component{}
     public static class Exit extends Component{}

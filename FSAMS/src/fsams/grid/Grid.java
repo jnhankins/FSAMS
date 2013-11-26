@@ -102,8 +102,8 @@ public class Grid implements TileBasedMap{
         public Tile(Tile tile) {
             components = new ArrayList<>();
             for(Component component: tile.getComponents()) {
-                if(component instanceof Sensor) {
-                    components.add(new Sensor());
+                if(component instanceof FireSensor) {
+                    components.add(new FireSensor());
                 } else if(component instanceof Fire) {
                     components.add(new Fire());
                 } else if(component instanceof HumanAgent){
@@ -145,7 +145,7 @@ public class Grid implements TileBasedMap{
         Tile t = tiles[x][y];
         t.components.add(comp);
         if (comp instanceof HumanAgent) {
-            comp.finder = new AStarPathFinder(this, 500, false);
+            comp.finder = new AStarPathFinder(this, 2000, false);
             comp.path = comp.finder.findPath(x, y, 1, 1);
         }
     }

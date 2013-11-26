@@ -16,7 +16,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
     private JButton wallB;
     private JButton doorB;
     private JButton exitB;
-    private JButton sensorB;
+    private JButton fireSensorB;
     private JButton fireAlarmB;
     private JButton fireB;
     private JButton humanAgentB;
@@ -36,7 +36,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         doorB = new JButton();
         exitB = new JButton();
         JLabel jLabel2 = new JLabel();
-        sensorB = new JButton();
+        fireSensorB = new JButton();
         fireAlarmB = new JButton();
         fireB = new JButton();
         JLabel jLabel3 = new JLabel();
@@ -50,7 +50,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         wallB.addActionListener(this);
         doorB.addActionListener(this);
         exitB.addActionListener(this);
-        sensorB.addActionListener(this);
+        fireSensorB.addActionListener(this);
         fireAlarmB.addActionListener(this);
         fireB.addActionListener(this);
         humanAgentB.addActionListener(this);
@@ -102,12 +102,12 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         gridBagConstraints.insets = new java.awt.Insets(0, 7, 0, 0);
         add(jLabel2, gridBagConstraints);
 
-        sensorB.setText("Sensor1");
+        fireSensorB.setText("Fire Sensor");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = ++row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        add(sensorB, gridBagConstraints);
+        add(fireSensorB, gridBagConstraints);
 
         fireAlarmB.setText("Fire Alarm");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -186,8 +186,8 @@ public class ComponentsPanel extends JPanel implements ActionListener {
             
         } else if(src == exitB) {
             fsams.setNextComponentType(Component.Type.Exit);
-        } else if(src == sensorB) {
-            fsams.setNextComponentType(Component.Type.Sensor);
+        } else if(src == fireSensorB) {
+            fsams.setNextComponentType(Component.Type.FireSensor);
         } else if(src == fireAlarmB) {
             
         } else if(src == fireB) {
