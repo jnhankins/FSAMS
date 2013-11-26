@@ -7,7 +7,11 @@ package fsams;
 import fsams.grid.*;
 import fsams.grid.Component.*;
 import fsams.grid.Grid.Tile;
+import fsams.pathfinding.AStarPathFinder;
+import fsams.pathfinding.Path;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 public class Simulation extends Thread{
@@ -70,6 +74,11 @@ public class Simulation extends Thread{
                                         simFire(grid_x,grid_y,elapTime);
                                     }
                                     else if(component instanceof HumanAgent){
+                                        try {
+                                            Thread.sleep(1000);
+                                        } catch (InterruptedException ex) {
+                                            Logger.getLogger(Simulation.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
                                         if(simHumanAgent((HumanAgent)component, grid_x,grid_y,elapTime))
                                             comp_i--;
                                     }
@@ -136,7 +145,12 @@ public class Simulation extends Thread{
         }
     }
     
+    
     boolean simHumanAgent(HumanAgent human, int grid_x, int grid_y, double elapTime) {
+        tracePath(human, grid_x, grid_y);
+        return false; 
+   }
+/*    boolean simHumanAgent(HumanAgent human, int grid_x, int grid_y, double elapTime) {
         Tile tiles[][] = grid.getTiles();
         //cannot reach exit - no exit in building
         if(true){
@@ -229,6 +243,33 @@ public class Simulation extends Thread{
                     return true;
             }
         }
+        //There exist an exit
+        
+        
+        return false;//
+        
+    }
+*/
+    //given a list x,y coordinates to follow simulate path
+/*    public boolean tracePath(HumanAgent human, Path path){
+        Tile tiles[][] = grid.getTiles();
+        
+        
+        tiles[path.getX(1)][grid_y].getComponents().remove(human);
+        tiles[next.x][next.y].getComponents().add(human);
         return false;
-    }   
+    }
+    
+*/
+    public void tracePath(HumanAgent human, int x, int y) {
+        Tile tiles[][] = grid.getTiles();
+        human.finder = new AStarPathFinder(grid, 500, false);
+        human.path = human.finder.findPath(x, y, 1, 1);
+        HumanAgent newHuman = new HumanAgent();
+        if (human.path != null) {
+            grid.addComponent(newHuman, human.path.getX(1), human.path.getY(1));
+            tiles[x][y].getComponents().remove(human);
+        }
+ 
+    }
 }

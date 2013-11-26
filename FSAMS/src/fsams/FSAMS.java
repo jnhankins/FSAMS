@@ -20,7 +20,7 @@ public final class FSAMS extends JFrame implements ActionListener {
     private ComponentsPanel compP;
     
     // World State
-    private Grid grid;
+    public Grid grid;
     private Grid sim_grid;
     private Simulation simulation;
     

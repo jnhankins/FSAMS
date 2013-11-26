@@ -52,9 +52,9 @@ public interface TileBasedMap {
          * @param direction an integer representing the direction: 0 up, 1 down, 2 left, 3 right
 	 * @return True if the location is blocked
 	 */
-	public boolean wallBlocked(Mover mover, int x, int y, int direction);
+	public boolean wallBlocked(int x, int y, int direction);
         
-        public boolean blocked(Mover mover, int x, int y);
+        public boolean blocked(int x, int y);
 	
 	/**
 	 * Get the cost of moving through the given tile. This can be used to 
@@ -68,5 +68,5 @@ public interface TileBasedMap {
 	 * @param ty The y coordinate of the tile we're moving to
 	 * @return The relative cost of moving across the given tile
 	 */
-	public float getCost(Mover mover, int sx, int sy, int tx, int ty);
+	public float getCost(int sx, int sy, int tx, int ty);
 }

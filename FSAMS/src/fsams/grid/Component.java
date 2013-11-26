@@ -4,18 +4,26 @@
  */
 package fsams.grid;
 
+import fsams.pathfinding.Path;
+import fsams.pathfinding.PathFinder;
+
 /**
  *
  * @author FSAMS Team
  */
 public class Component {
+    
+    public Path path;
+    public PathFinder finder;
+    
+    
     public static enum Type {
         Wall,
         Sensor, 
         Fire,
         HumanAgent,
         Exit,
-		Suppressor
+        Suppressor
     }
     
     public static class Sensor extends Component {}

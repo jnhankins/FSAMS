@@ -85,10 +85,10 @@ public class AStarPathFinder implements PathFinder {
 	/**
 	 * @see PathFinder#findPath(Mover, int, int, int, int)
 	 */
-	public Path findPath(Mover mover, int sx, int sy, int tx, int ty) {
+	public Path findPath(int sx, int sy, int tx, int ty) {
 		// easy first check, if the destination is blocked, we can't get there
 
-		if (map.wallBlocked(mover, tx, ty, getDirection(sx, sy, tx, ty))) {
+		if (map.wallBlocked(tx, ty, getDirection(sx, sy, tx, ty))) {
 			return null;
 		}
 		
@@ -145,14 +145,14 @@ public class AStarPathFinder implements PathFinder {
 					int xp = x + current.x;
 					int yp = y + current.y;
 					
-					if (isValidLocation(mover,sx,sy,xp,yp)) {
+					if (isValidLocation(sx,sy,xp,yp)) {
 						// the cost to get to this node is cost the current plus the movement
 
 						// cost to reach this node. Note that the heursitic value is only used
 
 						// in the sorted open list
 
-						float nextStepCost = current.cost + getMovementCost(mover, current.x, current.y, xp, yp);
+						float nextStepCost = current.cost + getMovementCost(current.x, current.y, xp, yp);
 						Node neighbour = nodes[xp][yp];
 						map.pathFinderVisited(xp, yp);
 						
@@ -180,7 +180,7 @@ public class AStarPathFinder implements PathFinder {
 
 						if (!inOpenList(neighbour) && !(inClosedList(neighbour))) {
 							neighbour.cost = nextStepCost;
-							neighbour.heuristic = getHeuristicCost(mover, xp, yp, tx, ty);
+							neighbour.heuristic = getHeuristicCost(xp, yp, tx, ty);
 							maxDepth = Math.max(maxDepth, neighbour.setParent(current));
 							addToOpen(neighbour);
 						}
@@ -291,11 +291,23 @@ public class AStarPathFinder implements PathFinder {
 	 * @param y The y coordinate of the location to check
 	 * @return True if the location is valid for the given mover
 	 */
-	protected boolean isValidLocation(Mover mover, int sx, int sy, int x, int y) {
+	protected boolean isValidLocation(int sx, int sy, int x, int y) {
 		boolean invalid = (x < 0) || (y < 0) || (x >= map.getWidthInTiles()) || (y >= map.getHeightInTiles());
 		
+                int direction;
+                if (y > sy)
+                    direction = 0;
+                if (y < sy)
+                    direction = 1;
+                if (x < sx)
+                    direction = 2;
+                if (x > sx)
+                    direction = 3;
+                else
+                    direction = 4;
+                
 		if ((!invalid) && ((sx != x) || (sy != y))) {
-			invalid = map.blocked(mover, x, y);
+			invalid = (map.blocked(x, y) || map.wallBlocked(sx, sy, direction));
 		}
 		
 		return !invalid;
@@ -311,8 +323,8 @@ public class AStarPathFinder implements PathFinder {
 	 * @param ty The y coordinate of the target location
 	 * @return The cost of movement through the given tile
 	 */
-	public float getMovementCost(Mover mover, int sx, int sy, int tx, int ty) {
-		return map.getCost(mover, sx, sy, tx, ty);
+	public float getMovementCost(int sx, int sy, int tx, int ty) {
+		return map.getCost(sx, sy, tx, ty);
 	}
 
 	/**
@@ -326,8 +338,8 @@ public class AStarPathFinder implements PathFinder {
 	 * @param ty The y coordinate of the target location
 	 * @return The heuristic cost assigned to the tile
 	 */
-	public float getHeuristicCost(Mover mover, int x, int y, int tx, int ty) {
-		return heuristic.getCost(map, mover, x, y, tx, ty);
+	public float getHeuristicCost(int x, int y, int tx, int ty) {
+		return heuristic.getCost(map, x, y, tx, ty);
 	}
 	
 	/**

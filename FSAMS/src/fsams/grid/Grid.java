@@ -1,14 +1,18 @@
 package fsams.grid;
 
 import fsams.grid.Component.*;
+import fsams.pathfinding.AStarPathFinder;
+import fsams.pathfinding.Mover;
+import fsams.pathfinding.TileBasedMap;
 import java.util.ArrayList;
 
-public class Grid {
+public class Grid implements TileBasedMap{
     public static final int grid_width = 20;
     public static final int grid_height = 20;
     
     private Tile tiles[][];
-    
+    private boolean[][] visited = new boolean[grid_width][grid_height];
+
     
     public Grid() {
         tiles = new Tile[grid_width][grid_height];
@@ -25,6 +29,62 @@ public class Grid {
                 tiles[grid_x][grid_y] = new Tile(grid.getTiles()[grid_x][grid_y]);
             }
         }
+    }
+
+    @Override
+    public int getWidthInTiles() {
+        return grid_width;
+    }
+
+    @Override
+    public int getHeightInTiles() {
+        return grid_height;
+    }
+
+    @Override
+    public void pathFinderVisited(int x, int y) {
+        visited[x][y] = true;
+    }
+
+    
+    
+    //0 up 1 down 2 left 3 right
+    @Override
+    public boolean wallBlocked(int x, int y, int direction) {
+        boolean up, down, left, right;
+        
+        up = tiles[x][y].wallU;
+        down = tiles[x][y].wallD;
+        left = tiles[x][y].wallL;
+        right = tiles[x][y].wallR;
+        
+        if (direction == 0 && down)
+            return true;
+        else if (direction == 1 && up)
+            return true;
+        else if (direction == 2 && right)
+            return true;
+        else if (direction == 3 && left)
+            return true;
+        
+        return false;
+        
+    }
+
+    
+    @Override
+    public boolean blocked(int x, int y) {
+        for (Component c : tiles[x][y].getComponents()) {
+            if (c instanceof Fire) {
+                return true;
+            }
+        }
+        return false;    
+    }
+
+    @Override
+    public float getCost(int sx, int sy, int tx, int ty) {
+        return 1;
     }
     
     public class Tile {
@@ -75,6 +135,8 @@ public class Grid {
         public boolean getWallR() {
             return wallR;
         }
+
+        
     }
     
     public void addComponent(Component comp, int x, int y) {
@@ -82,6 +144,10 @@ public class Grid {
             throw new IllegalArgumentException("Illegal grid position: "+x+","+y);
         Tile t = tiles[x][y];
         t.components.add(comp);
+        if (comp instanceof HumanAgent) {
+            comp.finder = new AStarPathFinder(this, 500, false);
+            comp.path = comp.finder.findPath(x, y, 1, 1);
+        }
     }
     
     public void addWall(int x1, int y1, int x2, int y2) {
