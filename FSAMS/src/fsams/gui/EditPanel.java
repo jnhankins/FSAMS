@@ -203,7 +203,11 @@ public class EditPanel extends JPanel implements MouseListener {
                         repaint();
                         break;
                     case Exit:
-                        grid.addComponent(new Exit(), grid_x, grid_y);
+                        Exit exit = new Exit();
+                        grid.addComponent(exit, grid_x, grid_y);
+                        
+                        exit.location_x = grid_x;
+                        exit.location_y = grid_y;
                         nextComponentType = null;
                         repaint();
                         break;

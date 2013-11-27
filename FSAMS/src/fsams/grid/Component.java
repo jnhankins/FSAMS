@@ -12,10 +12,7 @@ import fsams.pathfinding.PathFinder;
  * @author FSAMS Team
  */
 public class Component {
-    
-    public Path path;
-    public PathFinder finder;
-    
+    public int location_x, location_y;
     
     public static enum Type {
         Wall,
@@ -28,7 +25,10 @@ public class Component {
     
     public static class FireSensor extends Component {}
     public static class Fire extends Component {}
-    public static class HumanAgent extends Component{}
+    public static class HumanAgent extends Component{
+        public Path path;
+        public PathFinder finder;
+    }
     public static class Exit extends Component{}
     public static class Suppressor extends Component{}
 }

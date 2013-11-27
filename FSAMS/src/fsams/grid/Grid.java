@@ -1,8 +1,6 @@
 package fsams.grid;
 
 import fsams.grid.Component.*;
-import fsams.pathfinding.AStarPathFinder;
-import fsams.pathfinding.Mover;
 import fsams.pathfinding.TileBasedMap;
 import java.util.ArrayList;
 
@@ -144,10 +142,6 @@ public class Grid implements TileBasedMap{
             throw new IllegalArgumentException("Illegal grid position: "+x+","+y);
         Tile t = tiles[x][y];
         t.components.add(comp);
-        if (comp instanceof HumanAgent) {
-            comp.finder = new AStarPathFinder(this, 2000, false);
-            comp.path = comp.finder.findPath(x, y, 1, 1);
-        }
     }
     
     public void addWall(int x1, int y1, int x2, int y2) {

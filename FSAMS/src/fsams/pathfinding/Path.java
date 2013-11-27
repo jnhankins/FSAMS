@@ -19,12 +19,13 @@ import java.util.ArrayList;
  */
 public class Path {
     /** The list of steps building up this path */
-    private ArrayList steps = new ArrayList();
+    private ArrayList steps;
 
     /**
      * Create an empty path
      */
     public Path() {
+        this.steps = new ArrayList();
         
     }
 

@@ -73,9 +73,13 @@ public class Simulation extends Thread{
                                     if(component instanceof Fire) {
                                         simFire(grid_x,grid_y,elapTime);
                                     }
+                                    else if(component instanceof Exit){
+                                        Exit exit = (Exit)component;
+                                        System.out.println(exit.location_x + " " + exit.location_y);
+                                    }
                                     else if(component instanceof HumanAgent){
                                         try {
-                                            Thread.sleep(1000);
+                                            sleep(1000);
                                         } catch (InterruptedException ex) {
                                             Logger.getLogger(Simulation.class.getName()).log(Level.SEVERE, null, ex);
                                         }
@@ -145,15 +149,31 @@ public class Simulation extends Thread{
         }
     }
     
-    
-    boolean simHumanAgent(HumanAgent human, int grid_x, int grid_y, double elapTime) {
-        tracePath(human, grid_x, grid_y);
-        return false; 
-   }
-/*    boolean simHumanAgent(HumanAgent human, int grid_x, int grid_y, double elapTime) {
+    //ideal is to find closest exit...for now just find one
+    Exit closestExit(Grid grid, int grid_x, int grid_y) {
         Tile tiles[][] = grid.getTiles();
+        for(Component component : tiles[grid_x][grid_y].getComponents()){
+            if(component instanceof Exit)
+                
+                return (Exit)component;
+        }
+        return null; 
+   }
+    boolean simHumanAgent(HumanAgent human, int grid_x, int grid_y, double elapTime) {
+        Tile tiles[][] = grid.getTiles();
+        human.finder = new AStarPathFinder(grid, 500, false);
+        Exit exit = closestExit(grid, grid_x, grid_y);
+        //locate closest exits first if any, else path = null
+        if(exit != null)//fix
+            human.path = human.finder.findPath(grid_x, grid_y, exit.location_x, exit.location_y);
+        HumanAgent newHuman = new HumanAgent();
+        //There exist a path to an exit
+        if (human.path != null) {
+            grid.addComponent(newHuman, human.path.getX(1), human.path.getY(1));
+            tiles[grid_x][grid_y].getComponents().remove(human);
+        }
         //cannot reach exit - no exit in building
-        if(true){
+        else{
             boolean fireU, fireD, fireL, fireR;
             boolean openU, openD, openL, openR;
             fireU = fireD = fireL = fireR = false;
@@ -243,13 +263,10 @@ public class Simulation extends Thread{
                     return true;
             }
         }
-        //There exist an exit
         
-        
-        return false;//
-        
+        return false;
     }
-*/
+
     //given a list x,y coordinates to follow simulate path
 /*    public boolean tracePath(HumanAgent human, Path path){
         Tile tiles[][] = grid.getTiles();
