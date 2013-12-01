@@ -9,6 +9,7 @@ import fsams.grid.Component.*;
 import fsams.grid.Grid.Tile;
 import fsams.pathfinding.AStarPathFinder;
 import fsams.pathfinding.Path;
+import fsams.pathfinding.PathFinder;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,6 +20,8 @@ public class Simulation extends Thread{
     private boolean startFlag;
     private boolean isProgRunning;
     private boolean isSimRunning;
+    private PathFinder finder;
+    private Path path;
     // Data Model
     private Grid grid;
     // GUI Component
@@ -161,15 +164,15 @@ public class Simulation extends Thread{
    }
     boolean simHumanAgent(HumanAgent human, int grid_x, int grid_y, double elapTime) {
         Tile tiles[][] = grid.getTiles();
-        human.finder = new AStarPathFinder(grid, 500, false);
-        Exit exit = closestExit(grid, grid_x, grid_y);
+        finder = new AStarPathFinder(grid, 500, false);
+//        Exit exit = closestExit(grid, grid_x, grid_y);
         //locate closest exits first if any, else path = null
-        if(exit != null)//fix
-            human.path = human.finder.findPath(grid_x, grid_y, exit.location_x, exit.location_y);
+ //       if(exit != null)//fix
+            path = finder.findPath(grid_x, grid_y, 1, 1);
         HumanAgent newHuman = new HumanAgent();
         //There exist a path to an exit
-        if (human.path != null) {
-            grid.addComponent(newHuman, human.path.getX(1), human.path.getY(1));
+        if (path != null) {
+            grid.addComponent(newHuman, path.getX(1), path.getY(1));
             tiles[grid_x][grid_y].getComponents().remove(human);
         }
         //cannot reach exit - no exit in building
@@ -280,11 +283,11 @@ public class Simulation extends Thread{
 */
     public void tracePath(HumanAgent human, int x, int y) {
         Tile tiles[][] = grid.getTiles();
-        human.finder = new AStarPathFinder(grid, 500, false);
-        human.path = human.finder.findPath(x, y, 1, 1);
+        finder = new AStarPathFinder(grid, 500, false);
+        path = finder.findPath(x, y, 1, 1);
         HumanAgent newHuman = new HumanAgent();
-        if (human.path != null) {
-            grid.addComponent(newHuman, human.path.getX(1), human.path.getY(1));
+        if (path != null) {
+            grid.addComponent(newHuman, path.getX(1), path.getY(1));
             tiles[x][y].getComponents().remove(human);
         }
     }
