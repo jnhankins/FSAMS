@@ -9,6 +9,7 @@ public class Grid implements TileBasedMap{
     public static final int grid_height = 20;
     
     private Tile tiles[][];
+    private ArrayList<Exit> exits;
     private boolean[][] visited = new boolean[grid_width][grid_height];
 
     
@@ -220,5 +221,9 @@ public class Grid implements TileBasedMap{
     
     public Tile[][] getTiles() {
         return tiles;
+    }
+    
+    public ArrayList<Exit> getExits() {
+        return exits;
     }
 }

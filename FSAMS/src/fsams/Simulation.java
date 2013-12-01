@@ -20,7 +20,7 @@ public class Simulation extends Thread{
     private boolean startFlag;
     private boolean isProgRunning;
     private boolean isSimRunning;
-    private PathFinder finder;
+    private AStarPathFinder finder;
     private Path path;
     // Data Model
     private Grid grid;
@@ -153,12 +153,17 @@ public class Simulation extends Thread{
     }
     
     //ideal is to find closest exit...for now just find one
-    Exit closestExit(Grid grid, int grid_x, int grid_y) {
-        Tile tiles[][] = grid.getTiles();
-        for(Component component : tiles[grid_x][grid_y].getComponents()){
-            if(component instanceof Exit)
-                
-                return (Exit)component;
+    Exit closestExit(HumanAgent human, int grid_x, int grid_y) {
+        if (grid.getExits() != null) {
+            int index = 0;
+            float lowestCost = finder.getMovementCost(grid_x, grid_y, grid.getExits().get(0).location_x, grid.getExits().get(0).location_y);
+            for (Exit exit : grid.getExits()) {
+                if (finder.getMovementCost(grid_x, grid_y, exit.location_x, exit.location_y) < lowestCost) {
+                    index = grid.getExits().indexOf(exit);
+                    lowestCost = finder.getMovementCost(grid_x, grid_y, exit.location_x, exit.location_y);
+                }
+            }
+            return grid.getExits().get(index);
         }
         return null; 
    }
