@@ -25,7 +25,9 @@ public class Component {
     
     public static class FireSensor extends Component {}
     public static class Fire extends Component {}
-    public static class HumanAgent extends Component {}
+    public static class HumanAgent extends Component {
+        public int xDest, yDest;
+    }
     public static class Exit extends Component{}
     public static class Suppressor extends Component{}
 }

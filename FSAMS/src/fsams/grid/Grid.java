@@ -15,6 +15,7 @@ public class Grid implements TileBasedMap{
     
     public Grid() {
         tiles = new Tile[grid_width][grid_height];
+        exits = new ArrayList<Exit>();
         for(int grid_x=0; grid_x<tiles.length; grid_x++) {
             for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
                 tiles[grid_x][grid_y] = new Tile();
@@ -23,6 +24,7 @@ public class Grid implements TileBasedMap{
     }
     public Grid(Grid grid) {
         tiles = new Tile[grid_width][grid_height];
+        exits = this.getExits();
         for(int grid_x=0; grid_x<tiles.length; grid_x++) {
             for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
                 tiles[grid_x][grid_y] = new Tile(grid.getTiles()[grid_x][grid_y]);
@@ -143,6 +145,9 @@ public class Grid implements TileBasedMap{
             throw new IllegalArgumentException("Illegal grid position: "+x+","+y);
         Tile t = tiles[x][y];
         t.components.add(comp);
+        if (comp instanceof Exit) {
+            exits.add((Exit)comp);
+        }
     }
     
     public void addWall(int x1, int y1, int x2, int y2) {
