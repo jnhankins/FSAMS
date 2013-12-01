@@ -109,14 +109,12 @@ public class EditPanel extends JPanel implements MouseListener {
                         g.drawLine(xL, yD, xL, yU);
                     }
                     // Draw Components
-                    ArrayList<Component> components = tile.getComponents();
                     int x = (int)((xL+xR)/2.0);
                     int y = (int)((yU+yD)/2.0);
                     final double sensor_radius = 0.1*scale;
                     final double human_radius = 0.3*scale;
-                    for(Component component: components) {
                         //Draw HumanAgents
-                        if(component instanceof HumanAgent){
+                        if(tile.getHumanAgent()){
                             g.setColor(Color.pink);
                             int x1 = (int)(x-human_radius);
                             int y1 = (int)(y-human_radius);
@@ -124,14 +122,14 @@ public class EditPanel extends JPanel implements MouseListener {
                             continue;
                         }
                         // Draw Fires
-                        if(component instanceof Fire) {
+                        if(tile.getFire()) {
                             g.setColor(Color.red);
                             g.drawLine(xL,yU,xR,yD);
                             g.drawLine(xL,yD,xR,yU);
                             continue;
                         }
                         // Draw Sensors
-                        if(component instanceof FireSensor) {
+                        if(tile.getFireSensor()) {
                             g.setColor(Color.green);
                             int x1 = (int)(x-sensor_radius);
                             int y1 = (int)(y-sensor_radius);
@@ -139,12 +137,12 @@ public class EditPanel extends JPanel implements MouseListener {
                             continue;
                         }
                         // Draw Exits
-                        if(component instanceof Exit) {
+                        if(tile.getExit()) {
                             g.setColor(Color.green);
                             g.fillRect(xL, yU, (int)scale, (int)scale);
                             continue;
                         }
-                    }
+                    
                 }
             }
         }

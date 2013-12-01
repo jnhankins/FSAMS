@@ -70,26 +70,22 @@ public class Simulation extends Thread{
                                 // Get the tile
                                 Grid.Tile tile = tiles[grid_x][grid_y];
                                 // Get the components
-                                ArrayList<Component> components = tile.getComponents();
-                                for(int comp_i=0; comp_i<components.size(); comp_i++) {
-                                    Component component = components.get(comp_i);
-                                    if(component instanceof Fire) {
+                                    if(tile.getFire()) {
                                         simFire(grid_x,grid_y,elapTime);
                                     }
-                                    else if(component instanceof Exit){
-                                        Exit exit = (Exit)component;
-                                        System.out.println(exit.location_x + " " + exit.location_y);
+                                    else if(tile.getExit()){
+                         //               Exit exit = (Exit)component;
+                         //               System.out.println(exit.location_x + " " + exit.location_y);
                                     }
-                                    else if(component instanceof HumanAgent){
+                                    /*else if(tile.getHumanAgent()){
                                         try {
                                             sleep(1000);
                                         } catch (InterruptedException ex) {
                                             Logger.getLogger(Simulation.class.getName()).log(Level.SEVERE, null, ex);
                                         }
-                                        if(simHumanAgent((HumanAgent)component, grid_x,grid_y,elapTime))
-                                            comp_i--;
-                                    }
-                                }
+                                        simHumanAgent((HumanAgent)component, grid_x,grid_y,elapTime)
+                                    }*/
+                                
                             }
                         }
                     }
@@ -141,14 +137,12 @@ public class Simulation extends Thread{
         double prob = 1 - Math.pow(1.0-burn_probability,elapTime/burn_timeframe); // p'=1-(1-p)^(t'/t)
         if(Math.random()<prob) {
             Tile tile = grid.getTiles()[grid_x][grid_y];
-            ArrayList<Component> components = tile.getComponents();
-            for(Component component: components) {
-                if(component instanceof Fire) {
+            if(tile.getFire()) {
                     return;
                 }
                 // TODO check for other types of components.
-            }
-            components.add(new Fire());
+            
+            tile.setFire(true);
         }
     }
     
@@ -178,7 +172,7 @@ public class Simulation extends Thread{
         //There exist a path to an exit
         if (path != null) {
             grid.addComponent(newHuman, path.getX(1), path.getY(1));
-            tiles[grid_x][grid_y].getComponents().remove(human);
+            tiles[grid_x][grid_y].setHumanAgent(false);
         }
         //cannot reach exit - no exit in building
         else{
@@ -191,52 +185,44 @@ public class Simulation extends Thread{
                 openL = true;
                 int x = grid_x-1;
                 int y = grid_y;
-                for(Component component: tiles[x][y].getComponents()) {
-                    if(component instanceof Fire) {
-                        fireL = true;
-                        openL = false;
-                        break;
-                    }
+                if(tiles[grid_x][grid_y].getFire()) {
+                    fireL = true;
+                    openL = false;
                 }
+                
             }
             // Down
             if(grid_y-1>=0 && !tiles[grid_x][grid_y].getWallD()) {
                 openD = true;
                 int x = grid_x;
                 int y = grid_y-1;
-                for(Component component: tiles[x][y].getComponents()) {
-                    if(component instanceof Fire) {
-                        fireD = true;
-                        openD = false;
-                        break;
-                    }
+                if(tiles[grid_x][grid_y].getFire()) {
+                    fireD = true;
+                    openD = false;
                 }
+                
             }
             // Right
             if(grid_x+1<Grid.grid_width && !tiles[grid_x][grid_y].getWallR()) {
                 openR = true;
                 int x = grid_x+1;
                 int y = grid_y;
-                for(Component component: tiles[x][y].getComponents()) {
-                    if(component instanceof Fire) {
-                        fireR = true;
-                        openR = false;
-                        break;
-                    }
+                if(tiles[grid_x][grid_y].getFire()) {
+                    fireR = true;
+                    openR = false;
                 }
+                
             }
             // Up
             if(grid_y+1<Grid.grid_height && !tiles[grid_x][grid_y].getWallU()) {
                 openU = true;
                 int x = grid_x;
                 int y = grid_y+1;
-                for(Component component: tiles[x][y].getComponents()) {
-                    if(component instanceof Fire) {
-                        fireU = true;
-                        openU = false;
-                        break;
+                if(tiles[grid_x][grid_y].getFire()) {
+                    fireU = true;
+                    openU = false;
                     }
-                }
+                
             }
             
             //if all on fire or non on fire do nothing
@@ -249,25 +235,25 @@ public class Simulation extends Thread{
                 case 0:
                     return false;
                 case 1:
-                    tiles[grid_x][grid_y].getComponents().remove(human);
-                    if(openU) tiles[grid_x][grid_y+1].getComponents().add(human);
-                    else if(openD) tiles[grid_x][grid_y-1].getComponents().add(human);
-                    else if(openL) tiles[grid_x-1][grid_y].getComponents().add(human);
-                    else if(openR) tiles[grid_x+1][grid_y].getComponents().add(human);
+                    tiles[grid_x][grid_y].setHumanAgent(false);
+                    if(openU) tiles[grid_x][grid_y+1].setHumanAgent(true);
+                    else if(openD) tiles[grid_x][grid_y-1].setHumanAgent(true);
+                    else if(openL) tiles[grid_x-1][grid_y].setHumanAgent(true);
+                    else if(openR) tiles[grid_x+1][grid_y].setHumanAgent(true);
                     return true;
                 case 2:
-                    tiles[grid_x][grid_y].getComponents().remove(human);
-                    if(openU) tiles[grid_x][grid_y+1].getComponents().add(human);
-                    else if(openD) tiles[grid_x][grid_y-1].getComponents().add(human);
-                    else if(openL) tiles[grid_x-1][grid_y].getComponents().add(human);
-                    else if(openR) tiles[grid_x+1][grid_y].getComponents().add(human);
+                    tiles[grid_x][grid_y].setHumanAgent(false);
+                    if(openU) tiles[grid_x][grid_y+1].setHumanAgent(true);
+                    else if(openD) tiles[grid_x][grid_y-1].setHumanAgent(true);
+                    else if(openL) tiles[grid_x-1][grid_y].setHumanAgent(true);
+                    else if(openR) tiles[grid_x+1][grid_y].setHumanAgent(true);
                     return true;
                 case 3:
-                    tiles[grid_x][grid_y].getComponents().remove(human);
-                    if(fireD) tiles[grid_x][grid_y+1].getComponents().add(human);
-                    if(fireU) tiles[grid_x][grid_y-1].getComponents().add(human);
-                    if(fireR) tiles[grid_x-1][grid_y].getComponents().add(human);
-                    if(fireL) tiles[grid_x+1][grid_y].getComponents().add(human);
+                    tiles[grid_x][grid_y].setHumanAgent(false);
+                    if(fireD) tiles[grid_x][grid_y+1].setHumanAgent(true);
+                    if(fireU) tiles[grid_x][grid_y-1].setHumanAgent(true);
+                    if(fireR) tiles[grid_x-1][grid_y].setHumanAgent(true);
+                    if(fireL) tiles[grid_x+1][grid_y].setHumanAgent(true);
                     return true;
             }
         }
@@ -293,7 +279,7 @@ public class Simulation extends Thread{
         HumanAgent newHuman = new HumanAgent();
         if (path != null) {
             grid.addComponent(newHuman, path.getX(1), path.getY(1));
-            tiles[x][y].getComponents().remove(human);
+            tiles[x][y].setHumanAgent(false);
         }
     }
 }

@@ -75,12 +75,10 @@ public class Grid implements TileBasedMap{
     
     @Override
     public boolean blocked(int x, int y) {
-        for (Component c : tiles[x][y].getComponents()) {
-            if (c instanceof Fire) {
-                return true;
-            }
+        if (tiles[x][y].fire) {
+            return true;
         }
-        return false;    
+    return false;    
     }
 
     @Override
@@ -90,40 +88,32 @@ public class Grid implements TileBasedMap{
     
     public class Tile {
         //TODO replace ArrayList with boolean values
-        ArrayList<Component> components;
         boolean wallU, wallD, wallL, wallR;
+        boolean fire, fireSensor, humanAgent,exit, suppressor;
         
         public Tile() {
-            components = new ArrayList<>();
             wallU = false;
             wallD = false;
             wallL = false;
             wallR = false;
+            fire = false;
+            fireSensor = false;
+            humanAgent = false;
+            exit = false;
+            suppressor = false;
         }
         public Tile(Tile tile) {
-            components = new ArrayList<>();
-            for(Component component: tile.getComponents()) {
-                if(component instanceof FireSensor) {
-                    components.add(new FireSensor());
-                } else if(component instanceof Fire) {
-                    components.add(new Fire());
-                } else if(component instanceof HumanAgent){
-                    components.add(new HumanAgent());
-                } else if(component instanceof Exit){
-                    components.add(new Exit());
-                } else if(component instanceof Suppressor){
-					components.add(new Suppressor());
-				}
-            }
             wallU = tile.wallU;
             wallD = tile.wallD;
             wallL = tile.wallL;
             wallR = tile.wallR;
+            fire = tile.fire;
+            fireSensor = tile.fireSensor;
+            humanAgent = tile.humanAgent;
+            exit = tile.exit;
+            suppressor = tile.suppressor;
         }
         
-        public ArrayList<Component> getComponents() {
-            return components;
-        }
         public boolean getWallU() {
             return wallU;
         }
@@ -137,6 +127,32 @@ public class Grid implements TileBasedMap{
             return wallR;
         }
 
+        public boolean getFire() {
+            return fire;
+        }
+        public void setFire(boolean status) {
+            fire = status;
+        }
+        
+        public boolean getFireSensor() {
+            return fireSensor;
+        }
+        
+        public boolean getExit() {
+            return exit;
+        }
+
+        public boolean getHumanAgent() {
+            return humanAgent;
+        }
+        
+        public void setHumanAgent(boolean status) {
+            humanAgent = status;
+        }
+        
+        public boolean getSuppressor() {
+            return suppressor;
+        }
         
     }
     
@@ -144,9 +160,22 @@ public class Grid implements TileBasedMap{
         if(x<0 || grid_width<=x || y<0 || grid_height<=y)
             throw new IllegalArgumentException("Illegal grid position: "+x+","+y);
         Tile t = tiles[x][y];
-        t.components.add(comp);
         if (comp instanceof Exit) {
             exits.add((Exit)comp);
+            tiles[x][y].exit = true;
+        }
+        
+        else if (comp instanceof HumanAgent) {
+            tiles[x][y].humanAgent = true;
+        }
+        else if (comp instanceof Fire) {
+            tiles[x][y].fire = true;
+        }
+        else if (comp instanceof FireSensor) {
+            tiles[x][y].fireSensor = true;
+        }
+        else if (comp instanceof Suppressor) {
+            tiles[x][y].suppressor = true;
         }
     }
     
