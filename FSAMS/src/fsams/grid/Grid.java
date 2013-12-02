@@ -9,13 +9,11 @@ public class Grid implements TileBasedMap{
     public static final int grid_height = 20;
     
     private Tile tiles[][];
-    private ArrayList<HumanAgent> humans;
     private boolean[][] visited = new boolean[grid_width][grid_height];
 
     
     public Grid() {
         tiles = new Tile[grid_width][grid_height];
-        humans = new ArrayList<HumanAgent>();
         for(int grid_x=0; grid_x<tiles.length; grid_x++) {
             for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
                 tiles[grid_x][grid_y] = new Tile();
@@ -24,7 +22,6 @@ public class Grid implements TileBasedMap{
     }
     public Grid(Grid grid) {
         tiles = new Tile[grid_width][grid_height];
-        this.humans = grid.getHumans();
         for(int grid_x=0; grid_x<tiles.length; grid_x++) {
             for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
                 tiles[grid_x][grid_y] = new Tile(grid.getTiles()[grid_x][grid_y]);
@@ -256,8 +253,5 @@ public class Grid implements TileBasedMap{
     public Tile[][] getTiles() {
         return tiles;
     }
-    
-    public ArrayList<HumanAgent> getHumans() {
-        return humans;
-    }
+
 }

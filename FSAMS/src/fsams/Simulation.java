@@ -165,28 +165,30 @@ public class Simulation extends Thread{
     }
     
     //ideal is to find closest exit...for now just find one
-  /*  Exit closestExit(HumanAgent human, int grid_x, int grid_y) {
-        if (grid.getExits() != null) {
+    Exit closestExit(int grid_x, int grid_y) {
+        if (exits != null) {
             int index = 0;
-            float lowestCost = finder.getMovementCost(grid_x, grid_y, grid.getExits().get(0).location_x, grid.getExits().get(0).location_y);
-            for (Exit exit : grid.getExits()) {
-                if (finder.getMovementCost(grid_x, grid_y, exit.location_x, exit.location_y) < lowestCost) {
-                    index = grid.getExits().indexOf(exit);
+            float lowestCost = finder.getMovementCost(grid_x, grid_y, exits.get(0).location_x, exits.get(0).location_y);
+            for (Exit exit : exits) {
+                float cost = finder.getMovementCost(grid_x, grid_y, exit.location_x, exit.location_y);
+                if (cost < lowestCost) {
+                    index = exits.indexOf(exit);
                     lowestCost = finder.getMovementCost(grid_x, grid_y, exit.location_x, exit.location_y);
                 }
             }
-            return grid.getExits().get(index);
+            return exits.get(index);
         }
         return null; 
    }
-    */
+    
     boolean simHumanAgent(int grid_x, int grid_y, double elapTime) {
         Tile tiles[][] = grid.getTiles();
 
 //        Exit exit = closestExit(grid, grid_x, grid_y);
         //locate closest exits first if any, else path = null
  //       if(exit != null)//fix
-        path = finder.findPath(grid_x, grid_y, 1, 1);
+        Exit closestExit = closestExit(grid_x, grid_y);
+        path = finder.findPath(grid_x, grid_y, closestExit.location_x, closestExit.location_y);
         HumanAgent newHuman = new HumanAgent();
         //There exist a path to an exit
         if (path != null) {
