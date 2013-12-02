@@ -119,14 +119,12 @@ public class EditPanel extends JPanel implements MouseListener {
                             int x1 = (int)(x-human_radius);
                             int y1 = (int)(y-human_radius);
                             g.drawOval(x1,y1,(int)(2*human_radius),(int)(2*human_radius));
-                            continue;
                         }
                         // Draw Fires
                         if(tile.getFire()) {
                             g.setColor(Color.red);
                             g.drawLine(xL,yU,xR,yD);
                             g.drawLine(xL,yD,xR,yU);
-                            continue;
                         }
                         // Draw Sensors
                         if(tile.getFireSensor()) {
@@ -134,13 +132,11 @@ public class EditPanel extends JPanel implements MouseListener {
                             int x1 = (int)(x-sensor_radius);
                             int y1 = (int)(y-sensor_radius);
                             g.drawOval(x1,y1,(int)(2*sensor_radius),(int)(2*sensor_radius));
-                            continue;
                         }
                         // Draw Exits
                         if(tile.getExit()) {
                             g.setColor(Color.green);
                             g.fillRect(xL, yU, (int)scale, (int)scale);
-                            continue;
                         }
                     
                 }

@@ -100,15 +100,15 @@ public class Grid implements TileBasedMap{
             suppressor = false;
         }
         public Tile(Tile tile) {
-            wallU = tile.wallU;
-            wallD = tile.wallD;
-            wallL = tile.wallL;
-            wallR = tile.wallR;
-            fire = tile.fire;
-            fireSensor = tile.fireSensor;
-            humanAgent = tile.humanAgent;
-            exit = tile.exit;
-            suppressor = tile.suppressor;
+            this.wallU = tile.wallU;
+            this.wallD = tile.wallD;
+            this.wallL = tile.wallL;
+            this.wallR = tile.wallR;
+            this.fire = tile.fire;
+            this.fireSensor = tile.fireSensor;
+            this.humanAgent = tile.humanAgent;
+            this.exit = tile.exit;
+            this.suppressor = tile.suppressor;
         }
         
         public boolean getWallU() {

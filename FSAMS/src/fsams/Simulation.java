@@ -184,16 +184,16 @@ public class Simulation extends Thread{
     boolean simHumanAgent(int grid_x, int grid_y, double elapTime) {
         Tile tiles[][] = grid.getTiles();
 
-//        Exit exit = closestExit(grid, grid_x, grid_y);
+        Exit exit = closestExit(grid_x, grid_y);
         //locate closest exits first if any, else path = null
- //       if(exit != null)//fix
-        Exit closestExit = closestExit(grid_x, grid_y);
-        path = finder.findPath(grid_x, grid_y, closestExit.location_x, closestExit.location_y);
-        HumanAgent newHuman = new HumanAgent();
-        //There exist a path to an exit
-        if (path != null) {
-            grid.addComponent(newHuman, path.getX(1), path.getY(1));
-            tiles[grid_x][grid_y].setHumanAgent(false);
+        if(exits != null) {//fix
+            path = finder.findPath(grid_x, grid_y, exit.location_x, exit.location_y);
+            HumanAgent newHuman = new HumanAgent();
+            //There exist a path to an exit
+            if (path != null) {
+                grid.addComponent(newHuman, path.getX(1), path.getY(1));
+                tiles[grid_x][grid_y].setHumanAgent(false);
+            }
         }
         //cannot reach exit - no exit in building
         else{
