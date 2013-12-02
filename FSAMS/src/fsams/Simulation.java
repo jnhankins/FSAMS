@@ -26,13 +26,14 @@ public class Simulation extends Thread{
     private Grid grid;
     // GUI Component
     private JPanel panel;
+    private ArrayList<Exit> exits;
     
     public Simulation(JPanel panel) {
         this.panel = panel;
         startFlag = false;
         isProgRunning = true;
         isSimRunning = false;
-
+        exits = new ArrayList<Exit>();
     }
     
     public boolean isSimRunning(){
@@ -42,8 +43,24 @@ public class Simulation extends Thread{
     public void startSim(Grid grid) {
         startFlag = !isSimRunning;
         System.out.println("hello I'm starting");
+        Grid.Tile[][] tiles = grid.getTiles();
+        // Draw components
+        for(int grid_x=0; grid_x<tiles.length; grid_x++) {
+            for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
+                Grid.Tile tile = tiles[grid_x][grid_y];
+                if (tile.getExit()) {
+                    Exit newExit = new Exit();
+                    newExit.location_x = grid_x;
+                    newExit.location_y = grid_y;
+                    exits.add(newExit);                    
+                }
+            }
+        }   
+        System.out.println("number of exits = " + exits.size());
         if(!isSimRunning) {
             this.grid = grid;
+            finder = new AStarPathFinder(grid, 500, false);
+
         }
     }
     
@@ -148,7 +165,7 @@ public class Simulation extends Thread{
     }
     
     //ideal is to find closest exit...for now just find one
-    Exit closestExit(HumanAgent human, int grid_x, int grid_y) {
+  /*  Exit closestExit(HumanAgent human, int grid_x, int grid_y) {
         if (grid.getExits() != null) {
             int index = 0;
             float lowestCost = finder.getMovementCost(grid_x, grid_y, grid.getExits().get(0).location_x, grid.getExits().get(0).location_y);
@@ -162,9 +179,9 @@ public class Simulation extends Thread{
         }
         return null; 
    }
+    */
     boolean simHumanAgent(int grid_x, int grid_y, double elapTime) {
         Tile tiles[][] = grid.getTiles();
-        finder = new AStarPathFinder(grid, 500, false);
 
 //        Exit exit = closestExit(grid, grid_x, grid_y);
         //locate closest exits first if any, else path = null

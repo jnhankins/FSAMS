@@ -9,14 +9,12 @@ public class Grid implements TileBasedMap{
     public static final int grid_height = 20;
     
     private Tile tiles[][];
-    private ArrayList<Exit> exits;
     private ArrayList<HumanAgent> humans;
     private boolean[][] visited = new boolean[grid_width][grid_height];
 
     
     public Grid() {
         tiles = new Tile[grid_width][grid_height];
-        exits = new ArrayList<Exit>();
         humans = new ArrayList<HumanAgent>();
         for(int grid_x=0; grid_x<tiles.length; grid_x++) {
             for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
@@ -26,7 +24,6 @@ public class Grid implements TileBasedMap{
     }
     public Grid(Grid grid) {
         tiles = new Tile[grid_width][grid_height];
-        this.exits = grid.getExits();
         this.humans = grid.getHumans();
         for(int grid_x=0; grid_x<tiles.length; grid_x++) {
             for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
@@ -78,7 +75,7 @@ public class Grid implements TileBasedMap{
     
     @Override
     public boolean blocked(int x, int y) {
-        if (tiles[x][y].fire) {
+        if (tiles[x][y].fire || tiles[x][y].humanAgent) {
             return true;
         }
     return false;    
@@ -164,7 +161,6 @@ public class Grid implements TileBasedMap{
             throw new IllegalArgumentException("Illegal grid position: "+x+","+y);
         Tile t = tiles[x][y];
         if (comp instanceof Exit) {
-            exits.add((Exit)comp);
             tiles[x][y].exit = true;
         }
         
@@ -182,37 +178,6 @@ public class Grid implements TileBasedMap{
         }
     }
     
-    public void removeComponent(Component comp, int x, int y) {
-        if(x<0 || grid_width<=x || y<0 || grid_height<=y)
-            throw new IllegalArgumentException("Illegal grid position: "+x+","+y);
-        Tile t = tiles[x][y];
-        if (comp instanceof Exit) {
-            for (Exit exit : exits) {
-                if ((exit.location_x == x) && (exit.location_y == y)) {
-                    exits.remove(exit);
-                }
-            }
-            tiles[x][y].exit = false;
-        }
-        
-        else if (comp instanceof HumanAgent) {
-            for (HumanAgent human : humans) {
-                if ((human.location_x == x) && (human.location_y == y)) {
-                    humans.remove(human);
-                }
-            }
-            tiles[x][y].humanAgent = false;
-        }
-        else if (comp instanceof Fire) {
-            tiles[x][y].fire = false;
-        }
-        else if (comp instanceof FireSensor) {
-            tiles[x][y].fireSensor = false;
-        }
-        else if (comp instanceof Suppressor) {
-            tiles[x][y].suppressor = false;
-        }
-    }
     
     public void addWall(int x1, int y1, int x2, int y2) {
         if((x1!=x2) && (y2!=y2))
@@ -290,10 +255,6 @@ public class Grid implements TileBasedMap{
     
     public Tile[][] getTiles() {
         return tiles;
-    }
-    
-    public ArrayList<Exit> getExits() {
-        return exits;
     }
     
     public ArrayList<HumanAgent> getHumans() {
