@@ -32,6 +32,7 @@ public class Simulation extends Thread{
         startFlag = false;
         isProgRunning = true;
         isSimRunning = false;
+
     }
     
     public boolean isSimRunning(){
@@ -77,14 +78,14 @@ public class Simulation extends Thread{
                          //               Exit exit = (Exit)component;
                          //               System.out.println(exit.location_x + " " + exit.location_y);
                                     }
-                                    /*else if(tile.getHumanAgent()){
+                                    else if(tile.getHumanAgent()){
                                         try {
                                             sleep(1000);
                                         } catch (InterruptedException ex) {
                                             Logger.getLogger(Simulation.class.getName()).log(Level.SEVERE, null, ex);
                                         }
-                                        simHumanAgent((HumanAgent)component, grid_x,grid_y,elapTime)
-                                    }*/
+                                        simHumanAgent(grid_x,grid_y,elapTime);
+                                    }
                                 
                             }
                         }
@@ -161,13 +162,14 @@ public class Simulation extends Thread{
         }
         return null; 
    }
-    boolean simHumanAgent(HumanAgent human, int grid_x, int grid_y, double elapTime) {
+    boolean simHumanAgent(int grid_x, int grid_y, double elapTime) {
         Tile tiles[][] = grid.getTiles();
         finder = new AStarPathFinder(grid, 500, false);
+
 //        Exit exit = closestExit(grid, grid_x, grid_y);
         //locate closest exits first if any, else path = null
  //       if(exit != null)//fix
-            path = finder.findPath(grid_x, grid_y, 1, 1);
+        path = finder.findPath(grid_x, grid_y, 1, 1);
         HumanAgent newHuman = new HumanAgent();
         //There exist a path to an exit
         if (path != null) {
