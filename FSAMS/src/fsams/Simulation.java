@@ -71,6 +71,10 @@ public class Simulation extends Thread{
     
     @Override
     public void run() {
+        final int numFrameTimes = 100;
+        long frameTimes[] = new long[numFrameTimes];
+        int frameTimePos = 0;
+        
         while(isProgRunning){
             if(startFlag){
                 startFlag = false;
@@ -79,6 +83,18 @@ public class Simulation extends Thread{
                 while(isSimRunning){
                     long currTime = System.currentTimeMillis();
                     double elapTime = (currTime - lastTime)/1000.0;
+                    if(elapTime<0.01){
+                        try {
+                            Thread.sleep((long)(1000*(0.01-elapTime)));
+                        } catch (InterruptedException ex) {}
+                        elapTime = (currTime - lastTime)/1000.0;
+                    }
+                    
+                    if(false) { // show fps
+                        frameTimes[frameTimePos] = currTime;
+                        System.out.println(numFrameTimes*1000.0/(frameTimes[frameTimePos]-frameTimes[(frameTimePos+1)%numFrameTimes]));
+                        frameTimePos = (frameTimePos+1)%numFrameTimes;
+                    }
                     
                     synchronized(grid) {
                         Grid.Tile[][] tiles = grid.getTiles();
@@ -101,7 +117,7 @@ public class Simulation extends Thread{
                                         } catch (InterruptedException ex) {
                                             Logger.getLogger(Simulation.class.getName()).log(Level.SEVERE, null, ex);
                                         }
-                                        simHumanAgent(grid_x,grid_y,elapTime);
+                                        //simHumanAgent(grid_x,grid_y,elapTime);
                                     }
                                 
                             }
