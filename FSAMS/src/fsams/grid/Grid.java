@@ -4,7 +4,7 @@ import fsams.grid.Component.*;
 import fsams.pathfinding.TileBasedMap;
 import java.util.ArrayList;
 
-public class Grid implements TileBasedMap{
+public class Grid implements TileBasedMap {
     public static final int grid_width = 20;
     public static final int grid_height = 20;
     
