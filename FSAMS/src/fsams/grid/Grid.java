@@ -175,6 +175,27 @@ public class Grid implements TileBasedMap{
         }
     }
     
+    public void removeComponent(Component comp, int x, int y) {
+        if(x<0 || grid_width<=x || y<0 || grid_height<=y)
+            throw new IllegalArgumentException("Illegal grid position: "+x+","+y);
+        Tile t = tiles[x][y];
+        if (comp instanceof Exit) {
+            tiles[x][y].exit = false;
+        }
+        
+        else if (comp instanceof HumanAgent) {
+            tiles[x][y].humanAgent = false;
+        }
+        else if (comp instanceof Fire) {
+            tiles[x][y].fire = false;
+        }
+        else if (comp instanceof FireSensor) {
+            tiles[x][y].fireSensor = false;
+        }
+        else if (comp instanceof Suppressor) {
+            tiles[x][y].suppressor = false;
+        }
+    }
     
     public void addWall(int x1, int y1, int x2, int y2) {
         if((x1!=x2) && (y2!=y2))
