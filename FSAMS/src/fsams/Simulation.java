@@ -25,6 +25,7 @@ public class Simulation extends Thread{
     // Data Model
     private Grid grid;
     long[][] lastMoveTimes;
+    boolean[][]  suppressionActive;
     // GUI Component
     private JPanel panel;
     private ArrayList<Exit> exits;
@@ -35,9 +36,11 @@ public class Simulation extends Thread{
         isProgRunning = true;
         isSimRunning = false;
         lastMoveTimes = new long[Grid.grid_width][Grid.grid_height];
+        suppressionActive = new boolean[Grid.grid_width][Grid.grid_height];
         for(int x=0; x<Grid.grid_width;++x) {
             for(int y=0; y<Grid.grid_height; ++y){
                 lastMoveTimes[x][y]=0;
+                suppressionActive[x][y] = false;
             }
         }
     }
@@ -62,8 +65,13 @@ public class Simulation extends Thread{
                         exits.add(newExit);                    
                     }
                 }
-            }   
+            }
             System.out.println("number of exits = " + exits.size());
+            for(int grid_x=0; grid_x<tiles.length; grid_x++) {
+                for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
+                    suppressionActive[grid_x][grid_y] = false;
+                }
+            }
             this.grid = grid;
             finder = new AStarPathFinder(grid, 5000, false);
         }
@@ -358,16 +366,33 @@ public class Simulation extends Thread{
     }
     
     public void simSuppressor(int grid_x, int grid_y, double elapTime, boolean turnOn){
-        final int suppressionRadius = 2;
-        for (int x = grid_x - suppressionRadius; x <= grid_x + suppressionRadius; ++x) {
-            for (int y = grid_y - suppressionRadius; y <= grid_y + suppressionRadius; ++y) {
-                if(x >=0 && x < grid.grid_width && y >= 0 && y < grid.grid_height) {
+        final int activationRadius = 2;
+        for (int x = grid_x - activationRadius; x <= grid_x + activationRadius && !suppressionActive[grid_x][grid_y]; ++x) {
+            for (int y = grid_y - activationRadius; y <= grid_y + activationRadius && !suppressionActive[grid_x][grid_y]; ++y) {
+                if(x >=0 && x < Grid.grid_width && y >= 0 && y < Grid.grid_height) {
                     if (grid.getTiles()[x][y].getFire()) {
-                        final double suppress_probability = 0.95;
-                        final double suppress_timeframe = 20.0;
+                        suppressionActive[grid_x][grid_y] = true;
+                    }
+                }
+            }
+        }
+        final int suppressionRadius = 2;
+        if(suppressionActive[grid_x][grid_y]) {
+            for (int x = grid_x - suppressionRadius; x <= grid_x + suppressionRadius; ++x) {
+                for (int y = grid_y - suppressionRadius; y <= grid_y + suppressionRadius; ++y) {
+                    if(x >=0 && x < Grid.grid_width && y >= 0 && y < Grid.grid_height) {
+                        final double suppress_probability = 0.99;
+                        final double suppress_timeframe = 0.25;
+                        double distance = (x-grid_x)*(x-grid_x)+(y-grid_y)*(y-grid_y);
+                        distance = distance*distance;
+                        if(distance==0)
+                            distance = 1;
                         double prob = 1 - Math.pow(1.0-suppress_probability,elapTime/suppress_timeframe); // p'=1-(1-p)^(t'/t)
+                        prob = prob/distance;
+                        
                         if(Math.random()<prob) {
                             grid.getTiles()[x][y].setFire(false);
+                            grid.getTiles()[x][y].setSuppression(true);
                         }
                     }
                 }

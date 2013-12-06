@@ -19,7 +19,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
     private JToggleButton doorB;
     private JToggleButton exitB;
     private JToggleButton fireSensorB;
-    private JToggleButton fireAlarmB;
+    private JToggleButton fireSuppressorB;
     private JToggleButton fireB;
     private JToggleButton humanAgentB;
     private JToggleButton jButton8;
@@ -43,7 +43,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         exitB = new JToggleButton();
         JLabel jLabel2 = new JLabel();
         fireSensorB = new JToggleButton();
-        fireAlarmB = new JToggleButton();
+        fireSuppressorB = new JToggleButton();
         fireB = new JToggleButton();
         JLabel jLabel3 = new JLabel();
         humanAgentB = new JToggleButton();
@@ -58,7 +58,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         doorB.addActionListener(this);
         exitB.addActionListener(this);
         fireSensorB.addActionListener(this);
-        fireAlarmB.addActionListener(this);
+        fireSuppressorB.addActionListener(this);
         fireB.addActionListener(this);
         humanAgentB.addActionListener(this);
         jButton8.addActionListener(this);
@@ -70,7 +70,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         toggleGroup.add(fireB);
         toggleGroup.add(humanAgentB);
         toggleGroup.add(fireSensorB);
-        toggleGroup.add(fireAlarmB);
+        toggleGroup.add(fireSuppressorB);
         toggleGroup.add(doorB);
         toggleGroup.add(exitB);
         toggleGroup.add(jButton8);
@@ -128,12 +128,12 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(fireSensorB, gridBagConstraints);
 
-        fireAlarmB.setText("Fire Alarm");
+        fireSuppressorB.setText("Sprinkler");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        add(fireAlarmB, gridBagConstraints);
+        add(fireSuppressorB, gridBagConstraints);
 
         fireB.setText("Fire");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -198,7 +198,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         doorB.setToolTipText("Adds a door. Shortcut is ' d ' to select a door");
         exitB.setToolTipText("Adds an exit. Humans proceed towards it in the event of an alarm. Shortcut is ' e ' to select an exit"); 
         fireSensorB.setToolTipText("Adds a fire sensor. Shortcut is ' s ' to select a fire sensor");
-        fireAlarmB.setToolTipText("Adds a fire alarm. Shortcut is ' a ' to select a fire alarm");
+        fireSuppressorB.setToolTipText("Adds a sprinkeler. Shortcut is ' k ' to select a sprinkeler");
         fireB.setToolTipText("Fire. It spreads! Shortcut is ' f ' to select fire");
         humanAgentB.setToolTipText("Humans. Adds people who proceed to the exit. Shortcut is ' h '");
         jButton8.setToolTipText("");
@@ -239,9 +239,9 @@ public class ComponentsPanel extends JPanel implements ActionListener {
                     fireSensorB.doClick();
                 }
             };  
-          AbstractAction alarmA = new AbstractAction() {
+          AbstractAction sprinklerA = new AbstractAction() {
                 public void actionPerformed(ActionEvent ae) {
-                    fireAlarmB.doClick();
+                    fireSuppressorB.doClick();
                 }
             }; 
           AbstractAction doorASecond = new AbstractAction() {
@@ -276,8 +276,8 @@ public class ComponentsPanel extends JPanel implements ActionListener {
        humanAgentB.getActionMap().put("human", humanA);
        fireSensorB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), "sensor");
        fireSensorB.getActionMap().put("sensor", sensorA);
-       fireAlarmB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), "alarm");
-       fireAlarmB.getActionMap().put("alarm", alarmA);
+       fireSuppressorB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_K, 0), "alarm");
+       fireSuppressorB.getActionMap().put("sprinkler", sprinklerA);
        jButton8.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_O, 0), "door");
        jButton8.getActionMap().put("door", doorASecond);
        jButton9.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E, 0), "elevator");
@@ -294,8 +294,8 @@ public class ComponentsPanel extends JPanel implements ActionListener {
             fsams.setNextComponentType(Component.Type.Exit);
         } else if(src == fireSensorB) {
             fsams.setNextComponentType(Component.Type.FireSensor);
-        } else if(src == fireAlarmB) {
-            
+        } else if(src == fireSuppressorB) {
+            fsams.setNextComponentType(Component.Type.Suppressor);
         } else if(src == fireB) {
             fsams.setNextComponentType(Component.Type.Fire);
         } else if(src == humanAgentB) {

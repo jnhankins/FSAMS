@@ -87,6 +87,7 @@ public class Grid implements TileBasedMap {
         //TODO replace ArrayList with boolean values
         boolean wallU, wallD, wallL, wallR;
         boolean fire, fireSensor, humanAgent,exit, suppressor;
+        long suppression;
         
         public Tile() {
             wallU = false;
@@ -98,6 +99,7 @@ public class Grid implements TileBasedMap {
             humanAgent = false;
             exit = false;
             suppressor = false;
+            suppression = -1;
         }
         public Tile(Tile tile) {
             this.wallU = tile.wallU;
@@ -131,6 +133,22 @@ public class Grid implements TileBasedMap {
             fire = status;
         }
         
+        public boolean getSuppression() {
+            final long suppressionTime = 1000;
+            if(suppression==-1 || System.currentTimeMillis()-suppression>suppressionTime) {
+                return false;
+            }
+            return true;
+        }
+        
+        public void setSuppression(boolean status) {
+            if(status) {
+                suppression = System.currentTimeMillis();
+            } else {
+                suppression = -1;
+            }
+        }
+        
         public boolean getFireSensor() {
             return fireSensor;
         }
@@ -156,11 +174,9 @@ public class Grid implements TileBasedMap {
     public void addComponent(Component comp, int x, int y) {
         if(x<0 || grid_width<=x || y<0 || grid_height<=y)
             throw new IllegalArgumentException("Illegal grid position: "+x+","+y);
-        Tile t = tiles[x][y];
         if (comp instanceof Exit) {
             tiles[x][y].exit = true;
         }
-        
         else if (comp instanceof HumanAgent) {
             tiles[x][y].humanAgent = true;
         }
@@ -175,6 +191,7 @@ public class Grid implements TileBasedMap {
         }
     }
     
+    /*
     public void removeComponent(Component comp, int x, int y) {
         if(x<0 || grid_width<=x || y<0 || grid_height<=y)
             throw new IllegalArgumentException("Illegal grid position: "+x+","+y);
@@ -195,6 +212,17 @@ public class Grid implements TileBasedMap {
         else if (comp instanceof Suppressor) {
             tiles[x][y].suppressor = false;
         }
+    }
+    */
+    public void removeComponents(int x, int y) {
+        if(x<0 || grid_width<=x || y<0 || grid_height<=y)
+            throw new IllegalArgumentException("Illegal grid position: "+x+","+y);
+        Tile t = tiles[x][y];
+        t.exit = false;
+        t.fire = false;
+        t.fireSensor = false;
+        t.humanAgent = false;
+        t.suppressor = false;
     }
     
     public void addWall(int x1, int y1, int x2, int y2) {

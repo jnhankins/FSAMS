@@ -113,32 +113,43 @@ public class EditPanel extends JPanel implements MouseListener {
                     int y = (int)((yU+yD)/2.0);
                     final double sensor_radius = 0.1*scale;
                     final double human_radius = 0.3*scale;
-                        //Draw HumanAgents
-                        if(tile.getHumanAgent()){
-                            g.setColor(Color.pink);
-                            int x1 = (int)(x-human_radius);
-                            int y1 = (int)(y-human_radius);
-                            g.drawOval(x1,y1,(int)(2*human_radius),(int)(2*human_radius));
-                        }
-                        // Draw Fires
-                        if(tile.getFire()) {
-                            g.setColor(Color.red);
-                            g.drawLine(xL,yU,xR,yD);
-                            g.drawLine(xL,yD,xR,yU);
-                        }
-                        // Draw Sensors
-                        if(tile.getFireSensor()) {
-                            g.setColor(Color.green);
-                            int x1 = (int)(x-sensor_radius);
-                            int y1 = (int)(y-sensor_radius);
-                            g.drawOval(x1,y1,(int)(2*sensor_radius),(int)(2*sensor_radius));
-                        }
-                        // Draw Exits
-                        if(tile.getExit()) {
-                            g.setColor(Color.green);
-                            g.fillRect(xL, yU, (int)scale, (int)scale);
-                        }
-                    
+                    //Draw HumanAgents
+                    if(tile.getHumanAgent()){
+                        g.setColor(Color.pink);
+                        int x1 = (int)(x-human_radius);
+                        int y1 = (int)(y-human_radius);
+                        g.drawOval(x1,y1,(int)(2*human_radius),(int)(2*human_radius));
+                    }
+                    // Draw Fires
+                    if(tile.getFire()) {
+                        g.setColor(Color.red);
+                        g.drawLine(xL,yU,xR,yD);
+                        g.drawLine(xL,yD,xR,yU);
+                    }
+                    if(tile.getSuppression()) {
+                        g.setColor(Color.blue);
+                        g.drawLine(xL,yU,xR,yD);
+                        g.drawLine(xL,yD,xR,yU);
+                    }
+                    // Draw Sensors
+                    if(tile.getFireSensor()) {
+                        g.setColor(Color.green);
+                        int x1 = (int)(x-sensor_radius);
+                        int y1 = (int)(y-sensor_radius);
+                        g.drawOval(x1,y1,(int)(2*sensor_radius),(int)(2*sensor_radius));
+                    }
+                    // Draw Suppressor
+                    if(tile.getSuppressor()) {
+                        g.setColor(Color.yellow);
+                        int x1 = (int)(x-sensor_radius);
+                        int y1 = (int)(y-sensor_radius);
+                        g.drawRect(x1,y1,(int)(2*sensor_radius),(int)(2*sensor_radius));
+                    }
+                    // Draw Exits
+                    if(tile.getExit()) {
+                        g.setColor(Color.green);
+                        g.fillRect(xL, yU, (int)scale, (int)scale);
+                    }
                 }
             }
         }
@@ -154,7 +165,6 @@ public class EditPanel extends JPanel implements MouseListener {
                 if(grid_x<0 || Grid.grid_width<=grid_x || grid_y<0 || Grid.grid_height<=grid_y)
                     return;
                 if(nextComponentType != null) {
-                    Component comp;
                     switch(nextComponentType) {
                         case Wall:
                             int xL = toScreenXfromGridX(grid_x,Grid.grid_width);
@@ -194,6 +204,10 @@ public class EditPanel extends JPanel implements MouseListener {
                             grid.addComponent(new HumanAgent(), grid_x, grid_y);
                             repaint();
                             break;
+                        case Suppressor:
+                            grid.addComponent(new Suppressor(), grid_x, grid_y);
+                            repaint();
+                            break;
                         case Exit:
                             Exit exit = new Exit();
                             grid.addComponent(exit, grid_x, grid_y);
@@ -214,6 +228,41 @@ public class EditPanel extends JPanel implements MouseListener {
                 int grid_y = toGridYfromScreenY(me.getY(),Grid.grid_height);
                 if(grid_x<0 || Grid.grid_width<=grid_x || grid_y<0 || Grid.grid_height<=grid_y)
                     return;
+                
+                int xL = toScreenXfromGridX(grid_x,Grid.grid_width);
+                int xR = toScreenXfromGridX(grid_x+1,Grid.grid_width);
+                int yD = toScreenYfromGridY(grid_y,Grid.grid_height);
+                int yU = toScreenYfromGridY(grid_y+1,Grid.grid_height);
+                int mx = me.getX();
+                int my = me.getY();
+                
+                int wallGrabRadius = (int)(scale/10.0);
+                
+                if(mx-xL>wallGrabRadius && xR-mx>wallGrabRadius && 
+                   yD-my>wallGrabRadius && my-yU>wallGrabRadius) {
+                    grid.removeComponents(grid_x, grid_y);
+                } else {
+                    int x1 = mx-xL;
+                    int y1 = my-yU;
+                    int x2 = xR-mx;
+                    int y2 = y1;
+                    if(x1>y1) { // up-right
+                        if(x2>y2) { // up-left
+                            grid.removeWall(grid_x  ,grid_y+1,grid_x+1,grid_y+1); // Up
+                        } else { // down-right
+                            grid.removeWall(grid_x+1,grid_y,  grid_x+1,grid_y+1); // Right
+                        }
+                    } else { // down-left
+                        if(x2>y2) { // up-left
+                            grid.removeWall(grid_x,  grid_y,  grid_x,  grid_y+1); // Left
+                        } else { // down-right
+                            grid.removeWall(grid_x,  grid_y,  grid_x+1,grid_y  ); // Down
+                        }
+                    }
+                }
+                
+                
+                /*
                 if(nextComponentType != null) {
                     Component comp;
                     switch(nextComponentType) {
@@ -257,6 +306,10 @@ public class EditPanel extends JPanel implements MouseListener {
                             grid.removeComponent(new HumanAgent(), grid_x, grid_y);
                             repaint();
                             break;
+                        case Suppressor:
+                            grid.removeComponent(new Suppressor(), grid_x, grid_y);
+                            repaint();
+                            break;
                         case Exit:
                             Exit exit = new Exit();
                             grid.removeComponent(exit, grid_x, grid_y);
@@ -269,51 +322,11 @@ public class EditPanel extends JPanel implements MouseListener {
                     //justSelectedX = me.getX();
                     //justSelectedY = me.getY();
                 }
-                //justSelected = true;
-                //justSelectedX = me.getX();
-                //justSelectedY = me.getY();
-               //else {
-                //    if(fsams.selectComponent(me.getX(), me.getY(), getWidth(), getHeight())){
-                //        justSelected = true;
-                //        clickedMouseX = me.getX();
-                //        clickedMouseY = me.getY();
-                //    }
-                //}
-             }
-            //else {
-            //    if(fsams.selectComponent(me.getX(), me.getY(), getWidth(), getHeight())){
-            //        justSelected = true;
-            //        clickedMouseX = me.getX();
-            //        clickedMouseY = me.getY();
-            //    }
-            //}
-         }
-     
-
-
-    }
-/*
-    @Override
-    public void mouseDragged(MouseEvent e) {
-        if(justSelected == true){
-             int width = getWidth();
-            int height = getHeight();
-            double dX = view.toWorldCoordinateX(e.getX(), width, height) - view.toWorldCoordinateX(clickedMouseX, width, height);
-            double dY = view.toWorldCoordinateY(e.getY(), width, height) - view.toWorldCoordinateY(clickedMouseY, width, height);
-            FSAMSComponent1D comp = fsams.getSelectedComponent();
-            comp.setX1(comp.getX1() + dX);
-            comp.setY1(comp.getY1() + dY);
-            if(comp instanceof FSAMSComponent2D) {
-                FSAMSComponent2D comp2d = (FSAMSComponent2D)comp;
-                comp2d.setX2(comp2d.getX2() + dX);
-                comp2d.setY2(comp2d.getY2() + dY);
+                */
             }
-            clickedMouseX = e.getX();
-            clickedMouseY = e.getY();
             repaint();
         }
     }
-    */
     @Override
     public void mouseReleased(MouseEvent e) { }
     @Override
