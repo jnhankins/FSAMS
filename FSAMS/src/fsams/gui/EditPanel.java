@@ -9,7 +9,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 import javax.swing.JPanel;
 
 public class EditPanel extends JPanel implements MouseListener {
@@ -31,9 +30,6 @@ public class EditPanel extends JPanel implements MouseListener {
         centerY = 0;
         scale = 50.0;
         nextComponentType = null;
-        //justSelected = false;
-        //justSelectedX = 0;
-        //justSelectedY = 0;
         
         addMouseListener(this);
     }
@@ -133,6 +129,12 @@ public class EditPanel extends JPanel implements MouseListener {
                             int y1 = (int)(y-sensor_radius);
                             g.drawOval(x1,y1,(int)(2*sensor_radius),(int)(2*sensor_radius));
                         }
+                        if(tile.getSuppressor()) {
+                            g.setColor(Color.blue);
+                            int x1 = (int)(x-sensor_radius);
+                            int y1 = (int)(y-sensor_radius);
+                            g.drawRect(x1, y1, (int)(sensor_radius*2), (int)(sensor_radius*2));
+                        }
                         // Draw Exits
                         if(tile.getExit()) {
                             g.setColor(Color.green);
@@ -193,6 +195,11 @@ public class EditPanel extends JPanel implements MouseListener {
                         break;
                     case HumanAgent:
                         grid.addComponent(new HumanAgent(), grid_x, grid_y);
+                        nextComponentType = null;
+                        repaint();
+                        break;
+                    case Suppressor:
+                        grid.addComponent(new Suppressor(), grid_x, grid_y);
                         nextComponentType = null;
                         repaint();
                         break;
