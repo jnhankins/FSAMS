@@ -147,142 +147,76 @@ public class EditPanel extends JPanel implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent me) {
-        if (me.getButton() == MouseEvent.BUTTON1) { 
-            synchronized(grid) {
-                int grid_x = toGridXfromScreenX(me.getX(),Grid.grid_width);
-                int grid_y = toGridYfromScreenY(me.getY(),Grid.grid_height);
-                if(grid_x<0 || Grid.grid_width<=grid_x || grid_y<0 || Grid.grid_height<=grid_y)
-                    return;
-                if(nextComponentType != null) {
-                    Component comp;
-                    switch(nextComponentType) {
-                        case Wall:
-                            int xL = toScreenXfromGridX(grid_x,Grid.grid_width);
-                            int xR = toScreenXfromGridX(grid_x+1,Grid.grid_width);
-                            int yD = toScreenYfromGridY(grid_y,Grid.grid_height);
-                            int yU = toScreenYfromGridY(grid_y+1,Grid.grid_height);
-                            int mx = me.getX();
-                            int my = me.getY();
-                            int x1 = mx-xL;
-                            int y1 = my-yU;
-                            int x2 = xR-mx;
-                            int y2 = y1;
-                            if(x1>y1) { // up-right
-                                if(x2>y2) { // up-left
-                                    grid.addWall(grid_x  ,grid_y+1,grid_x+1,grid_y+1); // Up
-                                } else { // down-right
-                                    grid.addWall(grid_x+1,grid_y,  grid_x+1,grid_y+1); // Right
-                                }
-                            } else { // down-left
-                                if(x2>y2) { // up-left
-                                    grid.addWall(grid_x,  grid_y,  grid_x,  grid_y+1); // Left
-                                } else { // down-right
-                                    grid.addWall(grid_x,  grid_y,  grid_x+1,grid_y  ); // Down
-                                }
+        synchronized(grid) {
+            int grid_x = toGridXfromScreenX(me.getX(),Grid.grid_width);
+            int grid_y = toGridYfromScreenY(me.getY(),Grid.grid_height);
+            if(grid_x<0 || Grid.grid_width<=grid_x || grid_y<0 || Grid.grid_height<=grid_y)
+                return;
+            if(nextComponentType != null) {
+                Component comp;
+                switch(nextComponentType) {
+                    case Wall:
+                        int xL = toScreenXfromGridX(grid_x,Grid.grid_width);
+                        int xR = toScreenXfromGridX(grid_x+1,Grid.grid_width);
+                        int yD = toScreenYfromGridY(grid_y,Grid.grid_height);
+                        int yU = toScreenYfromGridY(grid_y+1,Grid.grid_height);
+                        int mx = me.getX();
+                        int my = me.getY();
+                        int x1 = mx-xL;
+                        int y1 = my-yU;
+                        int x2 = xR-mx;
+                        int y2 = y1;
+                        if(x1>y1) { // up-right
+                            if(x2>y2) { // up-left
+                                grid.addWall(grid_x  ,grid_y+1,grid_x+1,grid_y+1); // Up
+                            } else { // down-right
+                                grid.addWall(grid_x+1,grid_y,  grid_x+1,grid_y+1); // Right
                             }
-                            repaint();
-                            break;
-                        case FireSensor:
-                            grid.addComponent(new FireSensor(), grid_x, grid_y);
-                            repaint();
-                            break;
-                        case Fire:
-                            grid.addComponent(new Fire(), grid_x, grid_y);
-                            repaint();
-                            break;
-                        case HumanAgent:
-                            grid.addComponent(new HumanAgent(), grid_x, grid_y);
-                            repaint();
-                            break;
-                        case Exit:
-                            Exit exit = new Exit();
-                            grid.addComponent(exit, grid_x, grid_y);
-
-                            exit.location_x = grid_x;
-                            exit.location_y = grid_y;
-                            repaint();
-                            break;
-                    }
-                    //justSelected = true;
-                    //justSelectedX = me.getX();
-                    //justSelectedY = me.getY();
-                }
-                //else {
-                //    if(fsams.selectComponent(me.getX(), me.getY(), getWidth(), getHeight())){
-                //        justSelected = true;
-                //        clickedMouseX = me.getX();
-                //        clickedMouseY = me.getY();
-                //    }
-                //}
-            }
-        }
-        else if (me.getButton() == MouseEvent.BUTTON3) {
-            synchronized(grid) {
-                int grid_x = toGridXfromScreenX(me.getX(),Grid.grid_width);
-                int grid_y = toGridYfromScreenY(me.getY(),Grid.grid_height);
-                if(grid_x<0 || Grid.grid_width<=grid_x || grid_y<0 || Grid.grid_height<=grid_y)
-                    return;
-                if(nextComponentType != null) {
-                    Component comp;
-                    switch(nextComponentType) {
-                        case Wall:
-                            int xL = toScreenXfromGridX(grid_x,Grid.grid_width);
-                            int xR = toScreenXfromGridX(grid_x+1,Grid.grid_width);
-                            int yD = toScreenYfromGridY(grid_y,Grid.grid_height);
-                            int yU = toScreenYfromGridY(grid_y+1,Grid.grid_height);
-                            int mx = me.getX();
-                            int my = me.getY();
-                            int x1 = mx-xL;
-                            int y1 = my-yU;
-                            int x2 = xR-mx;
-                            int y2 = y1;
-                            if(x1>y1) { // up-right
-                                if(x2>y2) { // up-left
-                                    grid.removeWall(grid_x  ,grid_y+1,grid_x+1,grid_y+1); // Up
-                                } else { // down-right
-                                    grid.removeWall(grid_x+1,grid_y,  grid_x+1,grid_y+1); // Right
-                                }
-                            } else { // down-left
-                                if(x2>y2) { // up-left
-                                    grid.removeWall(grid_x,  grid_y,  grid_x,  grid_y+1); // Left
-                                } else { // down-right
-                                    grid.removeWall(grid_x,  grid_y,  grid_x+1,grid_y  ); // Down
-                                }
+                        } else { // down-left
+                            if(x2>y2) { // up-left
+                                grid.addWall(grid_x,  grid_y,  grid_x,  grid_y+1); // Left
+                            } else { // down-right
+                                grid.addWall(grid_x,  grid_y,  grid_x+1,grid_y  ); // Down
                             }
-                            repaint();
-                            break;
-                        case FireSensor:
-                            grid.removeComponent(new FireSensor(), grid_x, grid_y);
-                            repaint();
-                            break;
-                        case Fire:
-                            grid.removeComponent(new Fire(), grid_x, grid_y);
-                            repaint();
-                            break;
-                        case HumanAgent:
-                            grid.removeComponent(new HumanAgent(), grid_x, grid_y);
-                            repaint();
-                            break;
-                        case Exit:
-                            Exit exit = new Exit();
-                            grid.removeComponent(exit, grid_x, grid_y);
-                            exit.location_x = grid_x;
-                            exit.location_y = grid_y;
-                            repaint();
-                            break;
-                    }
-                    //justSelected = true;
-                    //justSelectedX = me.getX();
-                    //justSelectedY = me.getY();
+                        }
+                        repaint();
+                        break;
+                    case FireSensor:
+                        grid.addComponent(new FireSensor(), grid_x, grid_y);
+                        nextComponentType = null;
+                        repaint();
+                        break;
+                    case Fire:
+                        grid.addComponent(new Fire(), grid_x, grid_y);
+                        nextComponentType = null;
+                        repaint();
+                        break;
+                    case HumanAgent:
+                        grid.addComponent(new HumanAgent(), grid_x, grid_y);
+                        nextComponentType = null;
+                        repaint();
+                        break;
+                    case Exit:
+                        Exit exit = new Exit();
+                        grid.addComponent(exit, grid_x, grid_y);
+                        
+                        exit.location_x = grid_x;
+                        exit.location_y = grid_y;
+                        nextComponentType = null;
+                        repaint();
+                        break;
                 }
-                //else {
-                //    if(fsams.selectComponent(me.getX(), me.getY(), getWidth(), getHeight())){
-                //        justSelected = true;
-                //        clickedMouseX = me.getX();
-                //        clickedMouseY = me.getY();
-                //    }
-                //}
+                //justSelected = true;
+                //justSelectedX = me.getX();
+                //justSelectedY = me.getY();
             }
+            //else {
+            //    if(fsams.selectComponent(me.getX(), me.getY(), getWidth(), getHeight())){
+            //        justSelected = true;
+            //        clickedMouseX = me.getX();
+            //        clickedMouseY = me.getY();
+            //    }
+            //}
         }
     }
 /*

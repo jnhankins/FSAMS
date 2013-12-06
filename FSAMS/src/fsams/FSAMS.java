@@ -11,7 +11,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
-
+import java.awt.Color;
+import javax.swing.ButtonGroup;
+import javax.swing.JToggleButton;
 
 public final class FSAMS extends JFrame implements ActionListener {
     // GUI Components
@@ -38,15 +40,22 @@ public final class FSAMS extends JFrame implements ActionListener {
         simulation.start();
     }
     private void initMainWindow() {
-        JButton startB = new JButton("Start");
+        JToggleButton startB = new JToggleButton("Start");
         startB.setActionCommand("start");
         startB.addActionListener(this);
+        startB.setBackground(Color.green);
+        
         toolBar.add(startB);
-        JButton stopB = new JButton("Stop");
+        JToggleButton stopB = new JToggleButton("Stop");
         stopB.setActionCommand("stop");
         stopB.addActionListener(this);
+        stopB.setBackground(Color.red);
         toolBar.add(stopB);
         add(toolBar, BorderLayout.NORTH);
+        
+        ButtonGroup startStop = new ButtonGroup();
+        startStop.add(startB);
+        startStop.add(stopB);
         
         JSplitPane splitP = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         splitP.add(compP, JSplitPane.LEFT);

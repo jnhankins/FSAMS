@@ -110,25 +110,24 @@ public class Simulation extends Thread{
                                 // Get the tile
                                 Grid.Tile tile = tiles[grid_x][grid_y];
                                 // Get the components
-                                    if(tile.getFire()) {
-                                        simFire(grid_x,grid_y,elapTime);
-                                    }
-                                    else if(tile.getExit()){
-                         //               Exit exit = (Exit)component;
-                         //               System.out.println(exit.location_x + " " + exit.location_y);
-                                    }
-                                    else if(tile.getHumanAgent()){
+                                if(tile.getFire()) {
+                                    simFire(grid_x,grid_y,elapTime);
+                                }
+                                else if(tile.getExit()){
+                     //               Exit exit = (Exit)component;
+                     //               System.out.println(exit.location_x + " " + exit.location_y);
+                                }
+                                else if(tile.getHumanAgent()){
 //                                        try {
 //                                            sleep(1000);
 //                                        } catch (InterruptedException ex) {
 //                                            Logger.getLogger(Simulation.class.getName()).log(Level.SEVERE, null, ex);
 //                                        }
-                                        simHumanAgent(grid_x,grid_y,elapTime,currTime);
-                                    }
-                                    else if (tile.getFireSensor()) {
-                                        simFireSensor(grid_x, grid_y, elapTime);
-                                    }
-                                
+                                    simHumanAgent(grid_x,grid_y,elapTime,currTime);
+                                }
+                                else if (tile.getFireSensor()) {
+                                    simFireSensor(grid_x, grid_y, elapTime, false);
+                                }
                             }
                         }
                     }
@@ -339,13 +338,15 @@ public class Simulation extends Thread{
         }
     }
     
-    public void simFireSensor(int grid_x, int grid_y, double elapTime) { 
+    public void simFireSensor(int grid_x, int grid_y, double elapTime, boolean turnOnSuppressor) {
         final int sensorRadius = 3;
+        final int suppressorRadius = 2;
         for (int x = grid_x - sensorRadius; x <= grid_x + sensorRadius; x++) {
             for (int y = grid_y - sensorRadius; y <= grid_y + sensorRadius; y++) {
                 if(x >=0 && x < grid.grid_width && y >= 0 && y < grid.grid_height) {
                     if (grid.getTiles()[x][y].getFire()) {
                         fireDetected(grid_x, grid_y);
+                        grid.getTiles()[x][y].setFire(!turnOnSuppressor);
                     }
                 }
             }
@@ -355,5 +356,17 @@ public class Simulation extends Thread{
     public void fireDetected(int sensorX, int sensorY) {
         System.out.println("Fire detected at (" + sensorX + ", " + sensorY + ")");
     }
-
+    
+    public void simSuppressor(int grid_x, int grid_y, double elapTime, boolean turnOn){
+        final int sensorRadius = 2;
+        for (int x = grid_x - sensorRadius; x <= grid_x + sensorRadius; ++x) {
+            for (int y = grid_y - sensorRadius; y <= grid_y + sensorRadius; ++y) {
+                if(x >=0 && x < grid.grid_width && y >= 0 && y < grid.grid_height) {
+                    if (grid.getTiles()[x][y].getFire()) {
+                        grid.getTiles()[x][y].setFire(!turnOn);
+                    }
+                }
+            }
+        }
+    }
 }
