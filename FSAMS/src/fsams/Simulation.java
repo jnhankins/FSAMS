@@ -65,7 +65,7 @@ public class Simulation extends Thread{
             }   
             System.out.println("number of exits = " + exits.size());
             this.grid = grid;
-            finder = new AStarPathFinder(grid, 500, false);
+            finder = new AStarPathFinder(grid, 5000, false);
         }
     }
     
@@ -185,16 +185,23 @@ public class Simulation extends Thread{
     //ideal is to find closest exit...for now just find one
     Exit closestExit(int grid_x, int grid_y) {
         if(!exits.isEmpty()) {
-            int index = 0;
+            int index = -1;
             float lowestCost = Float.MAX_VALUE;
             System.out.println("!");
             for(Exit exit : exits) {
-                float cost = finder.getMovementCost(grid_x, grid_y, exit.location_x, exit.location_y);
+                Path path = finder.findPath(grid_x, grid_y, exit.location_x, exit.location_y);
+                if (path == null) {
+                    continue;
+                }
+                float cost = path.getLength();
                 System.out.println(cost);
                 if(cost < lowestCost) {
                     index = exits.indexOf(exit);
-                    lowestCost = finder.getMovementCost(grid_x, grid_y, exit.location_x, exit.location_y);
+                    lowestCost = cost;
                 }
+            }
+            if (index == -1) {
+                return null;
             }
             return exits.get(index);
         }
@@ -323,7 +330,7 @@ public class Simulation extends Thread{
 */
     public void tracePath(HumanAgent human, int x, int y) {
         Tile tiles[][] = grid.getTiles();
-        finder = new AStarPathFinder(grid, 500, false);
+        finder = new AStarPathFinder(grid, 5000, false);
         path = finder.findPath(x, y, 1, 1);
         HumanAgent newHuman = new HumanAgent();
         if (path != null) {
