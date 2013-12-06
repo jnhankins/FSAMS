@@ -160,7 +160,7 @@ public class AStarPathFinder implements PathFinder {
                     else
                         direction = 4;                                            
 
-                    if (isValidLocation(sx,sy,xp,yp)) {
+                    if (isValidLocation(current.x,current.y,xp,yp)) {
                         // the cost to get to this node is cost the current plus the movement
 
                         // cost to reach this node. Note that the heursitic value is only used
