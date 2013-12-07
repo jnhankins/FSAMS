@@ -26,9 +26,6 @@ public class Tile {
         // Grid Coordinates
         this.grid_x = grid_x;
         this.grid_y = grid_y;
-        
-        
-        System.out.println("C "+this.grid_x+" "+this.grid_y);
         // Walls and Doors
         wallU = wallD = wallR = wallL = false;
         doorU = doorD = doorR = doorL = false;
