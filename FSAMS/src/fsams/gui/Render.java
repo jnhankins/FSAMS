@@ -127,7 +127,11 @@ public class Render {
                         g.drawRect(x1,y1,(int)(2*sensor_radius),(int)(2*sensor_radius));
                     }
                     // Draw Equipment
-                    
+                    if(tile.getEquipment()){
+                        g.setColor(tile.getEquipmentActive()?Color.yellow:Color.orange);
+                        g.drawLine(xL,yU,xR,yD);
+                        g.drawLine(xL,yD,xR,yU);
+                    }
                     // Draw Exits
                     if(tile.getExit()) {
                         g.setColor(Color.green);
