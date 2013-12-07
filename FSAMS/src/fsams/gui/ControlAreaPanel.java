@@ -7,6 +7,7 @@
 package fsams.gui;
 
 import fsams.FSAMS;
+import fsams.Simulation;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
@@ -20,6 +21,7 @@ import javax.swing.JPanel;
  */
 public class ControlAreaPanel extends JPanel implements ActionListener {
     private final FSAMS fsams;
+    private final Simulation sim;
     private JButton callEmergency;
     private JButton lockDoors;
     private JButton activateSprinklers;
@@ -27,8 +29,9 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
     private JButton masterReset;
     private JButton eShutDown;
     
-    public ControlAreaPanel(FSAMS fsams) {
+    public ControlAreaPanel(FSAMS fsams, Simulation sim) {
         this.fsams = fsams;
+        this.sim = sim;
         initComponents();
     }
     
@@ -99,8 +102,6 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
         activateAlarms.setToolTipText("Turns on all alarms");
         masterReset.setToolTipText("Resets all systems: doors, sprinklers, and alarms.");
         eShutDown.setToolTipText("Shuts down all equipment.");
-  
-        
     }
 
     public void actionPerformed(ActionEvent ae) {
@@ -109,21 +110,22 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
             JOptionPane.showMessageDialog(new JFrame(), "Emergency Services Have Been Notified.");
         } else if(src == lockDoors) {
             JOptionPane.showMessageDialog(new JFrame(), "All Doors Have Been Locked.");
-            fsams.grid.setLockAll(true);
+            sim.setLockAll(true);
             fsams.repaint();
         } else if(src == activateSprinklers) {          
             JOptionPane.showMessageDialog(new JFrame(), "All Fire Suppression Systems Have Been Activated.");
-            fsams.grid.setSuppressionAll(true);
+            sim.setSuppressionAll(true);
             fsams.repaint();
         } else if (src == activateAlarms) {
             JOptionPane.showMessageDialog(new JFrame(), "All Alarms Have Been Activated.");
-             fsams.grid.setAlarmAll(true);
+             sim.setAlarmAll(true);
              fsams.repaint();
         } else if (src == masterReset) {
             JOptionPane.showMessageDialog(new JFrame(), "System Has Been Reset.");
-            fsams.grid.setLockAll(false);
-            fsams.grid.setAlarmAll(false);
-            fsams.grid.setSuppressionAll(false);
+            sim.setLockAll(false);
+            sim.setAlarmAll(false);
+            sim.setSuppressionAll(false);
+            sim.setSensorsAll(false);
             fsams.repaint();
         } else if (src == eShutDown) {
             JOptionPane.showMessageDialog(new JFrame(), "All Equipment Has Been Shut Down.");

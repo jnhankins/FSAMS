@@ -29,15 +29,17 @@ public final class FSAMS extends JFrame implements ActionListener {
     private Simulation simulation;
     
     public FSAMS() {
-        toolBar =  new JToolBar();
-        editP = new EditPanel(this);
-        compP = new ComponentsPanel(this);
-        ctrlP = new ControlAreaPanel(this);
-        
         grid = new Grid();
         sim_grid = null;
-        simulation = new Simulation(editP);
+        
+        toolBar =  new JToolBar();
+        editP = new EditPanel(this);
         editP.setGrid(grid);
+        compP = new ComponentsPanel(this);
+        
+        simulation = new Simulation(editP);
+        
+        ctrlP = new ControlAreaPanel(this,simulation);
         
         initMainWindow();
         simulation.start();

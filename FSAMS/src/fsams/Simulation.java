@@ -112,7 +112,6 @@ public class Simulation extends Thread{
                             }
                         }
                     }
-                    
                     panel.repaint();
                     lastTime = currTime;
                 }
@@ -378,6 +377,43 @@ public class Simulation extends Thread{
                         }
                     }
                 }
+            }
+        }
+    }
+    
+    
+    public void setLockAll(boolean locked) {
+        if(grid!=null) {
+            synchronized(grid) {
+                grid.setLockAll(locked);
+            }
+        }
+    }
+    public void setSuppressionAll(boolean active) {
+        if(grid!=null) {
+            synchronized(grid) {
+                grid.setSuppressionAll(active);
+            }
+        }
+    }
+    public void setAlarmAll(boolean active) {
+        if(grid!=null) {
+            synchronized(grid) {
+                grid.setAlarmAll(active);
+            }
+        }
+    }
+    public void setEquipmentAll(boolean active) {
+        if(grid!=null) {
+            synchronized(grid) {
+                grid.setEquipmentAll(active);
+            }
+        }
+    }
+    public void setSensorsAll(boolean active) {
+        if(grid!=null) {
+            synchronized(grid) {
+                grid.setSensorsAll(active);
             }
         }
     }

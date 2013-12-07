@@ -316,6 +316,17 @@ public class Grid implements TileBasedMap {
         }
     }
     
+    public void setSensorsAll(boolean active) {
+        for(int grid_x=0; grid_x<tiles.length; grid_x++) {
+            for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
+                Tile tile = tiles[grid_x][grid_y];
+                if(tile.getFireSensor()) {
+                    tile.setFireSensorActive(active);
+                }
+            }   
+        }
+    }
+    
     public Tile[][] getTiles() {
         return tiles;
     }
