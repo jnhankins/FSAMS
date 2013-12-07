@@ -9,4 +9,5 @@ public enum ComponentType {
     Suppressor,
     FireAlarm,
     Door,
+    Equipment,
 }
