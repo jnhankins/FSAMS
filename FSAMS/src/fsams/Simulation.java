@@ -51,8 +51,7 @@ public class Simulation extends Thread{
             System.out.println("number of exits = " + exits.size());
             for(int grid_x=0; grid_x<tiles.length; grid_x++) {
                 for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
-                    tiles[grid_x][grid_y].setLastMoveTime(0);
-                    tiles[grid_x][grid_y].setSuppressorActive(false);
+                    tiles[grid_x][grid_y].reset();
                 }
             }
             this.grid = grid;
@@ -131,26 +130,27 @@ public class Simulation extends Thread{
     }
     
     public void simFire(int grid_x, int grid_y, double elapTime) {
+        Tile t = grid.getTiles()[grid_x][grid_y];
         // Left
-        if(grid_x-1>=0 && !grid.getTiles()[grid_x][grid_y].getWallL()) {
+        if(grid_x-1>=0 && !t.getWallL() && !t.getLockL()) {
             int x = grid_x-1;
             int y = grid_y;
             simBurnTile(x,y,elapTime);
         }
         // Down
-        if(grid_y-1>=0 && !grid.getTiles()[grid_x][grid_y].getWallD()) {
+        if(grid_y-1>=0 && !t.getWallD() && !t.getLockD()) {
             int x = grid_x;
             int y = grid_y-1;
             simBurnTile(x,y,elapTime);
         }
         // Right
-        if(grid_x+1<Grid.grid_width && !grid.getTiles()[grid_x][grid_y].getWallR()) {
+        if(grid_x+1<Grid.grid_width && !t.getWallR() && !t.getLockR()) {
             int x = grid_x+1;
             int y = grid_y;
             simBurnTile(x,y,elapTime);
         }
         // Up
-        if(grid_y+1<Grid.grid_height && !grid.getTiles()[grid_x][grid_y].getWallU()) {
+        if(grid_y+1<Grid.grid_height && !t.getWallU() && !t.getLockU()) {
             int x = grid_x;
             int y = grid_y+1;
             simBurnTile(x,y,elapTime);
@@ -223,8 +223,11 @@ public class Simulation extends Thread{
             boolean openU, openD, openL, openR;
             fireU = fireD = fireL = fireR = false;
             openU = openD = openL = openR = false;
+            
+            Tile t = tiles[grid_x][grid_y];
+            
             // Left
-            if(grid_x-1>=0 && !tiles[grid_x][grid_y].getWallL()) {
+            if(grid_x-1>=0 && !t.getWallL() && !t.getLockL()) {
                 openL = true;
                 int x = grid_x-1;
                 int y = grid_y;
@@ -235,7 +238,7 @@ public class Simulation extends Thread{
                 
             }
             // Down
-            if(grid_y-1>=0 && !tiles[grid_x][grid_y].getWallD()) {
+            if(grid_y-1>=0 && !t.getWallD() && !t.getLockD()) {
                 openD = true;
                 int x = grid_x;
                 int y = grid_y-1;
@@ -246,7 +249,7 @@ public class Simulation extends Thread{
                 
             }
             // Right
-            if(grid_x+1<Grid.grid_width && !tiles[grid_x][grid_y].getWallR()) {
+            if(grid_x+1<Grid.grid_width && !t.getWallR() && !t.getLockR()) {
                 openR = true;
                 int x = grid_x+1;
                 int y = grid_y;
@@ -257,7 +260,7 @@ public class Simulation extends Thread{
                 
             }
             // Up
-            if(grid_y+1<Grid.grid_height && !tiles[grid_x][grid_y].getWallU()) {
+            if(grid_y+1<Grid.grid_height && !t.getWallU() && !t.getLockU()) {
                 openU = true;
                 int x = grid_x;
                 int y = grid_y+1;

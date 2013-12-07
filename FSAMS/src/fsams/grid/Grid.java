@@ -49,10 +49,12 @@ public class Grid implements TileBasedMap {
     public boolean wallBlocked(int x, int y, int direction) {
         boolean up, down, left, right;
         
-        up = tiles[x][y].getWallU();
-        down = tiles[x][y].getWallD();
-        left = tiles[x][y].getWallL();
-        right = tiles[x][y].getWallR();
+        Tile t = tiles[x][y];
+        
+        up = t.getWallU() || t.getLockU();
+        down = t.getWallD() || t.getLockD();
+        left = t.getWallL() || t.getLockL();
+        right = t.getWallR() || t.getLockR();
         
         if (direction == 0 && down)
             return true;
@@ -265,6 +267,27 @@ public class Grid implements TileBasedMap {
                     tiles[x][y1].setDoorD(false);
                 }
             }
+        }
+    }
+    
+    public void setLockAll(boolean locked) {
+        for(int grid_x=0; grid_x<tiles.length; grid_x++) {
+            for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
+                Tile tile = tiles[grid_x][grid_y];
+                if(tile.getDoorD()) tile.setLockD(locked);
+                if(tile.getDoorU()) tile.setLockU(locked);
+                if(tile.getDoorL()) tile.setLockL(locked);
+                if(tile.getDoorR()) tile.setLockR(locked);
+            }
+        }
+    }
+    public void setSuppressionAll(boolean active) {
+        for(int grid_x=0; grid_x<tiles.length; grid_x++) {
+            for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
+                Tile tile = tiles[grid_x][grid_y];
+                if(tile.getSuppressor())
+                    tile.setSuppressorActive(active);
+            }   
         }
     }
     

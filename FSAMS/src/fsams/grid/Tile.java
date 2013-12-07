@@ -4,18 +4,18 @@ public class Tile {
     public final int grid_x, grid_y;
     private boolean wallU, wallD, wallL, wallR;
     private boolean doorU, doorD, doorL, doorR;
-    private boolean fire, fireSensor, humanAgent, exit, suppressor, fireAlarm;
-    private boolean suppressorActive;
+    private boolean lockU, lockD, lockL, lockR;
+    private boolean fire, fireSensor, humanAgent, exit, fireAlarm;
+    private boolean suppressor, suppressorActive;
     private long suppression;
     private long lastMoveTime;
 
     public Tile(int grid_x, int grid_y) {
         this.grid_x = grid_x;
         this.grid_y = grid_y;
-        wallU = false;
-        wallD = false;
-        wallL = false;
-        wallR = false;
+        wallU = wallD = wallR = wallL = false;
+        doorU = doorD = doorR = doorL = false;
+        lockU = lockD = lockL = lockR = false;
         fire = false;
         fireSensor = false;
         humanAgent = false;
@@ -31,6 +31,14 @@ public class Tile {
         this.wallD = tile.wallD;
         this.wallL = tile.wallL;
         this.wallR = tile.wallR;
+        this.doorU = tile.doorU;
+        this.doorD = tile.doorD;
+        this.doorL = tile.doorL;
+        this.doorR = tile.doorR;
+        this.lockU = tile.lockU;
+        this.lockD = tile.lockD;
+        this.lockL = tile.lockL;
+        this.lockR = tile.lockR;
         this.fire = tile.fire;
         this.fireSensor = tile.fireSensor;
         this.humanAgent = tile.humanAgent;
@@ -40,11 +48,22 @@ public class Tile {
         this.suppression = tile.suppression;
     }
 
+    public void reset() {
+        lastMoveTime = 0;
+        suppressorActive = false;
+        suppression = -1;
+        lockU = false;
+        lockD = false;
+        lockL = false;
+        lockR = false;
+    }
+    
     public boolean getWallU() {
         return wallU;
     }
     public void setWallU(boolean status) {
         wallU = status;
+        if(status) doorU = false;
     }
     
     public boolean getWallD() {
@@ -52,6 +71,7 @@ public class Tile {
     }
     public void setWallD(boolean status) {
         wallD = status;
+        if(status) doorD = false;
     }
     
     public boolean getWallL() {
@@ -59,6 +79,7 @@ public class Tile {
     }
     public void setWallL(boolean status) {
         wallL = status;
+        if(status) doorL = false;
     }
     
     public boolean getWallR() {
@@ -66,6 +87,7 @@ public class Tile {
     }
     public void setWallR(boolean status) {
         wallR = status;
+        if(status) doorR = false;
     }
     
     
@@ -74,6 +96,7 @@ public class Tile {
     }
     public void setDoorU(boolean status) {
         doorU = status;
+        if(status) wallU = false;
     }
     
     public boolean getDoorD() {
@@ -81,6 +104,7 @@ public class Tile {
     }
     public void setDoorD(boolean status) {
         doorD = status;
+        if(status) wallD = false;
     }
     
     public boolean getDoorL() {
@@ -88,6 +112,7 @@ public class Tile {
     }
     public void setDoorL(boolean status) {
         doorL = status;
+        if(status) wallL = false;
     }
     
     public boolean getDoorR() {
@@ -95,7 +120,37 @@ public class Tile {
     }
     public void setDoorR(boolean status) {
         doorR = status;
+        if(status) wallR = false;
     }
+    
+    public boolean getLockU() {
+        return lockU;
+    }
+    public void setLockU(boolean status) {
+        lockU = doorU? status: false;
+    }
+    
+    public boolean getLockD() {
+        return lockD;
+    }
+    public void setLockD(boolean status) {
+        lockD = doorD? status: false;
+    }
+    
+    public boolean getLockL() {
+        return lockL;
+    }
+    public void setLockL(boolean status) {
+        lockL = doorL? status: false;
+    }
+    
+    public boolean getLockR() {
+        return lockR;
+    }
+    public void setLockR(boolean status) {
+        lockR = doorR? status: false;
+    }
+    
 
     public boolean getFire() {
         return fire;

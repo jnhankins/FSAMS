@@ -103,17 +103,20 @@ public class EditPanel extends JPanel implements MouseListener {
                         g.drawLine(xL, yD, xL, yU);
                     }
                     // Draw Doors
-                    g.setColor(Color.MAGENTA);
                     if(tile.getDoorD()) {
+                        g.setColor(tile.getLockD()?Color.PINK:Color.MAGENTA);
                         g.drawLine(xL, yD, xR, yD);
                     }
                     if(tile.getDoorU()) {
+                        g.setColor(tile.getLockU()?Color.PINK:Color.MAGENTA);
                         g.drawLine(xL, yU, xR, yU);
                     }
                     if(tile.getDoorR()) {
+                        g.setColor(tile.getLockR()?Color.PINK:Color.MAGENTA);
                         g.drawLine(xR, yD, xR, yU);
                     }
                     if(tile.getDoorL()) {
+                        g.setColor(tile.getLockL()?Color.PINK:Color.MAGENTA);
                         g.drawLine(xL, yD, xL, yU);
                     }
                     // Draw Components
