@@ -26,6 +26,8 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
     private JButton activateAlarms;
     private JButton masterReset;
     private JButton eShutDown;
+    private JButton zoomIn;
+    private JButton zoomOut;
     
     public ControlAreaPanel(FSAMS fsams) {
         this.fsams = fsams;
@@ -39,6 +41,8 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
         activateAlarms = new JButton();
         masterReset = new JButton();
         eShutDown = new JButton();
+        zoomIn = new JButton();
+        zoomOut = new JButton();
         
         callEmergency.addActionListener(this);
         lockDoors.addActionListener(this);
@@ -46,6 +50,8 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
         activateAlarms.addActionListener(this);
         masterReset.addActionListener(this);
         eShutDown.addActionListener(this);
+        zoomIn.addActionListener(this);
+        zoomOut.addActionListener(this);
         
         setLayout(new java.awt.GridBagLayout());
         java.awt.GridBagConstraints gridBagConstraints;
@@ -93,6 +99,20 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(masterReset, gridBagConstraints);
         
+        zoomIn.setText("Zoom In");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = ++row;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        add(zoomIn, gridBagConstraints);
+        
+        zoomOut.setText("Zoom Out");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = row;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        add(zoomOut, gridBagConstraints);
+        
         callEmergency.setToolTipText("Notifies Police and Fire Departmant Services.");
         lockDoors.setToolTipText("Locks all doors in the event of a security breach.");
         activateSprinklers.setToolTipText("Turns on all sprinklers.");
@@ -127,7 +147,12 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
             fsams.repaint();
         } else if (src == eShutDown) {
             JOptionPane.showMessageDialog(new JFrame(), "All Equipment Has Been Shut Down.");
-
+        } else if (src == zoomIn) {
+            fsams.zoomIn();
+            fsams.repaint();
+        } else if (src == zoomOut) {
+            fsams.zoomOut();
+            fsams.repaint();
         }
         
      }

@@ -13,7 +13,7 @@ public class EditPanel extends JPanel implements MouseListener {
     private double centerX;
     private double centerY;
     private double scale;
-    
+    private final double zoomFactor = 1.5;
     private Grid grid;
     
     private ComponentType nextComponentType;
@@ -49,6 +49,13 @@ public class EditPanel extends JPanel implements MouseListener {
     
     public double getScale() {
         return scale;
+    }
+    public void zoomIn() {
+        scale *= zoomFactor;
+    }
+    
+    public void zoomOut() {
+        scale /= zoomFactor;
     }
     
     @Override

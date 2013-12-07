@@ -105,4 +105,12 @@ public final class FSAMS extends JFrame implements ActionListener {
     public void repaint() {
         editP.repaint();
     }
+    
+    public void zoomIn() {
+        editP.zoomIn();
+    }
+    
+    public void zoomOut() {
+        editP.zoomOut();
+    }
 }
