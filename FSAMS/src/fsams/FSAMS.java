@@ -102,11 +102,13 @@ public final class FSAMS extends JFrame implements ActionListener {
                 sim_grid = new Grid(grid);
                 editP.setGrid(sim_grid);
                 simulation.startSim(sim_grid);
+                ctrlP.startSim();
                 break;
             case "stop":
                 sim_grid = null;
                 editP.setGrid(grid);
                 simulation.stopSim();
+                ctrlP.stopSim();
                 break;
             case "zoomIn":
                 editP.zoomIn();

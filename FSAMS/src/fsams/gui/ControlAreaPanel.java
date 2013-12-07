@@ -102,6 +102,13 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
         activateAlarms.setToolTipText("Turns on all alarms");
         masterReset.setToolTipText("Resets all systems: doors, sprinklers, and alarms.");
         eShutDown.setToolTipText("Shuts down all equipment.");
+        
+        callEmergency.setEnabled(false);
+        lockDoors.setEnabled(false);
+        activateSprinklers.setEnabled(false);
+        activateAlarms.setEnabled(false);
+        masterReset.setEnabled(false);
+        eShutDown.setEnabled(false);
     }
 
     public void actionPerformed(ActionEvent ae) {
@@ -132,4 +139,21 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
         } 
         
      }
+    
+    public void startSim() {
+        callEmergency.setEnabled(true);
+        lockDoors.setEnabled(true);
+        activateSprinklers.setEnabled(true);
+        activateAlarms.setEnabled(true);
+        masterReset.setEnabled(true);
+        eShutDown.setEnabled(true);
+    }
+    public void stopSim() {
+        callEmergency.setEnabled(false);
+        lockDoors.setEnabled(false);
+        activateSprinklers.setEnabled(false);
+        activateAlarms.setEnabled(false);
+        masterReset.setEnabled(false);
+        eShutDown.setEnabled(false);
+    }
 }
