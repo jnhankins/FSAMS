@@ -25,6 +25,7 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
     private JButton activateSprinklers;
     private JButton activateAlarms;
     private JButton masterReset;
+    private JButton eShutDown;
     
     public ControlAreaPanel(FSAMS fsams) {
         this.fsams = fsams;
@@ -37,12 +38,14 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
         activateSprinklers = new JButton();
         activateAlarms = new JButton();
         masterReset = new JButton();
+        eShutDown = new JButton();
         
         callEmergency.addActionListener(this);
         lockDoors.addActionListener(this);
         activateSprinklers.addActionListener(this);
         activateAlarms.addActionListener(this);
         masterReset.addActionListener(this);
+        eShutDown.addActionListener(this);
         
         setLayout(new java.awt.GridBagLayout());
         java.awt.GridBagConstraints gridBagConstraints;
@@ -76,9 +79,16 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(activateAlarms, gridBagConstraints);
 
-        masterReset.setText("Reset");
+        eShutDown.setText("Equipment Off");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = row;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        add(eShutDown, gridBagConstraints);
+        
+        masterReset.setText("Reset");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(masterReset, gridBagConstraints);
@@ -88,6 +98,7 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
         activateSprinklers.setToolTipText("Turns on all sprinklers.");
         activateAlarms.setToolTipText("Turns on all alarms");
         masterReset.setToolTipText("Resets all systems: doors, sprinklers, and alarms.");
+        eShutDown.setToolTipText("Shuts down all equipment.");
   
         
     }
@@ -114,6 +125,9 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
             fsams.grid.setAlarmAll(false);
             fsams.grid.setSuppressionAll(false);
             fsams.repaint();
+        } else if (src == eShutDown) {
+            JOptionPane.showMessageDialog(new JFrame(), "All Equipment Has Been Shut Down.");
+
         }
         
      }

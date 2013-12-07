@@ -88,28 +88,28 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         gridBagConstraints.insets = new java.awt.Insets(0, 7, 0, 0);
         add(buildingL, gridBagConstraints);
 
-        wallB.setText("[W]all");
+        wallB.setText("<html><u>W</u>all</html>");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = ++row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(wallB, gridBagConstraints);
 
-        doorB.setText("[D]oor");
+        doorB.setText("<html><u>D</u>oor</html>");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(doorB, gridBagConstraints);
 
-        exitB.setText("E[x]it");
+        exitB.setText("<html>E<u>x</u>it</html>");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(exitB, gridBagConstraints);
 
-        jLabel2.setText("Sensors");
+        jLabel2.setText("<html><u>S</u>ensors</html>");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = ++row;
@@ -118,21 +118,21 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         gridBagConstraints.insets = new java.awt.Insets(0, 7, 0, 0);
         add(jLabel2, gridBagConstraints);
 
-        fireSensorB.setText("Fire [S]ensor");
+        fireSensorB.setText("<html>Fire <u>S</u>ensor</html>");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = ++row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(fireSensorB, gridBagConstraints);
 
-        fireSuppressorB.setText("Sprin[k]ler");
+        fireSuppressorB.setText("<html>S<u>p</u>rinkler</html>");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(fireSuppressorB, gridBagConstraints);
 
-        fireB.setText("[F]ire");
+        fireB.setText("<html><u>F</u>ire</html>");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = row;
@@ -149,21 +149,21 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         gridBagConstraints.insets = new java.awt.Insets(0, 7, 0, 0);
         add(jLabel3, gridBagConstraints);
 
-        humanAgentB.setText("[H]uman Agent");
+        humanAgentB.setText("<html><u>H</u>uman</html>");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = ++row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(humanAgentB, gridBagConstraints);
 
-        equipment.setText("[E]quipment");
+        equipment.setText("<html><u>E</u>quipment</html>");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(equipment, gridBagConstraints);
 
-        alarmB.setText("[A]larm");
+        alarmB.setText("<html><u>A</u>larm</html>");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = row;
@@ -176,7 +176,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         gridBagConstraints.gridy = ++row;
         add(cancelL, gridBagConstraints);
 
-        cancelB.setText("[C]ancel");
+        cancelB.setText("<html><u>C</u>ancel</html>");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = ++row;
