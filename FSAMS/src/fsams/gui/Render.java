@@ -106,7 +106,7 @@ public class Render {
                     }
                     // Draw FireSensors
                     if(tile.getFireSensor()) {
-                        g.setColor(Color.green);
+                        g.setColor(tile.getFireSensorActive()?Color.white:Color.green);
                         int x1 = (int)(x-sensor_radius);
                         int y1 = (int)(y-sensor_radius);
                         g.drawOval(x1,y1,(int)(2*sensor_radius),(int)(2*sensor_radius));
@@ -114,7 +114,7 @@ public class Render {
                     
                     // Draw FireAlarms
                     if(tile.getFireAlarm()) {
-                        g.setColor(Color.yellow);
+                        g.setColor(tile.getFireAlarmActive()?Color.white:Color.yellow);
                         int x1 = (int)(x-sensor_radius);
                         int y1 = (int)(y-sensor_radius);
                         g.drawOval(x1,y1,(int)(2*sensor_radius),(int)(2*sensor_radius));
@@ -126,6 +126,8 @@ public class Render {
                         int y1 = (int)(y-sensor_radius);
                         g.drawRect(x1,y1,(int)(2*sensor_radius),(int)(2*sensor_radius));
                     }
+                    // Draw Equipment
+                    
                     // Draw Exits
                     if(tile.getExit()) {
                         g.setColor(Color.green);
