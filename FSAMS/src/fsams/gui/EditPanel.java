@@ -153,6 +153,10 @@ public class EditPanel extends JPanel implements MouseListener {
                         int x1 = (int)(x-sensor_radius);
                         int y1 = (int)(y-sensor_radius);
                         g.drawOval(x1,y1,(int)(2*sensor_radius),(int)(2*sensor_radius));
+                        if(tile.getFireAlarmActive()){
+                            g.setColor(Color.orange);
+                            g.drawOval(x1, y1, (int)(3*sensor_radius), (int)(3*sensor_radius));
+                        }
                     }
                     // Draw Suppressor
                     if(tile.getSuppressor()) {
