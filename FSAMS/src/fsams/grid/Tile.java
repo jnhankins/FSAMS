@@ -21,7 +21,9 @@ public class Tile {
     // Human Agents
     private boolean humanAgent, humanAgentActive; 
     private long lastMoveTime;
-
+    // Equipment
+    private boolean equipment, equipmentActive;
+    
     public Tile(int grid_x, int grid_y) {
         // Grid Coordinates
         this.grid_x = grid_x;
@@ -44,6 +46,9 @@ public class Tile {
         // Human Agents
         humanAgent = humanAgentActive = false;
         lastMoveTime = 0;
+        // Equipment
+        equipment = false;
+        equipmentActive = true;
     }
     public Tile(Tile tile) {
         // Grid Coordinates
@@ -80,6 +85,9 @@ public class Tile {
         this.humanAgent = tile.humanAgent;
         this.humanAgentActive = tile.humanAgentActive;
         this.lastMoveTime = tile.lastMoveTime;
+        // Equipment
+        this.equipment = tile.equipment;
+        this.equipmentActive = tile.equipmentActive;
     }
 
     public void reset() {
@@ -94,6 +102,8 @@ public class Tile {
         // Human Agents
         humanAgentActive = false;
         lastMoveTime = 0;
+        // Equipment
+        equipmentActive = true;
     }
     
     public boolean getWallU() { return wallU; }
@@ -126,6 +136,8 @@ public class Tile {
     public boolean getHumanAgent() { return humanAgent; }
     public boolean getHumanAgentActive() { return humanAgentActive; }
     public long getLastMoveTime() { return lastMoveTime; }
+    public boolean getEquipment() { return equipment; }
+    public boolean getEquipmentActive() { return equipmentActive; }
     
     public void setWallU(boolean status) { 
         wallU = status;
@@ -206,5 +218,12 @@ public class Tile {
     }
     public void setLastMoveTime(long time) {
         lastMoveTime = time;
+    }
+    public void setEquipment(boolean status) {
+        equipment = status;
+        if(status) humanAgent = false;
+    }
+    public void setEquipmentActive(boolean status) {
+        if(equipment) equipmentActive = status;
     }
 }
