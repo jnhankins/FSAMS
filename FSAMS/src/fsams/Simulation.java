@@ -84,14 +84,11 @@ public class Simulation extends Thread{
                         currTime = System.currentTimeMillis();
                     }
                     double elapTime = (currTime - lastTime)/1000.0;
-                    
-                    
                     if(false) { // show fps
                         frameTimes[frameTimePos] = currTime;
                         System.out.println(numFrameTimes*1000.0/(frameTimes[frameTimePos]-frameTimes[(frameTimePos+1)%numFrameTimes]));
                         frameTimePos = (frameTimePos+1)%numFrameTimes;
                     }
-                    
                     synchronized(grid) {
                         Tile[][] tiles = grid.getTiles();
                         // Update components
@@ -178,7 +175,6 @@ public class Simulation extends Thread{
         if(!exits.isEmpty()) {
             int index = -1;
             float lowestCost = Float.MAX_VALUE;
-            System.out.println("!");
             for(Tile exit : exits) {
                 Path path = finder.findPath(grid_x, grid_y, exit.grid_x, exit.grid_y);
                 if (path == null) {
@@ -211,7 +207,7 @@ public class Simulation extends Thread{
         //locate closest exits first if any, else path = null
         path = null;
         if(exit!=null) {
-            path =  finder.findPath(grid_x, grid_y, exit.grid_x, exit.grid_y);
+            path = finder.findPath(grid_x, grid_y, exit.grid_x, exit.grid_y);
         }
         //There exist a path to an exit
         if (path != null) {
@@ -312,16 +308,8 @@ public class Simulation extends Thread{
         
     }
     
-    public void tracePath(int x, int y) {
-        Tile tiles[][] = grid.getTiles();
-        finder = new AStarPathFinder(grid, 5000, false);
-        path = finder.findPath(x, y, 1, 1);
-        if (path != null) {
-            grid.addComponent(ComponentType.HumanAgent, path.getX(1), path.getY(1));
-            tiles[x][y].setHumanAgent(false);
-        }
-    }
-    
+ 
+   
     public void simFireSensor(int grid_x, int grid_y, double elapTime) {
         final int sensorRadius = 3;
         for (int x = grid_x - sensorRadius; x <= grid_x + sensorRadius; x++) {

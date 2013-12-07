@@ -19,9 +19,6 @@ public class EditPanel extends JPanel implements MouseListener {
     private Grid grid;
     
     private ComponentType nextComponentType;
-    //private boolean justSelected;
-    //private int justSelectedX;
-    //private int justSelectedY;
     
     public EditPanel(FSAMS fsams) {
         this.fsams = fsams;
@@ -125,7 +122,7 @@ public class EditPanel extends JPanel implements MouseListener {
                     final double sensor_radius = 0.1*scale;
                     final double human_radius = 0.3*scale;
                     //Draw HumanAgents
-                    if(tile.getHumanAgent()){
+                    if(tile.getHumanAgent()) {
                         g.setColor(Color.pink);
                         int x1 = (int)(x-human_radius);
                         int y1 = (int)(y-human_radius);
