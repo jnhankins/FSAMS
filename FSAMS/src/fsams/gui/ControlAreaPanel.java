@@ -98,13 +98,23 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
             JOptionPane.showMessageDialog(new JFrame(), "Emergency Services Have Been Notified.");
         } else if(src == lockDoors) {
             JOptionPane.showMessageDialog(new JFrame(), "All Doors Have Been Locked.");
-        } else if(src == activateSprinklers) {
-            JOptionPane.showMessageDialog(new JFrame(), "All Sprinklers Have Been Activated.");
+            fsams.grid.setLockAll(true);
+            fsams.repaint();
+        } else if(src == activateSprinklers) {          
+            JOptionPane.showMessageDialog(new JFrame(), "All Fire Suppression Systems Have Been Activated.");
+            fsams.grid.setSuppressionAll(true);
+            fsams.repaint();
         } else if (src == activateAlarms) {
             JOptionPane.showMessageDialog(new JFrame(), "All Alarms Have Been Activated.");
+             fsams.grid.setAlarmAll(true);
+             fsams.repaint();
         } else if (src == masterReset) {
             JOptionPane.showMessageDialog(new JFrame(), "System Has Been Reset.");
+            fsams.grid.setLockAll(false);
+            fsams.grid.setAlarmAll(false);
+            fsams.grid.setSuppressionAll(false);
+            fsams.repaint();
         }
         
-        }
+     }
 }
