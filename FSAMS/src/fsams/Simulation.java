@@ -161,11 +161,11 @@ public class Simulation extends Thread{
         double prob = 1 - Math.pow(1.0-burn_probability,elapTime/burn_timeframe); // p'=1-(1-p)^(t'/t)
         if(Math.random()<prob) {
             Tile tile = grid.getTiles()[grid_x][grid_y];
-            if(tile.getFire()) {
-                return;
+            if(tile.getHumanAgent()) {
+                tile.setHumanAgent(false);
+                tile.setHumanAgentActive(false);
+                System.out.println("Someone died (x_x)");
             }
-                // TODO check for other types of components.
-            
             tile.setFire(true);
         }
     }
@@ -195,15 +195,13 @@ public class Simulation extends Thread{
         return null; 
    }
     
-    boolean simHumanAgent(int grid_x, int grid_y, double elapTime, long currTime) {
+    void simHumanAgent(int grid_x, int grid_y, double elapTime, long currTime) {
         Tile tiles[][] = grid.getTiles();
         final double speed = 1; //Tiles per second
         
-        if((currTime - tiles[grid_x][grid_y].getLastMoveTime()) < 1000.0/speed){
-            return false;
-        }
+        if((currTime - tiles[grid_x][grid_y].getLastMoveTime()) < 1000.0/speed)
+            return;
 
-        
         final int activationRadius = 2;
         for (int x = grid_x - activationRadius; x <= grid_x + activationRadius && !tiles[grid_x][grid_y].getHumanAgentActive(); x++) {
            for (int y = grid_y - activationRadius; y <= grid_y + activationRadius && !tiles[grid_x][grid_y].getHumanAgentActive(); y++) {
@@ -282,35 +280,34 @@ public class Simulation extends Thread{
 
                 //if all on fire or non on fire do nothing
                 if(!fireU && !fireD && !fireL && !fireR) {
-                    return false;
+                    return;
                 }
 
                 int numOpen = (openU ? 1:0) + (openD ? 1:0) + (openL ? 1:0) + (openR ? 1:0);
                 switch(numOpen){
                     case 0:
-                        return false;
+                        return;
                     case 1:            
                         if(openU) moveHumanAgent(grid_x, grid_y, grid_x, grid_y+1, currTime, tiles);
                         else if(openD) moveHumanAgent(grid_x,grid_y,grid_x,grid_y-1, currTime, tiles);
                         else if(openL) moveHumanAgent(grid_x,grid_y,grid_x-1,grid_y, currTime, tiles);
                         else if(openR) moveHumanAgent(grid_x,grid_y,grid_x+1,grid_y, currTime, tiles);
-                        return true;
+                        return;
                     case 2:
                         if(openU) moveHumanAgent(grid_x,grid_y,grid_x,grid_y+1, currTime, tiles);
                         else if(openD) moveHumanAgent(grid_x,grid_y,grid_x,grid_y-1, currTime, tiles);
                         else if(openL) moveHumanAgent(grid_x,grid_y,grid_x-1,grid_y, currTime, tiles);
                         else if(openR) moveHumanAgent(grid_x,grid_y,grid_x+1,grid_y, currTime, tiles);
-                        return true;
+                        return;
                     case 3:
                         if(fireD) moveHumanAgent(grid_x,grid_y,grid_x,grid_y+1, currTime, tiles);
                         else if(fireU) moveHumanAgent(grid_x,grid_y,grid_x,grid_y-1, currTime, tiles);
                         else if(fireR) moveHumanAgent(grid_x,grid_y,grid_x-1,grid_y, currTime, tiles);
                         else if(fireL) moveHumanAgent(grid_x,grid_y,grid_x+1,grid_y, currTime, tiles);
-                        return true;
+                        return;
                 }
             }
         }
-        return false;
     }
 
     public void moveHumanAgent(int oldX, int oldY, int newX, int newY, long currTime, Tile tiles[][]){
