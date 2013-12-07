@@ -131,6 +131,7 @@ public class Render {
                         g.setColor(tile.getEquipmentActive()?Color.yellow:Color.orange);
                         g.drawLine(xL,yU,xR,yD);
                         g.drawLine(xL,yD,xR,yU);
+                        //g.drawRoundRect(xL, yU, (int)editP.getScale(), (int)editP.getScale(), (int)sensor_radius, (int)sensor_radius);
                     }
                     // Draw Exits
                     if(tile.getExit()) {
