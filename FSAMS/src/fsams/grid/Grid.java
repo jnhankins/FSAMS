@@ -285,8 +285,19 @@ public class Grid implements TileBasedMap {
         for(int grid_x=0; grid_x<tiles.length; grid_x++) {
             for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
                 Tile tile = tiles[grid_x][grid_y];
-                if(tile.getSuppressor())
+                if(tile.getSuppressor()) {
                     tile.setSuppressorActive(active);
+                }
+            }   
+        }
+    }
+    public void setAlarmAll(boolean active) {
+        for(int grid_x=0; grid_x<tiles.length; grid_x++) {
+            for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
+                Tile tile = tiles[grid_x][grid_y];
+                if(tile.getFireAlarm()) {
+                    tile.setFireAlarmActive(active);
+                }
             }   
         }
     }
