@@ -18,7 +18,7 @@ package fsams.pathfinding;
 public interface TileBasedMap {
     /**
      * Get the width of the tile map. The slightly odd name is used
-     * to distiguish this method from commonly used names in game maps.
+     * to distinguish this method from commonly used names in game maps.
      * 
      * @return The number of tiles across the map
      */
@@ -26,7 +26,7 @@ public interface TileBasedMap {
 
     /**
      * Get the height of the tile map. The slightly odd name is used
-     * to distiguish this method from commonly used names in game maps.
+     * to distinguish this method from commonly used names in game maps.
      * 
      * @return The number of tiles down the map
      */

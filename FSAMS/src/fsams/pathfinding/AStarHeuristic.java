@@ -28,7 +28,7 @@ public interface AStarHeuristic {
      * @param x The x coordinate of the tile being evaluated
      * @param y The y coordinate of the tile being evaluated
      * @param tx The x coordinate of the target location
-     * @param ty Teh y coordinate of the target location
+     * @param ty The y coordinate of the target location
      * @return The cost associated with the given tile
      */
     public float getCost(TileBasedMap map, int x, int y, int tx, int ty);

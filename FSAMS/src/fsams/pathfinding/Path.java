@@ -125,7 +125,7 @@ public class Path {
         /**
          * Get the x coordinate of the new step
          * 
-         * @return The x coodindate of the new step
+         * @return The x coordindate of the new step
          */
         public int getX() {
             return x;
@@ -134,7 +134,7 @@ public class Path {
         /**
          * Get the y coordinate of the new step
          * 
-         * @return The y coodindate of the new step
+         * @return The y coordindate of the new step
          */
         public int getY() {
             return y;
