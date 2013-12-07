@@ -4,7 +4,9 @@ public class Tile {
     public final int grid_x, grid_y;
     private boolean wallU, wallD, wallL, wallR;
     private boolean fire, fireSensor, humanAgent,exit, suppressor;
+    private boolean suppressorActive;
     private long suppression;
+    private long lastMoveTime;
 
     public Tile(int grid_x, int grid_y) {
         this.grid_x = grid_x;
@@ -18,6 +20,7 @@ public class Tile {
         humanAgent = false;
         exit = false;
         suppressor = false;
+        suppressorActive = false;
         suppression = -1;
     }
     public Tile(Tile tile) {
@@ -32,6 +35,7 @@ public class Tile {
         this.humanAgent = tile.humanAgent;
         this.exit = tile.exit;
         this.suppressor = tile.suppressor;
+        this.suppressorActive = tile.suppressorActive;
         this.suppression = tile.suppression;
     }
 
@@ -90,6 +94,13 @@ public class Tile {
     public void setHumanAgent(boolean status) {
         humanAgent = status;
     }
+    
+    public long getLastMoveTime() {
+        return lastMoveTime;
+    }
+    public void setLastMoveTime(long moveTime) {
+        lastMoveTime = moveTime;
+    }
 
     public boolean getSuppressor() {
         return suppressor;
@@ -97,6 +108,14 @@ public class Tile {
     public void setSuppressor(boolean status) {
         suppressor = status;
     }
+    
+    public boolean getSuppressorActive() {
+        return suppressorActive;
+    }
+    public void setSuppressorActive(boolean status) {
+        suppressorActive = status;
+    }
+    
     
     public boolean getSuppression() {
         final long suppressionTime = 1000;

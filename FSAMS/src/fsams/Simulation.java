@@ -19,8 +19,8 @@ public class Simulation extends Thread{
     private Path path;
     // Data Model
     private Grid grid;
-    long[][] lastMoveTimes;
-    boolean[][]  suppressionActive;
+    //long[][] lastMoveTimes;
+    //boolean[][]  suppressionActive;
     // GUI Component
     private final JPanel panel;
     private ArrayList<Tile> exits;
@@ -30,14 +30,6 @@ public class Simulation extends Thread{
         startFlag = false;
         isProgRunning = true;
         isSimRunning = false;
-        lastMoveTimes = new long[Grid.grid_width][Grid.grid_height];
-        suppressionActive = new boolean[Grid.grid_width][Grid.grid_height];
-        for(int x=0; x<Grid.grid_width;++x) {
-            for(int y=0; y<Grid.grid_height; ++y){
-                lastMoveTimes[x][y]=0;
-                suppressionActive[x][y] = false;
-            }
-        }
     }
     
     public boolean isSimRunning(){
@@ -61,7 +53,8 @@ public class Simulation extends Thread{
             System.out.println("number of exits = " + exits.size());
             for(int grid_x=0; grid_x<tiles.length; grid_x++) {
                 for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
-                    suppressionActive[grid_x][grid_y] = false;
+                    tiles[grid_x][grid_y].setLastMoveTime(0);
+                    tiles[grid_x][grid_y].setSuppressorActive(false);
                 }
             }
             this.grid = grid;
@@ -212,7 +205,7 @@ public class Simulation extends Thread{
         Tile tiles[][] = grid.getTiles();
         double speed = 1;//Tiles per second
         
-        if((currTime - lastMoveTimes[grid_x][grid_y]) < 1000.0/speed){
+        if((currTime - tiles[grid_x][grid_y].getLastMoveTime()) < 1000.0/speed){
             return false;
         }
 
@@ -312,7 +305,7 @@ public class Simulation extends Thread{
     public void moveHumanAgent(int oldX, int oldY, int newX, int newY, long currTime, Tile tiles[][]){
         if(!tiles[newX][newY].getExit()) {
             grid.addComponent(ComponentType.HumanAgent, newX, newY);
-            lastMoveTimes[newX][newY] = currTime;
+            tiles[newX][newY].setLastMoveTime(currTime);
         }
         tiles[oldX][oldY].setHumanAgent(false);//use new method
         
@@ -348,17 +341,18 @@ public class Simulation extends Thread{
     
     public void simSuppressor(int grid_x, int grid_y, double elapTime, boolean turnOn){
         final int activationRadius = 2;
-        for (int x = grid_x - activationRadius; x <= grid_x + activationRadius && !suppressionActive[grid_x][grid_y]; ++x) {
-            for (int y = grid_y - activationRadius; y <= grid_y + activationRadius && !suppressionActive[grid_x][grid_y]; ++y) {
-                if(x >=0 && x < Grid.grid_width && y >= 0 && y < Grid.grid_height) {
-                    if (grid.getTiles()[x][y].getFire()) {
-                        suppressionActive[grid_x][grid_y] = true;
+        Tile[][] tiles = grid.getTiles();
+        for (int x = grid_x - activationRadius; x <= grid_x + activationRadius && !tiles[grid_x][grid_y].getSuppressorActive(); ++x) {
+            for (int y = grid_y - activationRadius; y <= grid_y + activationRadius && !tiles[grid_x][grid_y].getSuppressorActive(); ++y) {
+                if (x >=0 && x < Grid.grid_width && y >= 0 && y < Grid.grid_height) {
+                    if (tiles[x][y].getFire()) {
+                        tiles[grid_x][grid_y].setSuppressorActive(true);
                     }
                 }
             }
         }
         final int suppressionRadius = 2;
-        if(suppressionActive[grid_x][grid_y]) {
+        if(tiles[grid_x][grid_y].getSuppressorActive()) {
             for (int x = grid_x - suppressionRadius; x <= grid_x + suppressionRadius; ++x) {
                 for (int y = grid_y - suppressionRadius; y <= grid_y + suppressionRadius; ++y) {
                     if(x >=0 && x < Grid.grid_width && y >= 0 && y < Grid.grid_height) {
