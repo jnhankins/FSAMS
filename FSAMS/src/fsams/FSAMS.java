@@ -13,6 +13,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import java.awt.Color;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JToggleButton;
 
 public final class FSAMS extends JFrame implements ActionListener {
@@ -46,13 +47,25 @@ public final class FSAMS extends JFrame implements ActionListener {
         startB.setActionCommand("start");
         startB.addActionListener(this);
         startB.setBackground(Color.green);
-        
         toolBar.add(startB);
+        
         JToggleButton stopB = new JToggleButton("Stop");
         stopB.setActionCommand("stop");
         stopB.addActionListener(this);
         stopB.setBackground(Color.red);
         toolBar.add(stopB);
+        add(toolBar, BorderLayout.NORTH);
+        
+        JButton zoomIn = new JButton("Zoom In");
+        zoomIn.setActionCommand("zoomIn");
+        zoomIn.addActionListener(this);
+        toolBar.add(zoomIn);
+        add(toolBar, BorderLayout.NORTH);
+        
+        JButton zoomOut = new JButton("Zoom Out");
+        zoomOut.setActionCommand("zoomOut");
+        zoomOut.addActionListener(this);
+        toolBar.add(zoomOut);
         add(toolBar, BorderLayout.NORTH);
         
         ButtonGroup startStop = new ButtonGroup();
@@ -93,6 +106,14 @@ public final class FSAMS extends JFrame implements ActionListener {
                 editP.setGrid(grid);
                 simulation.stopSim();
                 break;
+            case "zoomIn":
+                editP.zoomIn();
+                repaint();
+                break; 
+            case "zoomOut":
+                editP.zoomOut();
+                repaint();
+                break;            
             default:
                 System.out.println("warning unknown action: "+ae.getActionCommand());
         }
