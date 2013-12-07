@@ -49,129 +49,14 @@ public class EditPanel extends JPanel implements MouseListener {
         return (int)((y-getHeight()/2.0+centerY-grid_height*scale/2.0)/(-scale));
     }
     
+    public double getScale() {
+        return scale;
+    }
+    
     @Override
     public void paint(Graphics g) {
         synchronized(grid) {
-            // Clear the drawing area
-            g.setColor(Color.black);
-            g.fillRect(0,0,getWidth(),getHeight());
-
-            // Draw the grid
-            g.setColor(Color.gray);
-            int left = toScreenXfromGridX(0,Grid.grid_width);
-            int right = toScreenXfromGridX(Grid.grid_width,Grid.grid_width);
-            int bottom = toScreenYfromGridY(0,Grid.grid_height);
-            int top = toScreenYfromGridY(Grid.grid_height,Grid.grid_height);
-            // Verticle
-            for(int grid_x=0; grid_x<=Grid.grid_width; grid_x++) {
-                int x = toScreenXfromGridX(grid_x,Grid.grid_width);
-                g.drawLine(x, top, x, bottom);
-            }
-            // Horizontal
-            for(int grid_y=0; grid_y<=Grid.grid_height; grid_y++) {
-                int y = toScreenYfromGridY(grid_y,Grid.grid_height);
-                g.drawLine(left, y, right, y);
-            }
-
-            // Get the tiles
-            Tile[][] tiles = grid.getTiles();
-            // Draw components
-            for(int grid_x=0; grid_x<tiles.length; grid_x++) {
-                for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
-                    // Get the tile
-                    Tile tile = tiles[grid_x][grid_y];
-                    // Get the corners of the grid
-                    int xL = toScreenXfromGridX(grid_x,Grid.grid_width);
-                    int xR = toScreenXfromGridX(grid_x+1,Grid.grid_width);
-                    int yD = toScreenYfromGridY(grid_y,Grid.grid_height);
-                    int yU = toScreenYfromGridY(grid_y+1,Grid.grid_height);
-                    // Draw Walls
-                    g.setColor(Color.red);
-                    if(tile.getWallD()) {
-                        g.drawLine(xL, yD, xR, yD);
-                    }
-                    if(tile.getWallU()) {
-                        g.drawLine(xL, yU, xR, yU);
-                    }
-                    if(tile.getWallR()) {
-                        g.drawLine(xR, yD, xR, yU);
-                    }
-                    if(tile.getWallL()) {
-                        g.drawLine(xL, yD, xL, yU);
-                    }
-                    // Draw Doors
-                    if(tile.getDoorD()) {
-                        g.setColor(tile.getLockD()?Color.PINK:Color.MAGENTA);
-                        g.drawLine(xL, yD, xR, yD);
-                    }
-                    if(tile.getDoorU()) {
-                        g.setColor(tile.getLockU()?Color.PINK:Color.MAGENTA);
-                        g.drawLine(xL, yU, xR, yU);
-                    }
-                    if(tile.getDoorR()) {
-                        g.setColor(tile.getLockR()?Color.PINK:Color.MAGENTA);
-                        g.drawLine(xR, yD, xR, yU);
-                    }
-                    if(tile.getDoorL()) {
-                        g.setColor(tile.getLockL()?Color.PINK:Color.MAGENTA);
-                        g.drawLine(xL, yD, xL, yU);
-                    }
-                    // Draw Components
-                    int x = (int)((xL+xR)/2.0);
-                    int y = (int)((yU+yD)/2.0);
-                    final double sensor_radius = 0.1*scale;
-                    final double human_radius = 0.3*scale;
-                    //Draw HumanAgents
-                    if(tile.getHumanAgent()) {
-                        g.setColor(Color.pink);
-                        int x1 = (int)(x-human_radius);
-                        int y1 = (int)(y-human_radius);
-                        g.drawOval(x1,y1,(int)(2*human_radius),(int)(2*human_radius));
-                    }
-                    // Draw Fires
-                    if(tile.getFire()) {
-                        g.setColor(Color.red);
-                        g.drawLine(xL,yU,xR,yD);
-                        g.drawLine(xL,yD,xR,yU);
-                    }
-                    if(tile.getSuppression()) {
-                        g.setColor(Color.blue);
-                        g.drawLine(xL,yU,xR,yD);
-                        g.drawLine(xL,yD,xR,yU);
-                    }
-                    // Draw FireSensors
-                    if(tile.getFireSensor()) {
-                        g.setColor(Color.green);
-                        int x1 = (int)(x-sensor_radius);
-                        int y1 = (int)(y-sensor_radius);
-                        g.drawOval(x1,y1,(int)(2*sensor_radius),(int)(2*sensor_radius));
-                    }
-                    
-                    // Draw FireAlarms
-                    if(tile.getFireAlarm()) {
-                        g.setColor(Color.yellow);
-                        int x1 = (int)(x-sensor_radius);
-                        int y1 = (int)(y-sensor_radius);
-                        g.drawOval(x1,y1,(int)(2*sensor_radius),(int)(2*sensor_radius));
-                        if(tile.getFireAlarmActive()){
-                            g.setColor(Color.orange);
-                            g.drawOval(x1, y1, (int)(3*sensor_radius), (int)(3*sensor_radius));
-                        }
-                    }
-                    // Draw Suppressor
-                    if(tile.getSuppressor()) {
-                        g.setColor(Color.yellow);
-                        int x1 = (int)(x-sensor_radius);
-                        int y1 = (int)(y-sensor_radius);
-                        g.drawRect(x1,y1,(int)(2*sensor_radius),(int)(2*sensor_radius));
-                    }
-                    // Draw Exits
-                    if(tile.getExit()) {
-                        g.setColor(Color.green);
-                        g.fillRect(xL, yU, (int)scale, (int)scale);
-                    }
-                }
-            }
+            Render.draw(this, g, grid);
         }
     }
     
