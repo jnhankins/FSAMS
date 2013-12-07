@@ -88,21 +88,21 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         gridBagConstraints.insets = new java.awt.Insets(0, 7, 0, 0);
         add(buildingL, gridBagConstraints);
 
-        wallB.setText("Wall");
+        wallB.setText("[W]all");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = ++row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(wallB, gridBagConstraints);
 
-        doorB.setText("Door");
+        doorB.setText("[D]oor");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(doorB, gridBagConstraints);
 
-        exitB.setText("Exit");
+        exitB.setText("E[x]it");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = row;
@@ -118,21 +118,21 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         gridBagConstraints.insets = new java.awt.Insets(0, 7, 0, 0);
         add(jLabel2, gridBagConstraints);
 
-        fireSensorB.setText("Fire Sensor");
+        fireSensorB.setText("Fire [S]ensor");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = ++row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(fireSensorB, gridBagConstraints);
 
-        fireSuppressorB.setText("Sprinkler");
+        fireSuppressorB.setText("Sprin[k]ler");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(fireSuppressorB, gridBagConstraints);
 
-        fireB.setText("Fire");
+        fireB.setText("[F]ire");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = row;
@@ -149,7 +149,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         gridBagConstraints.insets = new java.awt.Insets(0, 7, 0, 0);
         add(jLabel3, gridBagConstraints);
 
-        humanAgentB.setText("Human Agent");
+        humanAgentB.setText("[H]uman Agent");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = ++row;
@@ -163,7 +163,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(jButton8, gridBagConstraints);
 
-        alarmB.setText("Alarm");
+        alarmB.setText("[A]larm");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = row;
@@ -176,7 +176,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         gridBagConstraints.gridy = ++row;
         add(cancelL, gridBagConstraints);
 
-        cancelB.setText("cancel");
+        cancelB.setText("[C]ancel");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = ++row;
@@ -202,6 +202,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         alarmB.setToolTipText("");
         cancelB.setToolTipText("Cancels the simulation, reverting the simulation to it's previous state before it began running. Shortcut is ' c ' to cancel the simuluation.");
 
+            wallB.doClick();
 
     }
 
