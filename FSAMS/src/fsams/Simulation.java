@@ -234,11 +234,15 @@ public class Simulation extends Thread{
 
                 Tile t = tiles[grid_x][grid_y];
 
+                int x;
+                int y;
                 // Left
-                if(grid_x-1>=0 && !t.getWallL() && !t.getLockL()) {
+                x = grid_x-1;
+                y = grid_y;
+                if(0<=x && x<=Grid.grid_width && 0<=y && y<Grid.grid_height
+                    && !t.getWallL() && !t.getLockL()
+                    && !tiles[x][y].getEquipment() && !tiles[x][y].getHumanAgent()) {
                     openL = true;
-                    int x = grid_x-1;
-                    int y = grid_y;
                     if(tiles[x][y].getFire()) {
                         fireL = true;
                         openL = false;
@@ -246,32 +250,36 @@ public class Simulation extends Thread{
 
                 }
                 // Down
-                if(grid_y-1>=0 && !t.getWallD() && !t.getLockD()) {
+                x = grid_x;
+                y = grid_y-1;
+                if(0<=x && x<=Grid.grid_width && 0<=y && y<Grid.grid_height
+                    && !t.getWallD() && !t.getLockD()
+                    && !tiles[x][y].getEquipment() && !tiles[x][y].getHumanAgent()) {
                     openD = true;
-                    int x = grid_x;
-                    int y = grid_y-1;
                     if(tiles[x][y].getFire()) {
                         fireD = true;
                         openD = false;
                     }
-
                 }
                 // Right
-                if(grid_x+1<Grid.grid_width && !t.getWallR() && !t.getLockR()) {
+                x = grid_x+1;
+                y = grid_y;
+                if(0<=x && x<=Grid.grid_width && 0<=y && y<Grid.grid_height
+                    && !t.getWallR() && !t.getLockR()
+                    && !tiles[x][y].getEquipment() && !tiles[x][y].getHumanAgent()) {
                     openR = true;
-                    int x = grid_x+1;
-                    int y = grid_y;
                     if(tiles[x][y].getFire()) {
                         fireR = true;
                         openR = false;
                     }
-
                 }
                 // Up
-                if(grid_y+1<Grid.grid_height && !t.getWallU() && !t.getLockU()) {
+                x = grid_x;
+                y = grid_y+1;
+                if(0<=x && x<=Grid.grid_width && 0<=y && y<Grid.grid_height
+                    && !t.getWallU() && !t.getLockU()
+                    && !tiles[x][y].getEquipment() && !tiles[x][y].getHumanAgent()) {
                     openU = true;
-                    int x = grid_x;
-                    int y = grid_y+1;
                     if(tiles[x][y].getFire()) {
                         fireU = true;
                         openU = false;
