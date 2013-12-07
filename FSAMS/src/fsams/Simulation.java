@@ -197,119 +197,133 @@ public class Simulation extends Thread{
     
     boolean simHumanAgent(int grid_x, int grid_y, double elapTime, long currTime) {
         Tile tiles[][] = grid.getTiles();
-        double speed = 1;//Tiles per second
+        final double speed = 1; //Tiles per second
         
         if((currTime - tiles[grid_x][grid_y].getLastMoveTime()) < 1000.0/speed){
             return false;
         }
 
-        Tile exit = closestExit(grid_x, grid_y);
-        //locate closest exits first if any, else path = null
-        path = null;
-        if(exit!=null) {
-            path = finder.findPath(grid_x, grid_y, exit.grid_x, exit.grid_y);
-        }
-        //There exist a path to an exit
-        if (path != null) {
-            moveHumanAgent(grid_x, grid_y, path.getX(1), path.getY(1), currTime, tiles);
-        }
-        //cannot reach exit - no exit in building
-        else {
-            boolean fireU, fireD, fireL, fireR;
-            boolean openU, openD, openL, openR;
-            fireU = fireD = fireL = fireR = false;
-            openU = openD = openL = openR = false;
-            
-            Tile t = tiles[grid_x][grid_y];
-            
-            // Left
-            if(grid_x-1>=0 && !t.getWallL() && !t.getLockL()) {
-                openL = true;
-                int x = grid_x-1;
-                int y = grid_y;
-                if(tiles[x][y].getFire()) {
-                    fireL = true;
-                    openL = false;
-                }
-                
-            }
-            // Down
-            if(grid_y-1>=0 && !t.getWallD() && !t.getLockD()) {
-                openD = true;
-                int x = grid_x;
-                int y = grid_y-1;
-                if(tiles[x][y].getFire()) {
-                    fireD = true;
-                    openD = false;
-                }
-                
-            }
-            // Right
-            if(grid_x+1<Grid.grid_width && !t.getWallR() && !t.getLockR()) {
-                openR = true;
-                int x = grid_x+1;
-                int y = grid_y;
-                if(tiles[x][y].getFire()) {
-                    fireR = true;
-                    openR = false;
-                }
-                
-            }
-            // Up
-            if(grid_y+1<Grid.grid_height && !t.getWallU() && !t.getLockU()) {
-                openU = true;
-                int x = grid_x;
-                int y = grid_y+1;
-                if(tiles[x][y].getFire()) {
-                    fireU = true;
-                    openU = false;
-                }
-            }
-            
-            //if all on fire or non on fire do nothing
-            if(!fireU && !fireD && !fireL && !fireR) {
-                return false;
-            }
-            
-            int numOpen = (openU ? 1:0) + (openD ? 1:0) + (openL ? 1:0) + (openR ? 1:0);
-            switch(numOpen){
-                case 0:
-                    return false;
-                case 1:            
-                    if(openU) moveHumanAgent(grid_x, grid_y, grid_x, grid_y+1, currTime, tiles);
-                    else if(openD) moveHumanAgent(grid_x,grid_y,grid_x,grid_y-1, currTime, tiles);
-                    else if(openL) moveHumanAgent(grid_x,grid_y,grid_x-1,grid_y, currTime, tiles);
-                    else if(openR) moveHumanAgent(grid_x,grid_y,grid_x+1,grid_y, currTime, tiles);
-                    return true;
-                case 2:
-                    if(openU) moveHumanAgent(grid_x,grid_y,grid_x,grid_y+1, currTime, tiles);
-                    else if(openD) moveHumanAgent(grid_x,grid_y,grid_x,grid_y-1, currTime, tiles);
-                    else if(openL) moveHumanAgent(grid_x,grid_y,grid_x-1,grid_y, currTime, tiles);
-                    else if(openR) moveHumanAgent(grid_x,grid_y,grid_x+1,grid_y, currTime, tiles);
-                    return true;
-                case 3:
-                    if(fireD) moveHumanAgent(grid_x,grid_y,grid_x,grid_y+1, currTime, tiles);
-                    else if(fireU) moveHumanAgent(grid_x,grid_y,grid_x,grid_y-1, currTime, tiles);
-                    else if(fireR) moveHumanAgent(grid_x,grid_y,grid_x-1,grid_y, currTime, tiles);
-                    else if(fireL) moveHumanAgent(grid_x,grid_y,grid_x+1,grid_y, currTime, tiles);
-                    return true;
-            }
+        
+        final int activationRadius = 2;
+        for (int x = grid_x - activationRadius; x <= grid_x + activationRadius && !tiles[grid_x][grid_y].getHumanAgentActive(); x++) {
+           for (int y = grid_y - activationRadius; y <= grid_y + activationRadius && !tiles[grid_x][grid_y].getHumanAgentActive(); y++) {
+               if(x >=0 && x < Grid.grid_width && y >= 0 && y < Grid.grid_height) {
+                   Tile t = grid.getTiles()[x][y];
+                   if(t.getFire() || t.getFireAlarmActive() || t.getSuppressorActive() || t.getHumanAgentActive()) {
+                       tiles[grid_x][grid_y].setHumanAgentActive(true);
+                   }
+               }
+           }
         }
         
+        if(tiles[grid_x][grid_y].getHumanAgentActive()) {
+            Tile exit = closestExit(grid_x, grid_y);
+            //locate closest exits first if any, else path = null
+            path = null;
+            if(exit!=null) {
+                path = finder.findPath(grid_x, grid_y, exit.grid_x, exit.grid_y);
+            }
+            //There exist a path to an exit
+            if (path != null) {
+                moveHumanAgent(grid_x, grid_y, path.getX(1), path.getY(1), currTime, tiles);
+            }
+            //cannot reach exit - no exit in building
+            else {
+                boolean fireU, fireD, fireL, fireR;
+                boolean openU, openD, openL, openR;
+                fireU = fireD = fireL = fireR = false;
+                openU = openD = openL = openR = false;
+
+                Tile t = tiles[grid_x][grid_y];
+
+                // Left
+                if(grid_x-1>=0 && !t.getWallL() && !t.getLockL()) {
+                    openL = true;
+                    int x = grid_x-1;
+                    int y = grid_y;
+                    if(tiles[x][y].getFire()) {
+                        fireL = true;
+                        openL = false;
+                    }
+
+                }
+                // Down
+                if(grid_y-1>=0 && !t.getWallD() && !t.getLockD()) {
+                    openD = true;
+                    int x = grid_x;
+                    int y = grid_y-1;
+                    if(tiles[x][y].getFire()) {
+                        fireD = true;
+                        openD = false;
+                    }
+
+                }
+                // Right
+                if(grid_x+1<Grid.grid_width && !t.getWallR() && !t.getLockR()) {
+                    openR = true;
+                    int x = grid_x+1;
+                    int y = grid_y;
+                    if(tiles[x][y].getFire()) {
+                        fireR = true;
+                        openR = false;
+                    }
+
+                }
+                // Up
+                if(grid_y+1<Grid.grid_height && !t.getWallU() && !t.getLockU()) {
+                    openU = true;
+                    int x = grid_x;
+                    int y = grid_y+1;
+                    if(tiles[x][y].getFire()) {
+                        fireU = true;
+                        openU = false;
+                    }
+                }
+
+                //if all on fire or non on fire do nothing
+                if(!fireU && !fireD && !fireL && !fireR) {
+                    return false;
+                }
+
+                int numOpen = (openU ? 1:0) + (openD ? 1:0) + (openL ? 1:0) + (openR ? 1:0);
+                switch(numOpen){
+                    case 0:
+                        return false;
+                    case 1:            
+                        if(openU) moveHumanAgent(grid_x, grid_y, grid_x, grid_y+1, currTime, tiles);
+                        else if(openD) moveHumanAgent(grid_x,grid_y,grid_x,grid_y-1, currTime, tiles);
+                        else if(openL) moveHumanAgent(grid_x,grid_y,grid_x-1,grid_y, currTime, tiles);
+                        else if(openR) moveHumanAgent(grid_x,grid_y,grid_x+1,grid_y, currTime, tiles);
+                        return true;
+                    case 2:
+                        if(openU) moveHumanAgent(grid_x,grid_y,grid_x,grid_y+1, currTime, tiles);
+                        else if(openD) moveHumanAgent(grid_x,grid_y,grid_x,grid_y-1, currTime, tiles);
+                        else if(openL) moveHumanAgent(grid_x,grid_y,grid_x-1,grid_y, currTime, tiles);
+                        else if(openR) moveHumanAgent(grid_x,grid_y,grid_x+1,grid_y, currTime, tiles);
+                        return true;
+                    case 3:
+                        if(fireD) moveHumanAgent(grid_x,grid_y,grid_x,grid_y+1, currTime, tiles);
+                        else if(fireU) moveHumanAgent(grid_x,grid_y,grid_x,grid_y-1, currTime, tiles);
+                        else if(fireR) moveHumanAgent(grid_x,grid_y,grid_x-1,grid_y, currTime, tiles);
+                        else if(fireL) moveHumanAgent(grid_x,grid_y,grid_x+1,grid_y, currTime, tiles);
+                        return true;
+                }
+            }
+        }
         return false;
     }
 
     public void moveHumanAgent(int oldX, int oldY, int newX, int newY, long currTime, Tile tiles[][]){
         if(!tiles[newX][newY].getExit()) {
             grid.addComponent(ComponentType.HumanAgent, newX, newY);
+            tiles[newX][newY].setHumanAgentActive(true);
             tiles[newX][newY].setLastMoveTime(currTime);
         }
+        tiles[oldX][oldY].setHumanAgentActive(false);
         tiles[oldX][oldY].setHumanAgent(false);//use new method
-        
+        tiles[oldX][oldY].setLastMoveTime(0);
     }
     
- 
-   
     public void simFireSensor(int grid_x, int grid_y, double elapTime) {
         final int sensorRadius = 3;
         for (int x = grid_x - sensorRadius; x <= grid_x + sensorRadius; x++) {
@@ -317,7 +331,6 @@ public class Simulation extends Thread{
                 if(x >=0 && x < Grid.grid_width && y >= 0 && y < Grid.grid_height) {
                     if (grid.getTiles()[x][y].getFire()) {
                         fireDetected(grid_x, grid_y);
-                        
                     }
                 }
             }

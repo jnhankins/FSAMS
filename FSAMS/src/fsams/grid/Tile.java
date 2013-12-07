@@ -65,7 +65,7 @@ public class Tile {
         // Exits
         this.exit = tile.exit;
         // Fire
-        this.fire = false;
+        this.fire = tile.fire;
         // Fire Sensor
         this.fireSensor = tile.fireSensor;
         this.fireSensorActive = tile.fireSensorActive;
