@@ -29,10 +29,6 @@ public class EditPanel extends JPanel implements MouseListener {
         centerY = 0;
         scale = 50.0;
         nextComponentType = null;
-        //justSelected = false;
-        //justSelectedX = 0;
-        //justSelectedY = 0;
-        
         addMouseListener(this);
     }
     
@@ -106,6 +102,20 @@ public class EditPanel extends JPanel implements MouseListener {
                     if(tile.getWallL()) {
                         g.drawLine(xL, yD, xL, yU);
                     }
+                    // Draw Doors
+                    g.setColor(Color.MAGENTA);
+                    if(tile.getDoorD()) {
+                        g.drawLine(xL, yD, xR, yD);
+                    }
+                    if(tile.getDoorU()) {
+                        g.drawLine(xL, yU, xR, yU);
+                    }
+                    if(tile.getDoorR()) {
+                        g.drawLine(xR, yD, xR, yU);
+                    }
+                    if(tile.getDoorL()) {
+                        g.drawLine(xL, yD, xL, yU);
+                    }
                     // Draw Components
                     int x = (int)((xL+xR)/2.0);
                     int y = (int)((yU+yD)/2.0);
@@ -129,9 +139,17 @@ public class EditPanel extends JPanel implements MouseListener {
                         g.drawLine(xL,yU,xR,yD);
                         g.drawLine(xL,yD,xR,yU);
                     }
-                    // Draw Sensors
+                    // Draw FireSensors
                     if(tile.getFireSensor()) {
                         g.setColor(Color.green);
+                        int x1 = (int)(x-sensor_radius);
+                        int y1 = (int)(y-sensor_radius);
+                        g.drawOval(x1,y1,(int)(2*sensor_radius),(int)(2*sensor_radius));
+                    }
+                    
+                    // Draw FireAlarms
+                    if(tile.getFireAlarm()) {
+                        g.setColor(Color.yellow);
                         int x1 = (int)(x-sensor_radius);
                         int y1 = (int)(y-sensor_radius);
                         g.drawOval(x1,y1,(int)(2*sensor_radius),(int)(2*sensor_radius));
@@ -164,7 +182,7 @@ public class EditPanel extends JPanel implements MouseListener {
                     return;
                 if(nextComponentType != null) {
                     switch(nextComponentType) {
-                        case Wall:
+                        case Wall: {
                             int xL = toScreenXfromGridX(grid_x,Grid.grid_width);
                             int xR = toScreenXfromGridX(grid_x+1,Grid.grid_width);
                             int yD = toScreenYfromGridY(grid_y,Grid.grid_height);
@@ -190,6 +208,38 @@ public class EditPanel extends JPanel implements MouseListener {
                             }
                             repaint();
                             break;
+                        }
+                        case Door: {
+                            int xL = toScreenXfromGridX(grid_x,Grid.grid_width);
+                            int xR = toScreenXfromGridX(grid_x+1,Grid.grid_width);
+                            int yD = toScreenYfromGridY(grid_y,Grid.grid_height);
+                            int yU = toScreenYfromGridY(grid_y+1,Grid.grid_height);
+                            int mx = me.getX();
+                            int my = me.getY();
+                            int x1 = mx-xL;
+                            int y1 = my-yU;
+                            int x2 = xR-mx;
+                            int y2 = y1;
+                            if(x1>y1) { // up-right
+                                if(x2>y2) { // up-left
+                                    grid.removeWall(grid_x  ,grid_y+1,grid_x+1,grid_y+1);
+                                    grid.addDoor(   grid_x  ,grid_y+1,grid_x+1,grid_y+1); // Up
+                                } else { // down-right
+                                    grid.removeWall(grid_x+1,grid_y,  grid_x+1,grid_y+1);
+                                    grid.addDoor(   grid_x+1,grid_y,  grid_x+1,grid_y+1); // Right
+                                }
+                            } else { // down-left
+                                if(x2>y2) { // up-left
+                                    grid.removeWall(grid_x,  grid_y,  grid_x,  grid_y+1);
+                                    grid.addDoor(   grid_x,  grid_y,  grid_x,  grid_y+1); // Left
+                                } else { // down-right
+                                    grid.removeWall(grid_x,  grid_y,  grid_x+1,grid_y  );
+                                    grid.addDoor(   grid_x,  grid_y,  grid_x+1,grid_y  ); // Down
+                                }
+                            }
+                            repaint();
+                            break;
+                        }
                         case FireSensor:
                             grid.addComponent(ComponentType.FireSensor, grid_x, grid_y);
                             repaint();
@@ -208,6 +258,10 @@ public class EditPanel extends JPanel implements MouseListener {
                             break;
                         case Exit:
                             grid.addComponent(ComponentType.Exit, grid_x, grid_y);
+                            repaint();
+                            break;
+                        case FireAlarm:
+                            grid.addComponent(ComponentType.FireAlarm, grid_x, grid_y);
                             repaint();
                             break;
                     }
@@ -243,14 +297,18 @@ public class EditPanel extends JPanel implements MouseListener {
                     if(x1>y1) { // up-right
                         if(x2>y2) { // up-left
                             grid.removeWall(grid_x  ,grid_y+1,grid_x+1,grid_y+1); // Up
+                            grid.removeDoor(grid_x  ,grid_y+1,grid_x+1,grid_y+1); // Up
                         } else { // down-right
                             grid.removeWall(grid_x+1,grid_y,  grid_x+1,grid_y+1); // Right
+                            grid.removeDoor(grid_x+1,grid_y,  grid_x+1,grid_y+1); // Right
                         }
                     } else { // down-left
                         if(x2>y2) { // up-left
                             grid.removeWall(grid_x,  grid_y,  grid_x,  grid_y+1); // Left
+                            grid.removeDoor(grid_x+1,grid_y,  grid_x+1,grid_y+1); // Right
                         } else { // down-right
                             grid.removeWall(grid_x,  grid_y,  grid_x+1,grid_y  ); // Down
+                            grid.removeDoor(grid_x+1,grid_y,  grid_x+1,grid_y+1); // Right
                         }
                     }
                 }

@@ -3,7 +3,8 @@ package fsams.grid;
 public class Tile {
     public final int grid_x, grid_y;
     private boolean wallU, wallD, wallL, wallR;
-    private boolean fire, fireSensor, humanAgent,exit, suppressor;
+    private boolean doorU, doorD, doorL, doorR;
+    private boolean fire, fireSensor, humanAgent, exit, suppressor, fireAlarm;
     private boolean suppressorActive;
     private long suppression;
     private long lastMoveTime;
@@ -66,6 +67,35 @@ public class Tile {
     public void setWallR(boolean status) {
         wallR = status;
     }
+    
+    
+    public boolean getDoorU() {
+        return doorU;
+    }
+    public void setDoorU(boolean status) {
+        doorU = status;
+    }
+    
+    public boolean getDoorD() {
+        return doorD;
+    }
+    public void setDoorD(boolean status) {
+        doorD = status;
+    }
+    
+    public boolean getDoorL() {
+        return doorL;
+    }
+    public void setDoorL(boolean status) {
+        doorL = status;
+    }
+    
+    public boolean getDoorR() {
+        return doorR;
+    }
+    public void setDoorR(boolean status) {
+        doorR = status;
+    }
 
     public boolean getFire() {
         return fire;
@@ -81,6 +111,13 @@ public class Tile {
         fireSensor = status;
     }
 
+    public boolean getFireAlarm() {
+        return fireAlarm;
+    }
+    public void setFireAlarm(boolean status) {
+        fireAlarm = status;
+    }
+    
     public boolean getExit() {
         return exit;
     }

@@ -1,11 +1,12 @@
 package fsams.grid;
 
-
 public enum ComponentType {
     Wall,
     FireSensor, 
     Fire,
     HumanAgent,
     Exit,
-    Suppressor
+    Suppressor,
+    FireAlarm,
+    Door,
 }

@@ -19,8 +19,6 @@ public class Simulation extends Thread{
     private Path path;
     // Data Model
     private Grid grid;
-    //long[][] lastMoveTimes;
-    //boolean[][]  suppressionActive;
     // GUI Component
     private final JPanel panel;
     private ArrayList<Tile> exits;

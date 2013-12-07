@@ -101,6 +101,9 @@ public class Grid implements TileBasedMap {
             case Suppressor: 
                 t.setSuppressor(true); 
                 break;
+            case FireAlarm:
+                t.setFireAlarm(true);
+                break;
         }
     }
     
@@ -113,6 +116,7 @@ public class Grid implements TileBasedMap {
         t.setFireSensor(false);
         t.setHumanAgent(false);
         t.setSuppressor(false);
+        t.setFireAlarm(false);
     }
     
     public void addWall(int x1, int y1, int x2, int y2) {
@@ -152,6 +156,44 @@ public class Grid implements TileBasedMap {
         }
     }
     
+    public void addDoor(int x1, int y1, int x2, int y2) {
+        if((x1!=x2) && (y2!=y2))
+            throw new IllegalArgumentException("Walls must be horizontal or vertical");
+        if(x1<0 || grid_width<x1 || y1<0 || grid_height<y1)
+            throw new IllegalArgumentException("Illegal grid position: "+x1+","+y1);
+        if(x2<0 || grid_width<x2 || y2<0 || grid_height<y2)
+            throw new IllegalArgumentException("Illegal grid position: "+x2+","+y2);
+        if(x1==x2 && y1==y2)
+            return;
+        // Verticle
+        if(x1==x2) {
+            for(int y=Math.min(y1,y2); y<Math.max(y1,y2); y++) {
+                // Left tile
+                if(x1-1>=0) {
+                    tiles[x1-1][y].setDoorR(true);
+                }
+                // Right tile
+                if(x1<grid_width) {
+                    tiles[x1][y].setDoorL(true);
+                }
+            }
+        }
+        // Horizontal
+        else {
+            for(int x=Math.min(x1,x2); x<Math.max(x1,x2); x++) {
+                // Bottom tile
+                if(y1-1>=0) {
+                    tiles[x][y1-1].setDoorU(true);
+                }
+                // Top Tile
+                if(y2<grid_width) {
+                    tiles[x][y1].setDoorD(true);
+                }
+            }
+        }
+    }
+    
+    
     public void removeWall(int x1, int y1, int x2, int y2) {
         if((x1!=x2) && (y2!=y2))
             throw new IllegalArgumentException("Walls must be horizontal or vertical");
@@ -184,6 +226,43 @@ public class Grid implements TileBasedMap {
                 // Top Tile
                 if(y2<grid_width) {
                     tiles[x][y1].setWallD(false);
+                }
+            }
+        }
+    }
+    
+    public void removeDoor(int x1, int y1, int x2, int y2) {
+        if((x1!=x2) && (y2!=y2))
+            throw new IllegalArgumentException("Walls must be horizontal or vertical");
+        if(x1<0 || grid_width<x1 || y1<0 || grid_height<y1)
+            throw new IllegalArgumentException("Illegal grid position: "+x1+","+y1);
+        if(x2<0 || grid_width<x2 || y2<0 || grid_height<y2)
+            throw new IllegalArgumentException("Illegal grid position: "+x2+","+y2);
+        if(x1==x2 && y1==y2)
+            return;
+        // Verticle
+        if(x1==x2) {
+            for(int y=Math.min(y1,y2); y<Math.max(y1,y2); y++) {
+                // Left tile
+                if(x1-1>=0) {
+                    tiles[x1-1][y].setDoorR(false);
+                }
+                // Right tile
+                if(x1<grid_width) {
+                    tiles[x1][y].setDoorL(false);
+                }
+            }
+        }
+        // Horizontal
+        else {
+            for(int x=Math.min(x1,x2); x<Math.max(x1,x2); x++) {
+                // Bottom tile
+                if(y1-1>=0) {
+                    tiles[x][y1-1].setDoorU(false);
+                }
+                // Top Tile
+                if(y2<grid_width) {
+                    tiles[x][y1].setDoorD(false);
                 }
             }
         }

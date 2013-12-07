@@ -21,7 +21,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
     private JToggleButton fireB;
     private JToggleButton humanAgentB;
     private JToggleButton jButton8;
-    private JToggleButton jButton9;
+    private JToggleButton alarmB;
     private JButton cancelB;
     private JToggleButton wallB;
     private JToggleButton cancelHidden;
@@ -45,7 +45,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         JLabel jLabel3 = new JLabel();
         humanAgentB = new JToggleButton();
         jButton8 = new JToggleButton();
-        jButton9 = new JToggleButton();
+        alarmB = new JToggleButton();
         JLabel cancelL = new JLabel();
         cancelB = new JButton();
         cancelHidden = new JToggleButton();
@@ -59,7 +59,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         fireB.addActionListener(this);
         humanAgentB.addActionListener(this);
         jButton8.addActionListener(this);
-        jButton9.addActionListener(this);
+        alarmB.addActionListener(this);
         cancelB.addActionListener(this);
         
         ButtonGroup toggleGroup = new ButtonGroup();
@@ -71,7 +71,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         toggleGroup.add(doorB);
         toggleGroup.add(exitB);
         toggleGroup.add(jButton8);
-        toggleGroup.add(jButton9);
+        toggleGroup.add(alarmB);
         toggleGroup.add(cancelB);
         toggleGroup.add(cancelHidden);
               
@@ -95,7 +95,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(wallB, gridBagConstraints);
 
-       doorB.setText("Door");
+        doorB.setText("Door");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = row;
@@ -156,19 +156,19 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(humanAgentB, gridBagConstraints);
 
-        jButton8.setText("Door");
+        jButton8.setText("???");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(jButton8, gridBagConstraints);
 
-        jButton9.setText("Elevator");
+        alarmB.setText("Alarm");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        add(jButton9, gridBagConstraints);
+        add(alarmB, gridBagConstraints);
 
         cancelL.setText("\n");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -199,7 +199,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         fireB.setToolTipText("Fire. It spreads! Shortcut is ' f ' to select fire");
         humanAgentB.setToolTipText("Humans. Adds people who proceed to the exit. Shortcut is ' h '");
         jButton8.setToolTipText("");
-        jButton9.setToolTipText("");
+        alarmB.setToolTipText("");
         cancelB.setToolTipText("Cancels the simulation, reverting the simulation to it's previous state before it began running. Shortcut is ' c ' to cancel the simuluation.");
 
 
@@ -246,9 +246,9 @@ public class ComponentsPanel extends JPanel implements ActionListener {
                     jButton8.doClick();
                 }
             };
-          AbstractAction elevatorA = new AbstractAction() {
+          AbstractAction alarmA = new AbstractAction() {
                 public void actionPerformed(ActionEvent ae) {
-                    jButton9.doClick();
+                    alarmB.doClick();
                 }
             };    
           AbstractAction cancelA = new AbstractAction() {
@@ -273,12 +273,12 @@ public class ComponentsPanel extends JPanel implements ActionListener {
        humanAgentB.getActionMap().put("human", humanA);
        fireSensorB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), "sensor");
        fireSensorB.getActionMap().put("sensor", sensorA);
-       fireSuppressorB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_K, 0), "alarm");
+       fireSuppressorB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_K, 0), "sprinkler");
        fireSuppressorB.getActionMap().put("sprinkler", sprinklerA);
        jButton8.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_O, 0), "door");
        jButton8.getActionMap().put("door", doorASecond);
-       jButton9.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E, 0), "elevator");
-       jButton9.getActionMap().put("elevator", elevatorA);
+       alarmB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), "alarm");
+       alarmB.getActionMap().put("alarm", alarmA);
        cancelB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_C, 0), "cancel");
        cancelB.getActionMap().put("cancel", cancelA);
 
@@ -286,7 +286,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         if(src == wallB) {
             fsams.setNextComponentType(ComponentType.Wall);
         } else if(src == doorB) {
-            
+            fsams.setNextComponentType(ComponentType.Door);
         } else if(src == exitB) {
             fsams.setNextComponentType(ComponentType.Exit);
         } else if(src == fireSensorB) {
@@ -299,8 +299,8 @@ public class ComponentsPanel extends JPanel implements ActionListener {
             fsams.setNextComponentType(ComponentType.HumanAgent);
         } else if(src == jButton8) {
             
-        } else if(src == jButton9) {
-            
+        } else if(src == alarmB) {
+            fsams.setNextComponentType(ComponentType.FireAlarm);
         } else if(src == cancelB) {
             fsams.setNextComponentType(null);
             cancelHidden.setSelected(true);
