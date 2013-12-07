@@ -5,14 +5,9 @@
 package fsams;
 
 import fsams.grid.*;
-import fsams.grid.Component.*;
-import fsams.grid.Grid.Tile;
 import fsams.pathfinding.AStarPathFinder;
 import fsams.pathfinding.Path;
-import fsams.pathfinding.PathFinder;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 public class Simulation extends Thread{
@@ -27,8 +22,8 @@ public class Simulation extends Thread{
     long[][] lastMoveTimes;
     boolean[][]  suppressionActive;
     // GUI Component
-    private JPanel panel;
-    private ArrayList<Exit> exits;
+    private final JPanel panel;
+    private ArrayList<Tile> exits;
     
     public Simulation(JPanel panel) {
         this.panel = panel;
@@ -53,16 +48,13 @@ public class Simulation extends Thread{
         startFlag = !isSimRunning;
         if(startFlag) {
             System.out.println("hello I'm starting");
-            Grid.Tile[][] tiles = grid.getTiles();
+            Tile[][] tiles = grid.getTiles();
             exits = new ArrayList<>();
             for(int grid_x=0; grid_x<tiles.length; grid_x++) {
                 for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
-                    Grid.Tile tile = tiles[grid_x][grid_y];
-                    if (tile.getExit()) {
-                        Exit newExit = new Exit();
-                        newExit.location_x = grid_x;
-                        newExit.location_y = grid_y;
-                        exits.add(newExit);                    
+                    Tile tile = tiles[grid_x][grid_y];
+                    if(tile.getExit()) {
+                        exits.add(tile);                    
                     }
                 }
             }
@@ -111,12 +103,12 @@ public class Simulation extends Thread{
                     }
                     
                     synchronized(grid) {
-                        Grid.Tile[][] tiles = grid.getTiles();
-                        // Draw components
+                        Tile[][] tiles = grid.getTiles();
+                        // Update components
                         for(int grid_x=0; grid_x<tiles.length; grid_x++) {
                             for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
                                 // Get the tile
-                                Grid.Tile tile = tiles[grid_x][grid_y];
+                                Tile tile = tiles[grid_x][grid_y];
                                 // Get the components
                                 if(tile.getFire()) {
                                     simFire(grid_x,grid_y,elapTime);
@@ -191,13 +183,13 @@ public class Simulation extends Thread{
     }
     
     //ideal is to find closest exit...for now just find one
-    Exit closestExit(int grid_x, int grid_y) {
+    Tile closestExit(int grid_x, int grid_y) {
         if(!exits.isEmpty()) {
             int index = -1;
             float lowestCost = Float.MAX_VALUE;
             System.out.println("!");
-            for(Exit exit : exits) {
-                Path path = finder.findPath(grid_x, grid_y, exit.location_x, exit.location_y);
+            for(Tile exit : exits) {
+                Path path = finder.findPath(grid_x, grid_y, exit.grid_x, exit.grid_y);
                 if (path == null) {
                     continue;
                 }
@@ -224,11 +216,11 @@ public class Simulation extends Thread{
             return false;
         }
 
-        Exit exit = closestExit(grid_x, grid_y);
+        Tile exit = closestExit(grid_x, grid_y);
         //locate closest exits first if any, else path = null
         path = null;
         if(exit!=null) {
-            path =  finder.findPath(grid_x, grid_y, exit.location_x, exit.location_y);
+            path =  finder.findPath(grid_x, grid_y, exit.grid_x, exit.grid_y);
         }
         //There exist a path to an exit
         if (path != null) {
@@ -319,30 +311,19 @@ public class Simulation extends Thread{
 
     public void moveHumanAgent(int oldX, int oldY, int newX, int newY, long currTime, Tile tiles[][]){
         if(!tiles[newX][newY].getExit()) {
-            grid.addComponent(new HumanAgent(), newX, newY);
+            grid.addComponent(ComponentType.HumanAgent, newX, newY);
             lastMoveTimes[newX][newY] = currTime;
         }
         tiles[oldX][oldY].setHumanAgent(false);//use new method
         
     }
-    //given a list x,y coordinates to follow simulate path
-/*    public boolean tracePath(HumanAgent human, Path path){
-        Tile tiles[][] = grid.getTiles();
-        
-        
-        tiles[path.getX(1)][grid_y].getComponents().remove(human);
-        tiles[next.x][next.y].getComponents().add(human);
-        return false;
-    }
     
-*/
-    public void tracePath(HumanAgent human, int x, int y) {
+    public void tracePath(int x, int y) {
         Tile tiles[][] = grid.getTiles();
         finder = new AStarPathFinder(grid, 5000, false);
         path = finder.findPath(x, y, 1, 1);
-        HumanAgent newHuman = new HumanAgent();
         if (path != null) {
-            grid.addComponent(newHuman, path.getX(1), path.getY(1));
+            grid.addComponent(ComponentType.HumanAgent, path.getX(1), path.getY(1));
             tiles[x][y].setHumanAgent(false);
         }
     }
@@ -351,7 +332,7 @@ public class Simulation extends Thread{
         final int sensorRadius = 3;
         for (int x = grid_x - sensorRadius; x <= grid_x + sensorRadius; x++) {
             for (int y = grid_y - sensorRadius; y <= grid_y + sensorRadius; y++) {
-                if(x >=0 && x < grid.grid_width && y >= 0 && y < grid.grid_height) {
+                if(x >=0 && x < Grid.grid_width && y >= 0 && y < Grid.grid_height) {
                     if (grid.getTiles()[x][y].getFire()) {
                         fireDetected(grid_x, grid_y);
                         

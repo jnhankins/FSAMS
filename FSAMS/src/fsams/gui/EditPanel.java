@@ -1,15 +1,13 @@
 package fsams.gui;
 
 import fsams.FSAMS;
-import fsams.grid.Component;
-import fsams.grid.Component.*;
+import fsams.grid.ComponentType;
 import fsams.grid.Grid;
-import fsams.grid.Grid.Tile;
+import fsams.grid.Tile;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
 import javax.swing.JPanel;
 
 public class EditPanel extends JPanel implements MouseListener {
@@ -20,7 +18,7 @@ public class EditPanel extends JPanel implements MouseListener {
     
     private Grid grid;
     
-    private Component.Type nextComponentType;
+    private ComponentType nextComponentType;
     //private boolean justSelected;
     //private int justSelectedX;
     //private int justSelectedY;
@@ -41,7 +39,7 @@ public class EditPanel extends JPanel implements MouseListener {
     public void setGrid(Grid grid) {
         this.grid = grid;
     }
-    public void setNextComponentType(Component.Type type) {
+    public void setNextComponentType(ComponentType type) {
         nextComponentType = type;
     }
     
@@ -193,27 +191,23 @@ public class EditPanel extends JPanel implements MouseListener {
                             repaint();
                             break;
                         case FireSensor:
-                            grid.addComponent(new FireSensor(), grid_x, grid_y);
+                            grid.addComponent(ComponentType.FireSensor, grid_x, grid_y);
                             repaint();
                             break;
                         case Fire:
-                            grid.addComponent(new Fire(), grid_x, grid_y);
+                            grid.addComponent(ComponentType.Fire, grid_x, grid_y);
                             repaint();
                             break;
                         case HumanAgent:
-                            grid.addComponent(new HumanAgent(), grid_x, grid_y);
+                            grid.addComponent(ComponentType.HumanAgent, grid_x, grid_y);
                             repaint();
                             break;
                         case Suppressor:
-                            grid.addComponent(new Suppressor(), grid_x, grid_y);
+                            grid.addComponent(ComponentType.Suppressor, grid_x, grid_y);
                             repaint();
                             break;
                         case Exit:
-                            Exit exit = new Exit();
-                            grid.addComponent(exit, grid_x, grid_y);
-
-                            exit.location_x = grid_x;
-                            exit.location_y = grid_y;
+                            grid.addComponent(ComponentType.Exit, grid_x, grid_y);
                             repaint();
                             break;
                     }

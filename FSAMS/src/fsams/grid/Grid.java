@@ -1,8 +1,6 @@
 package fsams.grid;
 
-import fsams.grid.Component.*;
 import fsams.pathfinding.TileBasedMap;
-import java.util.ArrayList;
 
 public class Grid implements TileBasedMap {
     public static final int grid_width = 20;
@@ -16,7 +14,7 @@ public class Grid implements TileBasedMap {
         tiles = new Tile[grid_width][grid_height];
         for(int grid_x=0; grid_x<tiles.length; grid_x++) {
             for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
-                tiles[grid_x][grid_y] = new Tile();
+                tiles[grid_x][grid_y] = new Tile(grid_x, grid_y);
             }
         }
     }
@@ -51,10 +49,10 @@ public class Grid implements TileBasedMap {
     public boolean wallBlocked(int x, int y, int direction) {
         boolean up, down, left, right;
         
-        up = tiles[x][y].wallU;
-        down = tiles[x][y].wallD;
-        left = tiles[x][y].wallL;
-        right = tiles[x][y].wallR;
+        up = tiles[x][y].getWallU();
+        down = tiles[x][y].getWallD();
+        left = tiles[x][y].getWallL();
+        right = tiles[x][y].getWallR();
         
         if (direction == 0 && down)
             return true;
@@ -72,10 +70,10 @@ public class Grid implements TileBasedMap {
     
     @Override
     public boolean blocked(int x, int y) {
-        if (tiles[x][y].fire || tiles[x][y].humanAgent) {
+        if(tiles[x][y].getFire() || tiles[x][y].getHumanAgent()) {
             return true;
         }
-    return false;    
+        return false;    
     }
 
     @Override
@@ -83,146 +81,38 @@ public class Grid implements TileBasedMap {
         return 1;
     }
     
-    public class Tile {
-        //TODO replace ArrayList with boolean values
-        boolean wallU, wallD, wallL, wallR;
-        boolean fire, fireSensor, humanAgent,exit, suppressor;
-        long suppression;
-        
-        public Tile() {
-            wallU = false;
-            wallD = false;
-            wallL = false;
-            wallR = false;
-            fire = false;
-            fireSensor = false;
-            humanAgent = false;
-            exit = false;
-            suppressor = false;
-            suppression = -1;
-        }
-        public Tile(Tile tile) {
-            this.wallU = tile.wallU;
-            this.wallD = tile.wallD;
-            this.wallL = tile.wallL;
-            this.wallR = tile.wallR;
-            this.fire = tile.fire;
-            this.fireSensor = tile.fireSensor;
-            this.humanAgent = tile.humanAgent;
-            this.exit = tile.exit;
-            this.suppressor = tile.suppressor;
-        }
-        
-        public boolean getWallU() {
-            return wallU;
-        }
-        public boolean getWallD() {
-            return wallD;
-        }
-        public boolean getWallL() {
-            return wallL;
-        }
-        public boolean getWallR() {
-            return wallR;
-        }
-
-        public boolean getFire() {
-            return fire;
-        }
-        public void setFire(boolean status) {
-            fire = status;
-        }
-        
-        public boolean getSuppression() {
-            final long suppressionTime = 1000;
-            if(suppression==-1 || System.currentTimeMillis()-suppression>suppressionTime) {
-                return false;
-            }
-            return true;
-        }
-        
-        public void setSuppression(boolean status) {
-            if(status) {
-                suppression = System.currentTimeMillis();
-            } else {
-                suppression = -1;
-            }
-        }
-        
-        public boolean getFireSensor() {
-            return fireSensor;
-        }
-        
-        public boolean getExit() {
-            return exit;
-        }
-
-        public boolean getHumanAgent() {
-            return humanAgent;
-        }
-        
-        public void setHumanAgent(boolean status) {
-            humanAgent = status;
-        }
-        
-        public boolean getSuppressor() {
-            return suppressor;
-        }
-        
-    }
-    
-    public void addComponent(Component comp, int x, int y) {
-        if(x<0 || grid_width<=x || y<0 || grid_height<=y)
-            throw new IllegalArgumentException("Illegal grid position: "+x+","+y);
-        if (comp instanceof Exit) {
-            tiles[x][y].exit = true;
-        }
-        else if (comp instanceof HumanAgent) {
-            tiles[x][y].humanAgent = true;
-        }
-        else if (comp instanceof Fire) {
-            tiles[x][y].fire = true;
-        }
-        else if (comp instanceof FireSensor) {
-            tiles[x][y].fireSensor = true;
-        }
-        else if (comp instanceof Suppressor) {
-            tiles[x][y].suppressor = true;
-        }
-    }
-    
-    /*
-    public void removeComponent(Component comp, int x, int y) {
+    public void addComponent(ComponentType comp, int x, int y) {
         if(x<0 || grid_width<=x || y<0 || grid_height<=y)
             throw new IllegalArgumentException("Illegal grid position: "+x+","+y);
         Tile t = tiles[x][y];
-        if (comp instanceof Exit) {
-            tiles[x][y].exit = false;
-        }
-        
-        else if (comp instanceof HumanAgent) {
-            tiles[x][y].humanAgent = false;
-        }
-        else if (comp instanceof Fire) {
-            tiles[x][y].fire = false;
-        }
-        else if (comp instanceof FireSensor) {
-            tiles[x][y].fireSensor = false;
-        }
-        else if (comp instanceof Suppressor) {
-            tiles[x][y].suppressor = false;
+        switch(comp) {
+            case Exit:       
+                t.setExit(true); 
+                break;
+            case HumanAgent: 
+                t.setHumanAgent(true); 
+                break;
+            case Fire:
+                t.setFire(true);
+                break;
+            case FireSensor: 
+                t.setFireSensor(true);
+                break;
+            case Suppressor: 
+                t.setSuppressor(true); 
+                break;
         }
     }
-    */
+    
     public void removeComponents(int x, int y) {
         if(x<0 || grid_width<=x || y<0 || grid_height<=y)
             throw new IllegalArgumentException("Illegal grid position: "+x+","+y);
         Tile t = tiles[x][y];
-        t.exit = false;
-        t.fire = false;
-        t.fireSensor = false;
-        t.humanAgent = false;
-        t.suppressor = false;
+        t.setExit(false);
+        t.setFire(false);
+        t.setFireSensor(false);
+        t.setHumanAgent(false);
+        t.setSuppressor(false);
     }
     
     public void addWall(int x1, int y1, int x2, int y2) {
@@ -239,11 +129,11 @@ public class Grid implements TileBasedMap {
             for(int y=Math.min(y1,y2); y<Math.max(y1,y2); y++) {
                 // Left tile
                 if(x1-1>=0) {
-                    tiles[x1-1][y].wallR = true;
+                    tiles[x1-1][y].setWallR(true);
                 }
                 // Right tile
                 if(x1<grid_width) {
-                    tiles[x1][y].wallL = true;
+                    tiles[x1][y].setWallL(true);
                 }
             }
         }
@@ -252,11 +142,11 @@ public class Grid implements TileBasedMap {
             for(int x=Math.min(x1,x2); x<Math.max(x1,x2); x++) {
                 // Bottom tile
                 if(y1-1>=0) {
-                    tiles[x][y1-1].wallU = true;
+                    tiles[x][y1-1].setWallU(true);
                 }
                 // Top Tile
                 if(y2<grid_width) {
-                    tiles[x][y1].wallD = true;
+                    tiles[x][y1].setWallD(true);
                 }
             }
         }
@@ -276,11 +166,11 @@ public class Grid implements TileBasedMap {
             for(int y=Math.min(y1,y2); y<Math.max(y1,y2); y++) {
                 // Left tile
                 if(x1-1>=0) {
-                    tiles[x1-1][y].wallR = false;
+                    tiles[x1-1][y].setWallR(false);
                 }
                 // Right tile
                 if(x1<grid_width) {
-                    tiles[x1][y].wallL = false;
+                    tiles[x1][y].setWallL(false);
                 }
             }
         }
@@ -289,11 +179,11 @@ public class Grid implements TileBasedMap {
             for(int x=Math.min(x1,x2); x<Math.max(x1,x2); x++) {
                 // Bottom tile
                 if(y1-1>=0) {
-                    tiles[x][y1-1].wallU = false;
+                    tiles[x][y1-1].setWallU(false);
                 }
                 // Top Tile
                 if(y2<grid_width) {
-                    tiles[x][y1].wallD = false;
+                    tiles[x][y1].setWallD(false);
                 }
             }
         }

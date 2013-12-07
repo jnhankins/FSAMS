@@ -1,13 +1,12 @@
 package fsams;
 
-import fsams.grid.Component;
+import fsams.grid.ComponentType;
 import fsams.grid.Grid;
 import fsams.gui.ComponentsPanel;
 import fsams.gui.EditPanel;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
@@ -68,7 +67,7 @@ public final class FSAMS extends JFrame implements ActionListener {
         setVisible(true);
     }
     
-    public void setNextComponentType(Component.Type type) {
+    public void setNextComponentType(ComponentType type) {
         editP.setNextComponentType(type);
     }
     

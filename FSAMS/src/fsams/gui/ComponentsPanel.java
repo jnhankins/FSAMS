@@ -1,13 +1,11 @@
 package fsams.gui;
 
 import fsams.FSAMS;
-import fsams.grid.Component;
+import fsams.grid.ComponentType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.KeyStroke;
-import javax.swing.InputMap;
-import javax.swing.ActionMap;
 import java.awt.event.KeyEvent;
 /**
  *
@@ -27,7 +25,6 @@ public class ComponentsPanel extends JPanel implements ActionListener {
     private JButton cancelB;
     private JToggleButton wallB;
     private JToggleButton cancelHidden;
-    private Action action = null;
     
     public ComponentsPanel(FSAMS fsams) {
         this.fsams = fsams;
@@ -287,19 +284,19 @@ public class ComponentsPanel extends JPanel implements ActionListener {
 
         
         if(src == wallB) {
-            fsams.setNextComponentType(Component.Type.Wall);
+            fsams.setNextComponentType(ComponentType.Wall);
         } else if(src == doorB) {
             
         } else if(src == exitB) {
-            fsams.setNextComponentType(Component.Type.Exit);
+            fsams.setNextComponentType(ComponentType.Exit);
         } else if(src == fireSensorB) {
-            fsams.setNextComponentType(Component.Type.FireSensor);
+            fsams.setNextComponentType(ComponentType.FireSensor);
         } else if(src == fireSuppressorB) {
-            fsams.setNextComponentType(Component.Type.Suppressor);
+            fsams.setNextComponentType(ComponentType.Suppressor);
         } else if(src == fireB) {
-            fsams.setNextComponentType(Component.Type.Fire);
+            fsams.setNextComponentType(ComponentType.Fire);
         } else if(src == humanAgentB) {
-            fsams.setNextComponentType(Component.Type.HumanAgent);
+            fsams.setNextComponentType(ComponentType.HumanAgent);
         } else if(src == jButton8) {
             
         } else if(src == jButton9) {
