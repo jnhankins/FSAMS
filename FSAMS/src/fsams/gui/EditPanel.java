@@ -4,17 +4,25 @@ import fsams.FSAMS;
 import fsams.grid.ComponentType;
 import fsams.grid.Grid;
 import java.awt.Graphics;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import javax.swing.JPanel;
 
-public class EditPanel extends JPanel implements MouseListener {
+public class EditPanel extends JPanel implements MouseListener, MouseMotionListener, KeyListener {
     private final FSAMS fsams;
     private double centerX;
     private double centerY;
     private double scale;
     private final double zoomFactor = 1.5;
     private Grid grid;
+    private boolean controlDown;
+    private boolean mousePressed;
+    private double mouseX;
+    private double mouseY;
     
     private ComponentType nextComponentType;
     
@@ -25,6 +33,11 @@ public class EditPanel extends JPanel implements MouseListener {
         scale = 50.0;
         nextComponentType = null;
         addMouseListener(this);
+        addMouseMotionListener(this);
+        addKeyListener(this);
+        setFocusable(true);
+        controlDown = false;
+        mousePressed = false;
     }
     
     public void setGrid(Grid grid) {
@@ -68,6 +81,10 @@ public class EditPanel extends JPanel implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent me) {
+        requestFocusInWindow();
+        mousePressed = true;
+        mouseX = me.getX();
+        mouseY = me.getY();
         if (me.getButton() == MouseEvent.BUTTON1) { 
             synchronized(grid) {
                 int grid_x = toGridXfromScreenX(me.getX(),Grid.grid_width);
@@ -212,13 +229,49 @@ public class EditPanel extends JPanel implements MouseListener {
             repaint();
         }
     }
+    @Override public void mouseReleased(MouseEvent e) { 
+        mousePressed = false;
+    }
+    @Override public void mouseClicked(MouseEvent e) { }
+    @Override public void mouseEntered(MouseEvent e) { }
+    @Override public void mouseExited(MouseEvent e) { }
+    @Override public void keyTyped(KeyEvent e) { }
+
     @Override
-    public void mouseReleased(MouseEvent e) { }
+    public void keyPressed(KeyEvent e) {
+        if (e.isControlDown()) {
+            controlDown = true;
+            System.out.println(controlDown);
+        }
+    }
+
     @Override
-    public void mouseClicked(MouseEvent e) { }
+    public void keyReleased(KeyEvent e) {
+        if(!e.isControlDown()) {
+            controlDown = false;
+            System.out.println(controlDown);
+        }
+    }
+
     @Override
-    public void mouseEntered(MouseEvent e) { }
+    public void mouseDragged(MouseEvent e) {
+        if (mousePressed && controlDown) {
+            double newMouseX = e.getX();
+            double newMouseY = e.getY();
+            
+            double newCenterX = centerX - (newMouseX - mouseX);
+            double newCenterY = centerY - (newMouseY - mouseY);
+            centerX = newCenterX;
+            centerY = newCenterY;
+            repaint();
+            mouseX = newMouseX;
+            mouseY = newMouseY;
+        }
+    }
+
     @Override
-    public void mouseExited(MouseEvent e) {}
+    public void mouseMoved(MouseEvent e) {
+        
+    }
     
 }

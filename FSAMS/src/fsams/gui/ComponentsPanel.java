@@ -282,7 +282,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
        alarmB.getActionMap().put("alarm", alarmA);
        cancelB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_C, 0), "cancel");
        cancelB.getActionMap().put("cancel", cancelA);
-
+       
         
         if(src == wallB) {
             fsams.setNextComponentType(ComponentType.Wall);
