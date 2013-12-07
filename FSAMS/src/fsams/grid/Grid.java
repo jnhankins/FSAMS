@@ -119,6 +119,7 @@ public class Grid implements TileBasedMap {
         t.setHumanAgent(false);
         t.setSuppressor(false);
         t.setFireAlarm(false);
+        t.setEquipment(false);
     }
     
     public void addWall(int x1, int y1, int x2, int y2) {
@@ -297,6 +298,16 @@ public class Grid implements TileBasedMap {
                 Tile tile = tiles[grid_x][grid_y];
                 if(tile.getFireAlarm()) {
                     tile.setFireAlarmActive(active);
+                }
+            }   
+        }
+    }
+    public void setEquipmentAll(boolean active) {
+        for(int grid_x=0; grid_x<tiles.length; grid_x++) {
+            for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
+                Tile tile = tiles[grid_x][grid_y];
+                if(tile.getEquipment()) {
+                    tile.setEquipmentActive(active);
                 }
             }   
         }

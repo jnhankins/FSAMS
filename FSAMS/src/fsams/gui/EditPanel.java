@@ -3,8 +3,6 @@ package fsams.gui;
 import fsams.FSAMS;
 import fsams.grid.ComponentType;
 import fsams.grid.Grid;
-import fsams.grid.Tile;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -153,10 +151,12 @@ public class EditPanel extends JPanel implements MouseListener {
                             grid.addComponent(ComponentType.FireAlarm, grid_x, grid_y);
                             repaint();
                             break;
+                        case Equipment:
+                            grid.addComponent(ComponentType.Equipment, grid_x, grid_y);
+                            repaint();
+                            break;
                     }
-           
                 }
-             
             }
         }
         else if (me.getButton() == MouseEvent.BUTTON3) {
@@ -201,69 +201,6 @@ public class EditPanel extends JPanel implements MouseListener {
                         }
                     }
                 }
-                
-                
-                /*
-                if(nextComponentType != null) {
-                    Component comp;
-                    switch(nextComponentType) {
-                        case Wall:
-                            int xL = toScreenXfromGridX(grid_x,Grid.grid_width);
-                            int xR = toScreenXfromGridX(grid_x+1,Grid.grid_width);
-                            int yD = toScreenYfromGridY(grid_y,Grid.grid_height);
-                            int yU = toScreenYfromGridY(grid_y+1,Grid.grid_height);
-                            int mx = me.getX();
-                            int my = me.getY();
-                            int x1 = mx-xL;
-                            int y1 = my-yU;
-                            int x2 = xR-mx;
-                            int y2 = y1;
-                            if(x1>y1) { // up-right
-                                if(x2>y2) { // up-left
-                                    grid.removeWall(grid_x  ,grid_y+1,grid_x+1,grid_y+1); // Up
-                                } else { // down-right
-                                    grid.removeWall(grid_x+1,grid_y,  grid_x+1,grid_y+1); // Right
-                                }
-                            } else { // down-left
-                                if(x2>y2) { // up-left
-                                    grid.removeWall(grid_x,  grid_y,  grid_x,  grid_y+1); // Left
-                                } else { // down-right
-                                    grid.removeWall(grid_x,  grid_y,  grid_x+1,grid_y  ); // Down
-                                }
-                            }
-                                                     
-                            
-                            repaint();
-                            break;
-                        case FireSensor:
-                            grid.removeComponent(new FireSensor(), grid_x, grid_y);
-                            repaint();
-                            break;
-                        case Fire:
-                            grid.removeComponent(new Fire(), grid_x, grid_y);
-                            repaint();
-                            break;
-                        case HumanAgent:
-                            grid.removeComponent(new HumanAgent(), grid_x, grid_y);
-                            repaint();
-                            break;
-                        case Suppressor:
-                            grid.removeComponent(new Suppressor(), grid_x, grid_y);
-                            repaint();
-                            break;
-                        case Exit:
-                            Exit exit = new Exit();
-                            grid.removeComponent(exit, grid_x, grid_y);
-                            exit.location_x = grid_x;
-                            exit.location_y = grid_y;
-                            repaint();
-                            break;
-                    }
-                    //justSelected = true;
-                    //justSelectedX = me.getX();
-                    //justSelectedY = me.getY();
-                }
-                */
             }
             repaint();
         }
