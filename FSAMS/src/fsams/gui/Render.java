@@ -85,6 +85,8 @@ public class Render {
                     int x = (int)((xL+xR)/2.0);
                     int y = (int)((yU+yD)/2.0);
                     final double sensor_radius = 0.1*editP.getScale();
+                    final double alarm_radius = 0.15*editP.getScale();
+                    final double suppression_radius = 0.2*editP.getScale();
                     final double human_radius = 0.3*editP.getScale();
                     //Draw HumanAgents
                     if(tile.getHumanAgent()) {
@@ -115,16 +117,16 @@ public class Render {
                     // Draw FireAlarms
                     if(tile.getFireAlarm()) {
                         g.setColor(tile.getFireAlarmActive()?Color.white:Color.yellow);
-                        int x1 = (int)(x-sensor_radius);
-                        int y1 = (int)(y-sensor_radius);
-                        g.drawOval(x1,y1,(int)(2*sensor_radius),(int)(2*sensor_radius));
+                        int x1 = (int)(x-alarm_radius);
+                        int y1 = (int)(y-alarm_radius);
+                        g.drawOval(x1,y1,(int)(2*alarm_radius),(int)(2*alarm_radius));
                     }
                     // Draw Suppressor
                     if(tile.getSuppressor()) {
                         g.setColor(Color.yellow);
-                        int x1 = (int)(x-sensor_radius);
-                        int y1 = (int)(y-sensor_radius);
-                        g.drawRect(x1,y1,(int)(2*sensor_radius),(int)(2*sensor_radius));
+                        int x1 = (int)(x-suppression_radius);
+                        int y1 = (int)(y-suppression_radius);
+                        g.drawRect(x1,y1,(int)(2*suppression_radius),(int)(2*suppression_radius));
                     }
                     // Draw Equipment
                     if(tile.getEquipment()){

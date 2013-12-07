@@ -9,6 +9,7 @@ package fsams.pathfinding;
 
 
 import fsams.grid.Grid;
+import fsams.grid.Tile;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -87,11 +88,13 @@ public class AStarPathFinder implements PathFinder {
      */
     public Path findPath(int sx, int sy, int tx, int ty) {
         // easy first check, if the destination is blocked, we can't get there
-
-        if (map.blocked(tx, ty) || (map.getTiles()[tx][ty].getWallU() 
-            && map.getTiles()[tx][ty].getWallD()
-            && map.getTiles()[tx][ty].getWallL()
-            && map.getTiles()[tx][ty].getWallR())) {
+        
+        Tile t = map.getTiles()[tx][ty];
+        
+        if (map.blocked(tx, ty) || (t.getWallU() 
+            && t.getWallD()
+            && t.getWallL()
+            && t.getWallR())) {
                 return null;
         }
 
