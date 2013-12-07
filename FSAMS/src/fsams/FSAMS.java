@@ -3,6 +3,7 @@ package fsams;
 import fsams.grid.ComponentType;
 import fsams.grid.Grid;
 import fsams.gui.ComponentsPanel;
+import fsams.gui.ControlAreaPanel;
 import fsams.gui.EditPanel;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -19,7 +20,8 @@ public final class FSAMS extends JFrame implements ActionListener {
     private JToolBar toolBar;
     private EditPanel editP;
     private ComponentsPanel compP;
-    
+    private ControlAreaPanel ctrlP;
+
     // World State
     public Grid grid;
     private Grid sim_grid;
@@ -29,6 +31,7 @@ public final class FSAMS extends JFrame implements ActionListener {
         toolBar =  new JToolBar();
         editP = new EditPanel(this);
         compP = new ComponentsPanel(this);
+        ctrlP = new ControlAreaPanel(this);
         
         grid = new Grid();
         sim_grid = null;
@@ -56,8 +59,13 @@ public final class FSAMS extends JFrame implements ActionListener {
         startStop.add(startB);
         startStop.add(stopB);
         
+        JSplitPane controlP = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        controlP.add(compP, JSplitPane.TOP);
+        controlP.add(ctrlP, JSplitPane.BOTTOM);
+        add(controlP, BorderLayout.CENTER);
+        
         JSplitPane splitP = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        splitP.add(compP, JSplitPane.LEFT);
+        splitP.add(controlP, JSplitPane.LEFT);
         splitP.add(editP, JSplitPane.RIGHT);
         add(splitP, BorderLayout.CENTER);
         
