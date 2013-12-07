@@ -72,7 +72,7 @@ public class Grid implements TileBasedMap {
     
     @Override
     public boolean blocked(int x, int y) {
-        if(tiles[x][y].getFire() || tiles[x][y].getHumanAgent()) {
+        if(tiles[x][y].getFire() || tiles[x][y].getHumanAgent() || tiles[x][y].getEquipment()) {
             return true;
         }
         return false;    
@@ -105,6 +105,9 @@ public class Grid implements TileBasedMap {
                 break;
             case FireAlarm:
                 t.setFireAlarm(true);
+                break;
+            case Equipment:
+                t.setEquipment(true);
                 break;
         }
     }
