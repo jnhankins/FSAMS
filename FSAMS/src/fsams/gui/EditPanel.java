@@ -3,6 +3,7 @@ package fsams.gui;
 import fsams.FSAMS;
 import fsams.grid.ComponentType;
 import fsams.grid.Grid;
+import fsams.grid.Tile;
 import java.awt.Graphics;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -224,10 +225,10 @@ public class EditPanel extends JPanel implements MouseListener, MouseMotionListe
                         } else { // down-left
                             if(x2>y2) { // up-left
                                 grid.removeWall(grid_x,  grid_y,  grid_x,  grid_y+1); // Left
-                                grid.removeDoor(grid_x+1,grid_y,  grid_x+1,grid_y+1); // Right
+                                grid.removeDoor(grid_x+1,grid_y,  grid_x+1,grid_y+1); // Left
                             } else { // down-right
                                 grid.removeWall(grid_x,  grid_y,  grid_x+1,grid_y  ); // Down
-                                grid.removeDoor(grid_x+1,grid_y,  grid_x+1,grid_y+1); // Right
+                                grid.removeDoor(grid_x+1,grid_y,  grid_x+1,grid_y+1); // Down
                             }
                         }
                     }
@@ -236,7 +237,49 @@ public class EditPanel extends JPanel implements MouseListener, MouseMotionListe
             }
         } else { // Simulation is running
             if (me.getButton() == MouseEvent.BUTTON3) {
+                   synchronized(grid) {
+                    int grid_x = toGridXfromScreenX(me.getX(),Grid.grid_width);
+                    int grid_y = toGridYfromScreenY(me.getY(),Grid.grid_height);
+                    if(grid_x<0 || Grid.grid_width<=grid_x || grid_y<0 || Grid.grid_height<=grid_y)
+                        return;
+
+                    int xL = toScreenXfromGridX(grid_x,Grid.grid_width);
+                    int xR = toScreenXfromGridX(grid_x+1,Grid.grid_width);
+                    int yD = toScreenYfromGridY(grid_y,Grid.grid_height);
+                    int yU = toScreenYfromGridY(grid_y+1,Grid.grid_height);
+                    int mx = me.getX();
+                    int my = me.getY();
                     
+                    Tile t = grid.getTiles()[grid_x][grid_y];
+
+                    int wallGrabRadius = (int)(scale/10.0);
+                    if(mx-xL>wallGrabRadius && xR-mx>wallGrabRadius && 
+                       yD-my>wallGrabRadius && my-yU>wallGrabRadius) {
+                        
+                        if(t.getEquipment()) t.setEquipmentActive(!t.getEquipmentActive());
+                        if(t.getFireAlarm()) t.setFireAlarmActive(!t.getFireAlarmActive());
+                        if(t.getSuppressor()) t.setSuppressorActive(!t.getSuppressorActive());
+                    } else {
+                        int x1 = mx-xL;
+                        int y1 = my-yU;
+                        int x2 = xR-mx;
+                        int y2 = y1;
+                        if(x1>y1) { // up-right
+                            if(x2>y2) { // up-left
+                                if(t.getDoorU()) t.setLockU(!t.getLockU());
+                            } else { // down-right
+                                if(t.getDoorR()) t.setLockR(!t.getLockR());
+                            }
+                        } else { // down-left
+                            if(x2>y2) { // up-left
+                                if(t.getDoorL()) t.setLockL(!t.getLockL());
+                            } else { // down-right
+                                if(t.getDoorD()) t.setLockD(!t.getLockD());
+                            }
+                        }
+                    }
+                }
+                repaint();
             }
         }
     }
@@ -299,9 +342,7 @@ public class EditPanel extends JPanel implements MouseListener, MouseMotionListe
     }
 
     @Override
-    public void mouseMoved(MouseEvent e) {
-        
-    }
+    public void mouseMoved(MouseEvent e) {}
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent me) {

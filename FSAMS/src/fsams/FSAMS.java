@@ -12,9 +12,19 @@ import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import java.awt.Color;
+import java.awt.FileDialog;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import org.xml.sax.SAXException;
 
 public final class FSAMS extends JFrame implements ActionListener {
     // GUI Components
@@ -27,6 +37,10 @@ public final class FSAMS extends JFrame implements ActionListener {
     public Grid grid;
     private Grid sim_grid;
     private Simulation simulation;
+    
+    // Project File
+    String workingDirectory = null;
+    String projectFileName = null;
     
     public FSAMS() {
         grid = new Grid();
@@ -45,6 +59,16 @@ public final class FSAMS extends JFrame implements ActionListener {
         simulation.start();
     }
     private void initMainWindow() {
+        JButton saveB = new JButton("Save");
+        saveB.setActionCommand("save");
+        saveB.addActionListener(this);
+        toolBar.add(saveB);
+        
+        JButton openB = new JButton("Open");
+        openB.setActionCommand("open");
+        openB.addActionListener(this);
+        toolBar.add(openB);
+        
         JToggleButton startB = new JToggleButton("Start");
         startB.setActionCommand("start");
         startB.addActionListener(this);
@@ -94,10 +118,45 @@ public final class FSAMS extends JFrame implements ActionListener {
         editP.setNextComponentType(type);
     }
     
-    
     @Override
     public void actionPerformed(ActionEvent ae) {
+        
         switch(ae.getActionCommand()){
+            case "save":
+                if(projectFileName==null) {
+                    FileDialog fd = new FileDialog(this, "Choose a file", FileDialog.SAVE);
+                    if(workingDirectory!=null)
+                        fd.setDirectory(workingDirectory);
+                    fd.setFile("*.fsams");
+                    fd.setVisible(true);
+                    projectFileName = fd.getFile();
+                    workingDirectory = fd.getDirectory();
+                }
+                if(projectFileName==null) break;
+                try {
+                    ProjectIO.saveProject(grid, projectFileName);
+                } catch (ParserConfigurationException | TransformerException ex) {
+                    JOptionPane.showMessageDialog(this, "An error was encoutned while saving the project file.");
+                }
+                break;
+            case "open":
+                FileDialog fd = new FileDialog(this, "Choose a file", FileDialog.LOAD);
+                if(workingDirectory!=null)
+                    fd.setDirectory(workingDirectory);
+                fd.setFile("*.fsams");
+                fd.setVisible(true);
+                projectFileName = fd.getFile();
+                workingDirectory = fd.getDirectory();
+                if(projectFileName==null) break;
+                try {
+                    ProjectIO.openProject(grid, projectFileName);
+                } catch (ParserConfigurationException | SAXException | IOException ex) {
+                    JOptionPane.showMessageDialog(this, "An error was encoutned while opening the project file.");
+                } catch (IllegalArgumentException ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage());
+                }
+                repaint();
+                break;
             case "start":
                 sim_grid = new Grid(grid);
                 editP.setGrid(sim_grid);
