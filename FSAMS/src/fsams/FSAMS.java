@@ -134,8 +134,11 @@ public final class FSAMS extends JFrame implements ActionListener {
     public void zoomIn() {
         editP.zoomIn();
     }
-    
     public void zoomOut() {
         editP.zoomOut();
+    }
+    
+    public boolean isSimulationRunning() {
+        return simulation.isSimRunning();
     }
 }

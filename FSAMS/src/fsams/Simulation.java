@@ -8,13 +8,7 @@ import fsams.grid.*;
 import fsams.pathfinding.AStarPathFinder;
 import fsams.pathfinding.Path;
 import java.util.ArrayList;
-import java.util.Objects;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.WindowConstants;
 
 public class Simulation extends Thread{
     // Simulation State Flags
