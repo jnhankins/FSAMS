@@ -20,7 +20,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
     private JToggleButton fireSuppressorB;
     private JToggleButton fireB;
     private JToggleButton humanAgentB;
-    private JToggleButton equipment;
+    private JToggleButton equipmentB;
     private JToggleButton alarmB;
     private JButton cancelB;
     private JToggleButton wallB;
@@ -48,8 +48,19 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         JLabel cancelL = new JLabel();
         cancelB = new JButton();
         cancelHidden = new JToggleButton();
-        equipment = new JToggleButton();
+        equipmentB = new JToggleButton();
         Box.Filler bottomFiller = new Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0));
+        
+        wallB.setActionCommand("wall");
+        doorB.setActionCommand("door");
+        exitB.setActionCommand("exit");
+        fireSensorB.setActionCommand("fireSensor");
+        fireSuppressorB.setActionCommand("fireSuppressor");
+        fireB.setActionCommand("fire");
+        humanAgentB.setActionCommand("humanAgent");
+        alarmB.setActionCommand("alarm");
+        cancelB.setActionCommand("cancel");
+        equipmentB.setActionCommand("equipment");
         
         wallB.addActionListener(this);
         doorB.addActionListener(this);
@@ -60,7 +71,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         humanAgentB.addActionListener(this);
         alarmB.addActionListener(this);
         cancelB.addActionListener(this);
-        equipment.addActionListener(this);
+        equipmentB.addActionListener(this);
         
         ButtonGroup toggleGroup = new ButtonGroup();
         toggleGroup.add(wallB);
@@ -73,7 +84,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         toggleGroup.add(alarmB);
         toggleGroup.add(cancelB);
         toggleGroup.add(cancelHidden);
-        toggleGroup.add(equipment);
+        toggleGroup.add(equipmentB);
               
         setLayout(new java.awt.GridBagLayout());
         java.awt.GridBagConstraints gridBagConstraints;
@@ -149,19 +160,19 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         gridBagConstraints.insets = new java.awt.Insets(0, 7, 0, 0);
         add(jLabel3, gridBagConstraints);
 
-        humanAgentB.setText("<html><u>H</u>uman</html>");
+        humanAgentB.setText("<html><u>P</u>erson</html>");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = ++row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(humanAgentB, gridBagConstraints);
 
-        equipment.setText("<html><u>E</u>quipment</html>");
+        equipmentB.setText("<html><u>E</u>quipment</html>");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        add(equipment, gridBagConstraints);
+        add(equipmentB, gridBagConstraints);
 
         alarmB.setText("<html><u>A</u>larm</html>");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -197,8 +208,8 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         fireSensorB.setToolTipText("Adds a fire sensor. Shortcut is ' s ' to select a fire sensor");
         fireSuppressorB.setToolTipText("Adds a sprinkeler. Shortcut is ' k ' to select a sprinkeler");
         fireB.setToolTipText("Fire. It spreads! Shortcut is ' f ' to select fire");
-        humanAgentB.setToolTipText("Humans. Adds people who proceed to the exit. Shortcut is ' h '");
-        equipment.setToolTipText("Equipment. Turn off to protect from spinklers. Shortcut is ' e '");
+        humanAgentB.setToolTipText("Person. Adds people who proceed to the exit. Shortcut is ' h '");
+        equipmentB.setToolTipText("Equipment. Turn off to protect from spinklers. Shortcut is ' e '");
         alarmB.setToolTipText("");
         cancelB.setToolTipText("Cancels the simulation, reverting the simulation to it's previous state before it began running. Shortcut is ' c ' to cancel the simuluation.");
 
@@ -206,107 +217,118 @@ public class ComponentsPanel extends JPanel implements ActionListener {
 
     }
 
-           AbstractAction fireA = new AbstractAction() {                
-                public void actionPerformed(ActionEvent ae) {
-                    fireB.doClick();
-                }
-            };
-          AbstractAction doorA = new AbstractAction() {                
-                public void actionPerformed(ActionEvent ae) {
-                    doorB.doClick();
-                }
-            };   
-          AbstractAction exitA = new AbstractAction() {
-                public void actionPerformed(ActionEvent ae) {
-                    exitB.doClick();
-                }
-            };   
-          
-          AbstractAction wallA = new AbstractAction() {
-                public void actionPerformed(ActionEvent ae) {
-                    wallB.doClick();
-                }
-            };
-          AbstractAction humanA = new AbstractAction() {
-                public void actionPerformed(ActionEvent ae) {
-                    humanAgentB.doClick();
-                }
-            };
-          AbstractAction sensorA = new AbstractAction() {
-                public void actionPerformed(ActionEvent ae) {
-                    fireSensorB.doClick();
-                }
-            };  
-          AbstractAction sprinklerA = new AbstractAction() {
-                public void actionPerformed(ActionEvent ae) {
-                    fireSuppressorB.doClick();
-                }
-            }; 
-          AbstractAction equipmentA = new AbstractAction() {
-                public void actionPerformed(ActionEvent ae) {
-                    equipment.doClick();
-                }
-            };
-          AbstractAction alarmA = new AbstractAction() {
-                public void actionPerformed(ActionEvent ae) {
-                    alarmB.doClick();
-                }
-            };    
-          AbstractAction cancelA = new AbstractAction() {
-                public void actionPerformed(ActionEvent ae) {
-                    cancelB.doClick();
-                    cancelHidden.doClick();
-                }
-            };  
+    AbstractAction fireA = new AbstractAction() {                
+         public void actionPerformed(ActionEvent ae) {
+             fireB.doClick();
+         }
+     };
+   AbstractAction doorA = new AbstractAction() {                
+         public void actionPerformed(ActionEvent ae) {
+             doorB.doClick();
+         }
+     };   
+   AbstractAction exitA = new AbstractAction() {
+         public void actionPerformed(ActionEvent ae) {
+             exitB.doClick();
+         }
+     };   
+
+   AbstractAction wallA = new AbstractAction() {
+         public void actionPerformed(ActionEvent ae) {
+             wallB.doClick();
+         }
+     };
+   AbstractAction humanA = new AbstractAction() {
+         public void actionPerformed(ActionEvent ae) {
+             humanAgentB.doClick();
+         }
+     };
+   AbstractAction sensorA = new AbstractAction() {
+         public void actionPerformed(ActionEvent ae) {
+             fireSensorB.doClick();
+         }
+     };  
+   AbstractAction sprinklerA = new AbstractAction() {
+         public void actionPerformed(ActionEvent ae) {
+             fireSuppressorB.doClick();
+         }
+    }; 
+   AbstractAction equipmentA = new AbstractAction() {
+        public void actionPerformed(ActionEvent ae) {
+            equipmentB.doClick();
+        }
+   };
+   AbstractAction alarmA = new AbstractAction() {
+        public void actionPerformed(ActionEvent ae) {
+            alarmB.doClick();
+        }
+    };    
+    AbstractAction cancelA = new AbstractAction() {
+        public void actionPerformed(ActionEvent ae) {
+            cancelB.doClick();
+            cancelHidden.doClick();
+        }
+    };  
           
     public void actionPerformed(ActionEvent ae) {
+        if(fsams.isSimulationRunning())
+            return;
+        
         Object src = ae.getSource();
-        
-       fireB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F, 0), "fire");
-       fireB.getActionMap().put("fire", fireA);
-       doorB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0), "door");
-       doorB.getActionMap().put("door", doorA);
-       exitB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_X, 0), "exit");
-       exitB.getActionMap().put("exit", exitA);
-       wallB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), "wall");
-       wallB.getActionMap().put("wall", wallA);
-       humanAgentB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_H, 0), "human");
-       humanAgentB.getActionMap().put("human", humanA);
-       fireSensorB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), "sensor");
-       fireSensorB.getActionMap().put("sensor", sensorA);
-       fireSuppressorB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_K, 0), "sprinkler");
-       fireSuppressorB.getActionMap().put("sprinkler", sprinklerA);
-       equipment.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E, 0), "equipment");
-       equipment.getActionMap().put("equipment", equipmentA);
-       alarmB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), "alarm");
-       alarmB.getActionMap().put("alarm", alarmA);
-       cancelB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_C, 0), "cancel");
-       cancelB.getActionMap().put("cancel", cancelA);
+
+        fireB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F, 0), "fire");
+        fireB.getActionMap().put("fire", fireA);
+        doorB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_D, 0), "door");
+        doorB.getActionMap().put("door", doorA);
+        exitB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_X, 0), "exit");
+        exitB.getActionMap().put("exit", exitA);
+        wallB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_W, 0), "wall");
+        wallB.getActionMap().put("wall", wallA);
+        humanAgentB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_P, 0), "person");
+        humanAgentB.getActionMap().put("person", humanA);
+        fireSensorB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), "sensor");
+        fireSensorB.getActionMap().put("sensor", sensorA);
+        fireSuppressorB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_K, 0), "sprinkler");
+        fireSuppressorB.getActionMap().put("sprinkler", sprinklerA);
+        equipmentB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E, 0), "equipment");
+        equipmentB.getActionMap().put("equipment", equipmentA);
+        alarmB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), "alarm");
+        alarmB.getActionMap().put("alarm", alarmA);
+        cancelB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_C, 0), "cancel");
+        cancelB.getActionMap().put("cancel", cancelA);
        
-        
-        if(src == wallB) {
-            fsams.setNextComponentType(ComponentType.Wall);
-        } else if(src == doorB) {
-            fsams.setNextComponentType(ComponentType.Door);
-        } else if(src == exitB) {
-            fsams.setNextComponentType(ComponentType.Exit);
-        } else if(src == fireSensorB) {
-            fsams.setNextComponentType(ComponentType.FireSensor);
-        } else if(src == fireSuppressorB) {
-            fsams.setNextComponentType(ComponentType.Suppressor);
-        } else if(src == fireB) {
-            fsams.setNextComponentType(ComponentType.Fire);
-        } else if(src == humanAgentB) {
-            fsams.setNextComponentType(ComponentType.HumanAgent);
-        } else if(src == equipment) {
-            fsams.setNextComponentType(ComponentType.Equipment);
-        } else if(src == alarmB) {
-            fsams.setNextComponentType(ComponentType.FireAlarm);
-        } else if(src == cancelB) {
-            fsams.setNextComponentType(null);
-            cancelHidden.setSelected(true);
-            
-            
+        switch(ae.getActionCommand()){
+            case "wall": 
+                fsams.setNextComponentType(ComponentType.Wall);
+                break;
+            case "door": 
+                fsams.setNextComponentType(ComponentType.Door); 
+                break;
+            case "exit": 
+                fsams.setNextComponentType(ComponentType.Exit);
+                break;
+            case "fireSensor": 
+                fsams.setNextComponentType(ComponentType.FireSensor);
+                break;
+            case "fireSuppressor": 
+                fsams.setNextComponentType(ComponentType.Sprinkler);
+                break;
+            case "fire": 
+                fsams.setNextComponentType(ComponentType.Fire);
+                break;
+            case "humanAgent": 
+                fsams.setNextComponentType(ComponentType.HumanAgent);
+                break;
+            case "equipment": 
+                fsams.setNextComponentType(ComponentType.Equipment);
+                break;
+            case "alarm":  
+                fsams.setNextComponentType(ComponentType.FireAlarm);
+                break;
+            case "cancel": 
+                fsams.setNextComponentType(null);
+                cancelHidden.setSelected(true);
+                break;
         }
         
 //        switch(src){

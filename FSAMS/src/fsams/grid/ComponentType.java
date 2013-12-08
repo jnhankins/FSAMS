@@ -6,7 +6,7 @@ public enum ComponentType {
     Fire,
     HumanAgent,
     Exit,
-    Suppressor,
+    Sprinkler,
     FireAlarm,
     Door,
     Equipment,

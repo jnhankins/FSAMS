@@ -106,7 +106,7 @@ public class Simulation extends Thread{
                                 if (tile.getFireSensor()) {
                                     simFireSensor(grid_x, grid_y, elapTime);
                                 }
-                                if(tile.getSuppressor()) {
+                                if(tile.getSprinkler()) {
                                     simSuppressor(grid_x, grid_y, elapTime, true);
                                 }
                             }

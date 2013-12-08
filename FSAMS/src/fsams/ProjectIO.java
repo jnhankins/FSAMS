@@ -58,7 +58,7 @@ public class ProjectIO {
                 if(t.getDoorR()) tileNode.setAttribute("doorR", "true");
                 if(t.getFireSensor()) tileNode.setAttribute("sensor", "true");
                 if(t.getFireAlarm()) tileNode.setAttribute("alarm", "true");
-                if(t.getSuppression()) tileNode.setAttribute("sprinkler", "true");
+                if(t.getSprinkler()) tileNode.setAttribute("sprinkler", "true");
                 if(t.getHumanAgent()) tileNode.setAttribute("person", "true");
                 if(t.getEquipment()) tileNode.setAttribute("equipment", "true");
                 if(t.getFire()) tileNode.setAttribute("fire", "true");
@@ -99,7 +99,7 @@ public class ProjectIO {
                 t.setDoorR(tileNode.getAttribute("doorR").equalsIgnoreCase("true"));
                 t.setFireSensor(tileNode.getAttribute("sensor").equalsIgnoreCase("true"));
                 t.setFireAlarm(tileNode.getAttribute("alarm").equalsIgnoreCase("true"));
-                t.setSuppression(tileNode.getAttribute("sprinkler").equalsIgnoreCase("true"));
+                t.setSprinkler(tileNode.getAttribute("sprinkler").equalsIgnoreCase("true"));
                 t.setHumanAgent(tileNode.getAttribute("person").equalsIgnoreCase("true"));
                 t.setEquipment(tileNode.getAttribute("equipment").equalsIgnoreCase("true"));
                 t.setFire(tileNode.getAttribute("fire").equalsIgnoreCase("true"));

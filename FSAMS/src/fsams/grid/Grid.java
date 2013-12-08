@@ -100,8 +100,8 @@ public class Grid implements TileBasedMap {
             case FireSensor: 
                 t.setFireSensor(true);
                 break;
-            case Suppressor: 
-                t.setSuppressor(true); 
+            case Sprinkler: 
+                t.setSprinkler(true); 
                 break;
             case FireAlarm:
                 t.setFireAlarm(true);
@@ -120,7 +120,7 @@ public class Grid implements TileBasedMap {
         t.setFire(false);
         t.setFireSensor(false);
         t.setHumanAgent(false);
-        t.setSuppressor(false);
+        t.setSprinkler(false);
         t.setFireAlarm(false);
         t.setEquipment(false);
     }
@@ -289,7 +289,7 @@ public class Grid implements TileBasedMap {
         for(int grid_x=0; grid_x<tiles.length; grid_x++) {
             for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
                 Tile tile = tiles[grid_x][grid_y];
-                if(tile.getSuppressor()) {
+                if(tile.getSprinkler()) {
                     tile.setSuppressorActive(active);
                 }
             }   

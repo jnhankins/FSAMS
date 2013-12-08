@@ -2,6 +2,7 @@ package fsams;
 
 import fsams.grid.ComponentType;
 import fsams.grid.Grid;
+import fsams.grid.Tile;
 import fsams.gui.ComponentsPanel;
 import fsams.gui.ControlAreaPanel;
 import fsams.gui.EditPanel;
@@ -13,13 +14,12 @@ import javax.swing.JSplitPane;
 import javax.swing.JToolBar;
 import java.awt.Color;
 import java.awt.FileDialog;
-import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JToggleButton;
 import javax.xml.parsers.ParserConfigurationException;
@@ -42,19 +42,32 @@ public final class FSAMS extends JFrame implements ActionListener {
     String workingDirectory = null;
     String projectFileName = null;
     
+    // File Menu
+    JMenuBar menuBar;
+    JMenuItem doorLockMI;
+    JMenuItem doorUnlockMI;
+    JMenuItem sprinklerEnableMI;
+    JMenuItem sprinklerDisableMI;
+    JMenuItem alarmEnableMI;
+    JMenuItem alarmDisableMI;
+    JMenuItem equipmentEnableMI;
+    JMenuItem equipmentDisableMI;
+    JMenuItem masterResetMI;
+    JMenuItem callEmergencyMI;
+    
     public FSAMS() {
         grid = new Grid();
         sim_grid = null;
         
         toolBar =  new JToolBar();
         editP = new EditPanel(this);
+        simulation = new Simulation(editP);
         editP.setGrid(grid);
         compP = new ComponentsPanel(this);
         
-        simulation = new Simulation(editP);
         
         ctrlP = new ControlAreaPanel(this,simulation);
-        
+                
         initMainWindow();
         simulation.start();
     }
@@ -108,6 +121,158 @@ public final class FSAMS extends JFrame implements ActionListener {
         splitP.add(editP, JSplitPane.RIGHT);
         add(splitP, BorderLayout.CENTER);
         
+        menuBar = new JMenuBar();
+        JMenu fileM = new JMenu("File");
+        JMenu editM = new JMenu("Edit");
+        JMenu viewM = new JMenu("View");
+        JMenu simulationM = new JMenu("Simulation");
+        menuBar.add(fileM);
+        menuBar.add(editM);
+        menuBar.add(viewM);
+        menuBar.add(simulationM);
+        
+        JMenuItem newMI = new JMenuItem("New");
+        newMI.setActionCommand("new");
+        newMI.addActionListener(this);
+        
+        JMenuItem saveMI = new JMenuItem("Save");
+        saveMI.setActionCommand("save");
+        saveMI.addActionListener(this);
+        
+        JMenuItem openMI = new JMenuItem("Open");
+        openMI.setActionCommand("open");
+        openMI.addActionListener(this);
+        
+        JMenuItem exitFSAMSMI = new JMenuItem("Exit");
+        exitFSAMSMI.setActionCommand("exit");
+        exitFSAMSMI.addActionListener(this);
+        
+        fileM.add(newMI);
+        fileM.add(saveMI);
+        fileM.add(openMI);
+        fileM.addSeparator();
+        fileM.add(exitFSAMSMI);
+        
+        JMenuItem wallMI = new JMenuItem("Wall");
+        JMenuItem doorMI = new JMenuItem("Door");
+        JMenuItem exitMI = new JMenuItem("Exit");
+        JMenuItem sensorMI = new JMenuItem("Sensor");
+        JMenuItem sprinklerMI = new JMenuItem("Sprinkler");
+        JMenuItem fireMI = new JMenuItem("Fire");
+        JMenuItem humanAgentMI = new JMenuItem("Person");
+        JMenuItem alarmMI = new JMenuItem("Alarm");
+        JMenuItem equipmentMI = new JMenuItem("Equipment");
+        JMenuItem cancelMI = new JMenuItem("Cancel");
+        
+        wallMI.setActionCommand("wall");
+        doorMI.setActionCommand("door");
+        exitMI.setActionCommand("exit");
+        sensorMI.setActionCommand("fireSensor");
+        sprinklerMI.setActionCommand("fireSuppressor");
+        fireMI.setActionCommand("fire");
+        humanAgentMI.setActionCommand("humanAgent");
+        alarmMI.setActionCommand("alarm");
+        equipmentMI.setActionCommand("equipment");
+        cancelMI.setActionCommand("cancel");
+        
+        wallMI.addActionListener(compP);
+        doorMI.addActionListener(compP);
+        exitMI.addActionListener(compP);
+        sensorMI.addActionListener(compP);
+        sprinklerMI.addActionListener(compP);
+        fireMI.addActionListener(compP);
+        humanAgentMI.addActionListener(compP);
+        alarmMI.addActionListener(compP);
+        equipmentMI.addActionListener(compP);
+        cancelMI.addActionListener(compP);
+        
+        editM.add(wallMI);
+        editM.add(doorMI);
+        editM.add(exitMI);
+        editM.add(sensorMI);
+        editM.add(sprinklerMI);
+        editM.add(fireMI);
+        editM.add(humanAgentMI);
+        editM.add(alarmMI);
+        editM.add(equipmentMI);
+        editM.add(cancelMI);
+        
+        JMenuItem zoomInMI = new JMenuItem("Zoom In");
+        JMenuItem zoomOutMI = new JMenuItem("Zoom Out");
+        zoomInMI.setActionCommand("zoomIn");
+        zoomOutMI.setActionCommand("zoomOut");
+        zoomInMI.addActionListener(this);
+        zoomOutMI.addActionListener(this);
+        viewM.add(zoomInMI);
+        viewM.add(zoomOutMI);
+        
+        JMenuItem startMI = new JMenuItem("Start");
+        JMenuItem stopMI = new JMenuItem("Stop");
+        startMI.setActionCommand("start");
+        stopMI.setActionCommand("stop");
+        startMI.addActionListener(this);
+        stopMI.addActionListener(this);
+        simulationM.add(startMI);
+        simulationM.add(stopMI);
+        simulationM.addSeparator();
+        
+        doorLockMI = new JMenuItem("Lock Doors");
+        doorUnlockMI = new JMenuItem("Unlock Doors");
+        sprinklerEnableMI = new JMenuItem("Activate Sprinklers");
+        sprinklerDisableMI = new JMenuItem("Deactivate Sprinklers");
+        alarmEnableMI = new JMenuItem("Activate Alarms");
+        alarmDisableMI = new JMenuItem("Decativate Alarms");
+        equipmentEnableMI = new JMenuItem("Power Equipment");
+        equipmentDisableMI = new JMenuItem("Shutdown Equipment");
+        masterResetMI = new JMenuItem("Master Reset");
+        callEmergencyMI = new JMenuItem("Call Emergency Services");
+        
+        doorLockMI.setActionCommand("doorLock");
+        doorUnlockMI.setActionCommand("doorUnlock");
+        sprinklerEnableMI.setActionCommand("sprinklerEnable");
+        sprinklerDisableMI.setActionCommand("sprinklerDisable");
+        alarmEnableMI.setActionCommand("alarmEnable");
+        alarmDisableMI.setActionCommand("alarmDisable");
+        equipmentEnableMI.setActionCommand("equipmentEnable");
+        equipmentDisableMI.setActionCommand("equipmentDisable");
+        masterResetMI.setActionCommand("masterReset");
+        callEmergencyMI.setActionCommand("callEmergency");
+        
+        doorLockMI.addActionListener(ctrlP);
+        doorUnlockMI.addActionListener(ctrlP);
+        sprinklerEnableMI.addActionListener(ctrlP);
+        sprinklerDisableMI.addActionListener(ctrlP);
+        alarmEnableMI.addActionListener(ctrlP);
+        alarmDisableMI.addActionListener(ctrlP);
+        equipmentEnableMI.addActionListener(ctrlP);
+        equipmentDisableMI.addActionListener(ctrlP);
+        masterResetMI.addActionListener(ctrlP);
+        callEmergencyMI.addActionListener(ctrlP);
+        
+        doorLockMI.setEnabled(false);
+        doorUnlockMI.setEnabled(false);
+        sprinklerEnableMI.setEnabled(false);
+        sprinklerDisableMI.setEnabled(false);
+        alarmEnableMI.setEnabled(false);
+        alarmDisableMI.setEnabled(false);
+        equipmentEnableMI.setEnabled(false);
+        equipmentDisableMI.setEnabled(false);
+        masterResetMI.setEnabled(false);
+        callEmergencyMI.setEnabled(false);
+        
+        simulationM.add(doorLockMI);
+        simulationM.add(doorUnlockMI);
+        simulationM.add(sprinklerEnableMI);
+        simulationM.add(sprinklerDisableMI);
+        simulationM.add(alarmEnableMI);
+        simulationM.add(alarmDisableMI);
+        simulationM.add(equipmentEnableMI);
+        simulationM.add(equipmentDisableMI);
+        simulationM.add(masterResetMI);
+        simulationM.add(callEmergencyMI);
+        
+        setJMenuBar(menuBar);
+        
         setSize(800, 600);
         setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -120,8 +285,34 @@ public final class FSAMS extends JFrame implements ActionListener {
     
     @Override
     public void actionPerformed(ActionEvent ae) {
-        
         switch(ae.getActionCommand()){
+            case "exit":
+                System.exit(0);
+            case "new":
+                System.out.println("herro?");
+                for(int x=0; x<Grid.grid_width; x++) {
+                    for(int y=0; y<Grid.grid_height; y++) {
+                        Tile t = grid.getTiles()[x][y];
+                        t.setWallD(false);
+                        t.setWallD(false);
+                        t.setWallL(false);
+                        t.setWallU(false);
+                        t.setWallR(false);
+                        t.setDoorD(false);
+                        t.setDoorL(false);
+                        t.setDoorU(false);
+                        t.setDoorR(false);
+                        t.setFireSensor(false);
+                        t.setFireAlarm(false);
+                        t.setSprinkler(false);
+                        t.setHumanAgent(false);
+                        t.setEquipment(false);
+                        t.setFire(false);
+                        t.setExit(false);
+                    }
+                }
+                repaint();
+                break;
             case "save":
                 if(projectFileName==null) {
                     FileDialog fd = new FileDialog(this, "Choose a file", FileDialog.SAVE);
@@ -158,12 +349,34 @@ public final class FSAMS extends JFrame implements ActionListener {
                 repaint();
                 break;
             case "start":
+                doorLockMI.setEnabled(true);
+                doorUnlockMI.setEnabled(true);
+                sprinklerEnableMI.setEnabled(true);
+                sprinklerDisableMI.setEnabled(true);
+                alarmEnableMI.setEnabled(true);
+                alarmDisableMI.setEnabled(true);
+                equipmentEnableMI.setEnabled(true);
+                equipmentDisableMI.setEnabled(true);
+                masterResetMI.setEnabled(true);
+                callEmergencyMI.setEnabled(true);
+                
                 sim_grid = new Grid(grid);
                 editP.setGrid(sim_grid);
                 simulation.startSim(sim_grid);
                 ctrlP.startSim();
                 break;
             case "stop":
+                doorLockMI.setEnabled(false);
+                doorUnlockMI.setEnabled(false);
+                sprinklerEnableMI.setEnabled(false);
+                sprinklerDisableMI.setEnabled(false);
+                alarmEnableMI.setEnabled(false);
+                alarmDisableMI.setEnabled(false);
+                equipmentEnableMI.setEnabled(false);
+                equipmentDisableMI.setEnabled(false);
+                masterResetMI.setEnabled(false);
+                callEmergencyMI.setEnabled(false);
+                
                 sim_grid = null;
                 editP.setGrid(grid);
                 simulation.stopSim();

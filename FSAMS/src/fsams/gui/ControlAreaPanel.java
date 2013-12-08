@@ -152,46 +152,56 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
         masterReset.setToolTipText("Reset all system components to their initial state.");
         callEmergency.setToolTipText("Call emergency services.");
         
+        doorLock.setActionCommand("doorLock");
+        doorUnlock.setActionCommand("doorUnlock");
+        sprinklerEnable.setActionCommand("sprinklerEnable");
+        sprinklerDisable.setActionCommand("sprinklerDisable");
+        alarmEnable.setActionCommand("alarmEnable");
+        alarmDisable.setActionCommand("alarmDisable");
+        equipmentEnable.setActionCommand("equipmentEnable");
+        equipmentDisable.setActionCommand("equipmentDisable");
+        masterReset.setActionCommand("masterReset");
+        callEmergency.setActionCommand("callEmergency");
+        
         stopSim();
     }
 
     public void actionPerformed(ActionEvent ae) {
-        Object src = ae.getSource();
-        
-        
-        if(src == doorLock) {
-            sim.setLockAll(true);
-        } 
-        else if(src == doorUnlock) { 
-            sim.setLockAll(false);
-        }
-        else if(src == sprinklerEnable) {
-            sim.setSuppressionAll(true);
-        }
-        else if(src == sprinklerDisable) {
-            sim.setSuppressionAll(false);
-        }
-        else if(src == alarmEnable) {
-            sim.setAlarmAll(true);
-        }
-        else if(src == alarmDisable) {
-            sim.setAlarmAll(false);
-        }
-        else if(src == equipmentEnable) {
-            sim.setEquipmentAll(true);
-        }
-        else if(src == equipmentDisable) {
-            sim.setEquipmentAll(false);
-        }
-        else if(src == masterReset) {
-            sim.setLockAll(false);
-            sim.setSuppressionAll(false);
-            sim.setAlarmAll(false);
-            //TODO sensor
-            sim.setEquipmentAll(true);
-        }
-        else if(src == callEmergency) {
-            JOptionPane.showMessageDialog(new JFrame(), "Emergency services have been notified.");
+        switch(ae.getActionCommand()) {
+            case "doorLock":
+                sim.setLockAll(true);
+                break;
+            case "doorUnlock": 
+                sim.setLockAll(false);
+                break;
+            case "sprinklerEnable":
+                sim.setSuppressionAll(true);
+                break;
+            case "sprinklerDisable":
+                sim.setSuppressionAll(false);
+                break;
+            case "alarmEnable":
+                sim.setAlarmAll(true);
+                break;
+            case "alarmDisable":
+                sim.setAlarmAll(false);
+                break;
+            case "equipmentEnable":
+                sim.setEquipmentAll(true);
+                break;
+            case "equipmentDisable":
+                sim.setEquipmentAll(false);
+                break;
+            case "masterReset":
+                sim.setLockAll(false);
+                sim.setSuppressionAll(false);
+                sim.setAlarmAll(false);
+                //TODO sensor
+                sim.setEquipmentAll(true);
+                break;
+            case "callEmergency":
+                JOptionPane.showMessageDialog(new JFrame(), "Emergency services have been notified.");
+                break;
         }
      }
     

@@ -16,7 +16,7 @@ public class Tile {
     // Fire Alarm
     private boolean fireAlarm, fireAlarmActive;
     // Fire Suppression
-    private boolean suppressor, suppressorActive;
+    private boolean sprinkler, sprinklerActive;
     private long suppression;
     // Human Agents
     private boolean humanAgent, humanAgentActive; 
@@ -41,7 +41,7 @@ public class Tile {
         // Fire Alarm
         fireAlarm = fireAlarmActive = false;
         // Fire Suppression
-        suppressor = suppressorActive = false;
+        sprinkler = sprinklerActive = false;
         suppression = -1;
         // Human Agents
         humanAgent = humanAgentActive = false;
@@ -78,8 +78,8 @@ public class Tile {
         this.fireAlarm = tile.fireAlarm;
         this.fireAlarmActive = tile.fireAlarmActive;
         // Fire Suppression
-        this.suppressor = tile.suppressor;
-        this.suppressorActive = tile.suppressorActive;
+        this.sprinkler = tile.sprinkler;
+        this.sprinklerActive = tile.sprinklerActive;
         this.suppression = tile.suppression;
         // Human Agents
         this.humanAgent = tile.humanAgent;
@@ -101,7 +101,7 @@ public class Tile {
         // Alarms
         fireAlarmActive = false;
         // Fire Suppression
-        suppressorActive = false;
+        sprinklerActive = false;
         suppression = -1;
         // Human Agents
         humanAgentActive = false;
@@ -128,8 +128,8 @@ public class Tile {
     public boolean getFireSensorActive() { return fireSensorActive; }
     public boolean getFireAlarm() { return fireAlarm; }
     public boolean getFireAlarmActive() { return fireAlarmActive; }
-    public boolean getSuppressor() { return suppressor; }
-    public boolean getSuppressorActive() { return suppressorActive; }
+    public boolean getSprinkler() { return sprinkler; }
+    public boolean getSuppressorActive() { return sprinklerActive; }
     public boolean getSuppression() {
         final long suppressionTime = 1000;
         if(suppression==-1 || System.currentTimeMillis()-suppression>suppressionTime) {
@@ -207,11 +207,11 @@ public class Tile {
     public void setFireAlarmActive(boolean status) {
         if(fireAlarm) fireAlarmActive = status;
     }
-    public void setSuppressor(boolean status) {
-        suppressor = status;
+    public void setSprinkler(boolean status) {
+        sprinkler = status;
     }
     public void setSuppressorActive(boolean status) { 
-        if(suppressor) suppressorActive = status;
+        if(sprinkler) sprinklerActive = status;
     }
     public void setSuppression(boolean status) {
         suppression = status? System.currentTimeMillis() : -1;

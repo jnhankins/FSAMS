@@ -122,7 +122,7 @@ public class Render {
                         g.drawOval(x1,y1,(int)(2*alarm_radius),(int)(2*alarm_radius));
                     }
                     // Draw Suppressor
-                    if(tile.getSuppressor()) {
+                    if(tile.getSprinkler()) {
                         g.setColor(Color.yellow);
                         int x1 = (int)(x-suppression_radius);
                         int y1 = (int)(y-suppression_radius);

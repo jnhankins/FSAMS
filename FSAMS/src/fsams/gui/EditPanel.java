@@ -170,8 +170,8 @@ public class EditPanel extends JPanel implements MouseListener, MouseMotionListe
                                 grid.addComponent(ComponentType.HumanAgent, grid_x, grid_y);
                                 repaint();
                                 break;
-                            case Suppressor:
-                                grid.addComponent(ComponentType.Suppressor, grid_x, grid_y);
+                            case Sprinkler:
+                                grid.addComponent(ComponentType.Sprinkler, grid_x, grid_y);
                                 repaint();
                                 break;
                             case Exit:
@@ -258,7 +258,7 @@ public class EditPanel extends JPanel implements MouseListener, MouseMotionListe
                         
                         if(t.getEquipment()) t.setEquipmentActive(!t.getEquipmentActive());
                         if(t.getFireAlarm()) t.setFireAlarmActive(!t.getFireAlarmActive());
-                        if(t.getSuppressor()) t.setSuppressorActive(!t.getSuppressorActive());
+                        if(t.getSprinkler()) t.setSuppressorActive(!t.getSuppressorActive());
                     } else {
                         int x1 = mx-xL;
                         int y1 = my-yU;
