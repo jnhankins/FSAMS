@@ -14,7 +14,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import javax.swing.JPanel;
 
-public class EditPanel extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener {
+public class EditPanel extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
     private final FSAMS fsams;
     private double centerX;
     private double centerY;
@@ -36,6 +36,8 @@ public class EditPanel extends JPanel implements MouseListener, MouseMotionListe
         addMouseListener(this);
         addMouseMotionListener(this);
         addMouseWheelListener(this);
+        addKeyListener(this);
+        setFocusable(true);
         mouseDrag = false;
     }
     
@@ -80,6 +82,7 @@ public class EditPanel extends JPanel implements MouseListener, MouseMotionListe
 
     @Override
     public void mousePressed(MouseEvent me) {
+        requestFocusInWindow();
         mouseDrag = false;
         mouseX = me.getX();
         mouseY = me.getY();
@@ -231,47 +234,68 @@ public class EditPanel extends JPanel implements MouseListener, MouseMotionListe
                 }
                 repaint();
             }
-        } else {
-            
-            
+        } else { // Simulation is running
+            if (me.getButton() == MouseEvent.BUTTON3) {
+                    
+            }
         }
     }
     @Override public void mouseClicked(MouseEvent e) { }
     @Override public void mouseEntered(MouseEvent e) { }
     @Override public void mouseExited(MouseEvent e) { }
     
-    /*
+    
     @Override public void keyTyped(KeyEvent e) { }
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.isControlDown()) {
-            controlDown = true;
-            System.out.println(controlDown);
+        final int panAmount = 20;
+        if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+            centerX -= panAmount;
+            repaint();
+        }
+        else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            centerX += panAmount;
+            repaint();
+        }
+        if(e.getKeyCode() == KeyEvent.VK_UP) {
+            centerY -= panAmount;
+            repaint();
+        }
+        if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+            centerY += panAmount;
+            repaint();
+        }
+        if(e.getKeyChar() == '+' || e.getKeyChar() == '=') {
+            zoomIn();
+            repaint();
+        }
+        if(e.getKeyChar() == '-' || e.getKeyChar() == '_') {
+            zoomOut();
+            repaint();
         }
     }
     @Override
-    public void keyReleased(KeyEvent e) {
-        if(!e.isControlDown()) {
-            controlDown = false;
-            System.out.println(controlDown);
-        }
-    }
-    */
+    public void keyReleased(KeyEvent e) {}
 
     @Override
     public void mouseDragged(MouseEvent e) {
         double newMouseX = e.getX();
         double newMouseY = e.getY();
 
-        double newCenterX = centerX - (newMouseX - mouseX);
-        double newCenterY = centerY - (newMouseY - mouseY);
-        centerX = newCenterX;
-        centerY = newCenterY;
-        repaint();
-        mouseX = newMouseX;
-        mouseY = newMouseY;
+        double dX = newMouseX - mouseX;
+        double dY = newMouseY - mouseY;
         
-        mouseDrag = true;
+        final double dragThreshold = 6;
+        if(Math.sqrt(dX*dX+dY*dY) > dragThreshold) {
+            double newCenterX = centerX - (newMouseX - mouseX);
+            double newCenterY = centerY - (newMouseY - mouseY);
+            centerX = newCenterX;
+            centerY = newCenterY;
+            repaint();
+            mouseX = newMouseX;
+            mouseY = newMouseY;
+            mouseDrag = true;
+        }
     }
 
     @Override
