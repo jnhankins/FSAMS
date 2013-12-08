@@ -8,7 +8,13 @@ import fsams.grid.*;
 import fsams.pathfinding.AStarPathFinder;
 import fsams.pathfinding.Path;
 import java.util.ArrayList;
+import java.util.Objects;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 public class Simulation extends Thread{
     // Simulation State Flags
@@ -342,7 +348,14 @@ public class Simulation extends Thread{
     }
     
     public void fireDetected(int sensorX, int sensorY) {
-        System.out.println("Fire detected at (" + sensorX + ", " + sensorY + ")");
+        System.out.println("Fire detected by sensor at (" + sensorX + ", " + sensorY + ")");
+        for (int x = 0; x < grid.grid_width; x++) {
+            for (int y = 0; y < grid.grid_height; y++) {
+                if (grid.getTiles()[x][y].getFireAlarm()) {
+                   grid.getTiles()[x][y].setFireAlarmActive(true);
+                }
+            }
+        }
     }
     
     public void simSuppressor(int grid_x, int grid_y, double elapTime, boolean turnOn){
