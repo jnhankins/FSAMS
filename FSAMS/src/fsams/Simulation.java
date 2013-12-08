@@ -238,7 +238,7 @@ public class Simulation extends Thread{
                 // Left
                 x = grid_x-1;
                 y = grid_y;
-                if(0<=x && x<=Grid.grid_width && 0<=y && y<Grid.grid_height
+                if(0<=x && x<Grid.grid_width && 0<=y && y<Grid.grid_height
                     && !t.getWallL() && !t.getLockL()
                     && !tiles[x][y].getEquipment() && !tiles[x][y].getHumanAgent()) {
                     openL = true;
@@ -251,7 +251,7 @@ public class Simulation extends Thread{
                 // Down
                 x = grid_x;
                 y = grid_y-1;
-                if(0<=x && x<=Grid.grid_width && 0<=y && y<Grid.grid_height
+                if(0<=x && x<Grid.grid_width && 0<=y && y<Grid.grid_height
                     && !t.getWallD() && !t.getLockD()
                     && !tiles[x][y].getEquipment() && !tiles[x][y].getHumanAgent()) {
                     openD = true;
@@ -263,7 +263,7 @@ public class Simulation extends Thread{
                 // Right
                 x = grid_x+1;
                 y = grid_y;
-                if(0<=x && x<=Grid.grid_width && 0<=y && y<Grid.grid_height
+                if(0<=x && x<Grid.grid_width && 0<=y && y<Grid.grid_height
                     && !t.getWallR() && !t.getLockR()
                     && !tiles[x][y].getEquipment() && !tiles[x][y].getHumanAgent()) {
                     openR = true;
@@ -275,7 +275,7 @@ public class Simulation extends Thread{
                 // Up
                 x = grid_x;
                 y = grid_y+1;
-                if(0<=x && x<=Grid.grid_width && 0<=y && y<Grid.grid_height
+                if(0<=x && x<Grid.grid_width && 0<=y && y<Grid.grid_height
                     && !t.getWallU() && !t.getLockU()
                     && !tiles[x][y].getEquipment() && !tiles[x][y].getHumanAgent()) {
                     openU = true;
