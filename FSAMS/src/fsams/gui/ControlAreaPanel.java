@@ -22,12 +22,17 @@ import javax.swing.JPanel;
 public class ControlAreaPanel extends JPanel implements ActionListener {
     private final FSAMS fsams;
     private final Simulation sim;
-    private JButton callEmergency;
-    private JButton lockDoors;
-    private JButton activateSprinklers;
-    private JButton activateAlarms;
+    
+    private JButton doorLock;
+    private JButton doorUnlock;
+    private JButton sprinklerEnable;
+    private JButton sprinklerDisable;
+    private JButton alarmEnable;
+    private JButton alarmDisable;
+    private JButton equipmentEnable;
+    private JButton equipmentDisable;
     private JButton masterReset;
-    private JButton eShutDown;
+    private JButton callEmergency;
     
     public ControlAreaPanel(FSAMS fsams, Simulation sim) {
         this.fsams = fsams;
@@ -36,124 +41,182 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
     }
     
     private void initComponents() {
-        callEmergency = new JButton();
-        lockDoors = new JButton();
-        activateSprinklers = new JButton();
-        activateAlarms = new JButton();
+        doorLock = new JButton();
+        doorUnlock = new JButton();
+        sprinklerEnable = new JButton();
+        sprinklerDisable = new JButton();
+        alarmEnable = new JButton();
+        alarmDisable = new JButton();
+        equipmentEnable = new JButton();
+        equipmentDisable = new JButton();
         masterReset = new JButton();
-        eShutDown = new JButton();
+        callEmergency = new JButton();
         
-        callEmergency.addActionListener(this);
-        lockDoors.addActionListener(this);
-        activateSprinklers.addActionListener(this);
-        activateAlarms.addActionListener(this);
+        
+        doorLock.addActionListener(this);
+        doorUnlock.addActionListener(this);
+        sprinklerEnable.addActionListener(this);
+        sprinklerDisable.addActionListener(this);
+        alarmEnable.addActionListener(this);
+        alarmDisable.addActionListener(this);
+        equipmentEnable.addActionListener(this);
+        equipmentDisable.addActionListener(this);
         masterReset.addActionListener(this);
-        eShutDown.addActionListener(this);
+        callEmergency.addActionListener(this);
         
         setLayout(new java.awt.GridBagLayout());
         java.awt.GridBagConstraints gridBagConstraints;
+        
         int row=0;
-        
-        callEmergency.setText("Emergency");
+        doorLock.setText("Lock Doors");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = ++row;
+        gridBagConstraints.gridy = row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        add(callEmergency, gridBagConstraints);
-
-        lockDoors.setText("Lock Doors");
+        add(doorLock, gridBagConstraints);
+        doorUnlock.setText("Unlock Doors");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        add(lockDoors, gridBagConstraints);
-
-        activateSprinklers.setText("Sprinklers");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = row;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        add(activateSprinklers, gridBagConstraints);
-
-        activateAlarms.setText("Alarms");
+        add(doorUnlock, gridBagConstraints);
+        
+        row++;
+        sprinklerEnable.setText("Activate Sprinklers");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = ++row;
+        gridBagConstraints.gridy = row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        add(activateAlarms, gridBagConstraints);
-
-        eShutDown.setText("Equipment Off");
+        add(sprinklerEnable, gridBagConstraints);
+        sprinklerDisable.setText("Deactivate Sprinklers");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        add(eShutDown, gridBagConstraints);
+        add(sprinklerDisable, gridBagConstraints);
         
-        masterReset.setText("Reset");
+        row++;
+        alarmEnable.setText("Activate Alarms");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = row;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        add(alarmEnable, gridBagConstraints);
+        alarmDisable.setText("Deactivate Alarms");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = row;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        add(alarmDisable, gridBagConstraints);
+        
+        row++;
+        equipmentEnable.setText("Power Equipment");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = row;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        add(equipmentEnable, gridBagConstraints);
+        equipmentDisable.setText("Shutdown Equipment");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = row;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        add(equipmentDisable, gridBagConstraints);
+        
+        row++;
+        masterReset.setText("Master Reset");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = row;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(masterReset, gridBagConstraints);
         
-        callEmergency.setToolTipText("Notifies Police and Fire Departmant Services.");
-        lockDoors.setToolTipText("Locks all doors in the event of a security breach.");
-        activateSprinklers.setToolTipText("Turns on all sprinklers.");
-        activateAlarms.setToolTipText("Turns on all alarms");
-        masterReset.setToolTipText("Resets all systems: doors, sprinklers, and alarms.");
-        eShutDown.setToolTipText("Shuts down all equipment.");
+        row++;
+        callEmergency.setText("Call Emergency Serviecs");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = row;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        add(callEmergency, gridBagConstraints);
         
-        callEmergency.setEnabled(false);
-        lockDoors.setEnabled(false);
-        activateSprinklers.setEnabled(false);
-        activateAlarms.setEnabled(false);
-        masterReset.setEnabled(false);
-        eShutDown.setEnabled(false);
+        doorLock.setToolTipText("Lock all doors.");
+        doorUnlock.setToolTipText("Unlock all doors.");
+        sprinklerEnable.setToolTipText("Activate all sprinklers.");
+        sprinklerDisable.setToolTipText("Deactivate all sprinklers.");
+        alarmEnable.setToolTipText("Activate all alarms.");
+        alarmDisable.setToolTipText("Deactivate all alarms.");
+        equipmentEnable.setToolTipText("Enable all equipment.");
+        equipmentDisable.setToolTipText("Disable all equipment.");
+        masterReset.setToolTipText("Reset all system components to their initial state.");
+        callEmergency.setToolTipText("Call emergency services.");
+        
+        stopSim();
     }
 
     public void actionPerformed(ActionEvent ae) {
         Object src = ae.getSource();
-        if(src == callEmergency) {
-            JOptionPane.showMessageDialog(new JFrame(), "Emergency Services Have Been Notified.");
-        } else if(src == lockDoors) {
-            JOptionPane.showMessageDialog(new JFrame(), "All Doors Have Been Locked.");
-            sim.setLockAll(true);
-            fsams.repaint();
-        } else if(src == activateSprinklers) {          
-            JOptionPane.showMessageDialog(new JFrame(), "All Fire Suppression Systems Have Been Activated.");
-            sim.setSuppressionAll(true);
-            fsams.repaint();
-        } else if (src == activateAlarms) {
-            JOptionPane.showMessageDialog(new JFrame(), "All Alarms Have Been Activated.");
-             sim.setAlarmAll(true);
-             fsams.repaint();
-        } else if (src == masterReset) {
-            JOptionPane.showMessageDialog(new JFrame(), "System Has Been Reset.");
-            sim.setLockAll(false);
-            sim.setAlarmAll(false);
-            sim.setSuppressionAll(false);
-            sim.setSensorsAll(false);
-            fsams.repaint();
-        } else if (src == eShutDown) {
-            JOptionPane.showMessageDialog(new JFrame(), "All Equipment Has Been Shut Down.");
-        } 
         
+        
+        if(src == doorLock) {
+            sim.setLockAll(true);
+        } 
+        else if(src == doorUnlock) { 
+            sim.setLockAll(false);
+        }
+        else if(src == sprinklerEnable) {
+            sim.setSuppressionAll(true);
+        }
+        else if(src == sprinklerDisable) {
+            sim.setSuppressionAll(false);
+        }
+        else if(src == alarmEnable) {
+            sim.setAlarmAll(true);
+        }
+        else if(src == alarmDisable) {
+            sim.setAlarmAll(false);
+        }
+        else if(src == equipmentEnable) {
+            sim.setEquipmentAll(true);
+        }
+        else if(src == equipmentDisable) {
+            sim.setEquipmentAll(false);
+        }
+        else if(src == masterReset) {
+            sim.setLockAll(false);
+            sim.setSuppressionAll(false);
+            sim.setAlarmAll(false);
+            //TODO sensor
+            sim.setEquipmentAll(true);
+        }
+        else if(src == callEmergency) {
+            JOptionPane.showMessageDialog(new JFrame(), "Emergency services have been notified.");
+        }
      }
     
     public void startSim() {
-        callEmergency.setEnabled(true);
-        lockDoors.setEnabled(true);
-        activateSprinklers.setEnabled(true);
-        activateAlarms.setEnabled(true);
+        doorLock.setEnabled(true);
+        doorUnlock.setEnabled(true);
+        sprinklerEnable.setEnabled(true);
+        sprinklerDisable.setEnabled(true);
+        alarmEnable.setEnabled(true);
+        alarmDisable.setEnabled(true);
+        equipmentEnable.setEnabled(true);
+        equipmentDisable.setEnabled(true);
         masterReset.setEnabled(true);
-        eShutDown.setEnabled(true);
+        callEmergency.setEnabled(true);
     }
     public void stopSim() {
-        callEmergency.setEnabled(false);
-        lockDoors.setEnabled(false);
-        activateSprinklers.setEnabled(false);
-        activateAlarms.setEnabled(false);
+        doorLock.setEnabled(false);
+        doorUnlock.setEnabled(false);
+        sprinklerEnable.setEnabled(false);
+        sprinklerDisable.setEnabled(false);
+        alarmEnable.setEnabled(false);
+        alarmDisable.setEnabled(false);
+        equipmentEnable.setEnabled(false);
+        equipmentDisable.setEnabled(false);
         masterReset.setEnabled(false);
-        eShutDown.setEnabled(false);
+        callEmergency.setEnabled(false);
     }
 }
