@@ -17,7 +17,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
     private JToggleButton doorB;
     private JToggleButton exitB;
     private JToggleButton fireSensorB;
-    private JToggleButton fireSuppressorB;
+    private JToggleButton sprinklerB;
     private JToggleButton fireB;
     private JToggleButton humanAgentB;
     private JToggleButton equipmentB;
@@ -40,7 +40,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         exitB = new JToggleButton();
         JLabel jLabel2 = new JLabel();
         fireSensorB = new JToggleButton();
-        fireSuppressorB = new JToggleButton();
+        sprinklerB = new JToggleButton();
         fireB = new JToggleButton();
         JLabel jLabel3 = new JLabel();
         humanAgentB = new JToggleButton();
@@ -55,7 +55,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         doorB.setActionCommand("door");
         exitB.setActionCommand("exit");
         fireSensorB.setActionCommand("fireSensor");
-        fireSuppressorB.setActionCommand("fireSuppressor");
+        sprinklerB.setActionCommand("fireSuppressor");
         fireB.setActionCommand("fire");
         humanAgentB.setActionCommand("humanAgent");
         alarmB.setActionCommand("alarm");
@@ -66,7 +66,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         doorB.addActionListener(this);
         exitB.addActionListener(this);
         fireSensorB.addActionListener(this);
-        fireSuppressorB.addActionListener(this);
+        sprinklerB.addActionListener(this);
         fireB.addActionListener(this);
         humanAgentB.addActionListener(this);
         alarmB.addActionListener(this);
@@ -78,7 +78,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         toggleGroup.add(fireB);
         toggleGroup.add(humanAgentB);
         toggleGroup.add(fireSensorB);
-        toggleGroup.add(fireSuppressorB);
+        toggleGroup.add(sprinklerB);
         toggleGroup.add(doorB);
         toggleGroup.add(exitB);
         toggleGroup.add(alarmB);
@@ -136,12 +136,12 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(fireSensorB, gridBagConstraints);
 
-        fireSuppressorB.setText("<html>S<u>p</u>rinkler</html>");
+        sprinklerB.setText("<html>Sprin<u>k</u>ler</html>");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = row;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        add(fireSuppressorB, gridBagConstraints);
+        add(sprinklerB, gridBagConstraints);
 
         fireB.setText("<html><u>F</u>ire</html>");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -206,7 +206,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         doorB.setToolTipText("Adds a door. Shortcut is ' d ' to select a door");
         exitB.setToolTipText("Adds an exit. Humans proceed towards it in the event of an alarm. Shortcut is ' e ' to select an exit"); 
         fireSensorB.setToolTipText("Adds a fire sensor. Shortcut is ' s ' to select a fire sensor");
-        fireSuppressorB.setToolTipText("Adds a sprinkeler. Shortcut is ' k ' to select a sprinkeler");
+        sprinklerB.setToolTipText("Adds a sprinkeler. Shortcut is ' k ' to select a sprinkeler");
         fireB.setToolTipText("Fire. It spreads! Shortcut is ' f ' to select fire");
         humanAgentB.setToolTipText("Person. Adds people who proceed to the exit. Shortcut is ' h '");
         equipmentB.setToolTipText("Equipment. Turn off to protect from spinklers. Shortcut is ' e '");
@@ -250,7 +250,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
      };  
    AbstractAction sprinklerA = new AbstractAction() {
          public void actionPerformed(ActionEvent ae) {
-             fireSuppressorB.doClick();
+             sprinklerB.doClick();
          }
     }; 
    AbstractAction equipmentA = new AbstractAction() {
@@ -288,8 +288,8 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         humanAgentB.getActionMap().put("person", humanA);
         fireSensorB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_S, 0), "sensor");
         fireSensorB.getActionMap().put("sensor", sensorA);
-        fireSuppressorB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_K, 0), "sprinkler");
-        fireSuppressorB.getActionMap().put("sprinkler", sprinklerA);
+        sprinklerB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_K, 0), "sprinkler");
+        sprinklerB.getActionMap().put("sprinkler", sprinklerA);
         equipmentB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E, 0), "equipment");
         equipmentB.getActionMap().put("equipment", equipmentA);
         alarmB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), "alarm");

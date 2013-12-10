@@ -289,7 +289,6 @@ public final class FSAMS extends JFrame implements ActionListener {
             case "exit":
                 System.exit(0);
             case "new":
-                System.out.println("herro?");
                 for(int x=0; x<Grid.grid_width; x++) {
                     for(int y=0; y<Grid.grid_height; y++) {
                         Tile t = grid.getTiles()[x][y];

@@ -179,9 +179,7 @@ public class Tile {
         if(doorU) lockU = status;
     }
     public void setLockD(boolean status) {
-        System.out.println("? "+status);
         if(doorD) lockD = status;
-        System.out.println("! "+status);
     }
     public void setLockR(boolean status) {
         if(doorR) lockR = status;

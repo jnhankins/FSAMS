@@ -180,7 +180,6 @@ public class Simulation extends Thread{
                     continue;
                 }
                 float cost = path.getLength();
-                System.out.println(cost);
                 if(cost < lowestCost) {
                     index = exits.indexOf(exit);
                     lowestCost = cost;

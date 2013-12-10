@@ -347,7 +347,6 @@ public class EditPanel extends JPanel implements MouseListener, MouseMotionListe
     @Override
     public void mouseWheelMoved(MouseWheelEvent me) {
         int notches = me.getWheelRotation();
-        System.out.println(notches);
         if(notches<0) {
             zoomIn();
         }
