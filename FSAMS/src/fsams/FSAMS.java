@@ -6,6 +6,7 @@ import fsams.grid.Tile;
 import fsams.gui.ComponentsPanel;
 import fsams.gui.ControlAreaPanel;
 import fsams.gui.EditPanel;
+import fsams.gui.TimerPanel;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,6 +33,7 @@ public final class FSAMS extends JFrame implements ActionListener {
     private EditPanel editP;
     private ComponentsPanel compP;
     private ControlAreaPanel ctrlP;
+    private TimerPanel timerP;
 
     // World State
     public Grid grid;
@@ -65,8 +67,9 @@ public final class FSAMS extends JFrame implements ActionListener {
         editP.setGrid(grid);
         compP = new ComponentsPanel(this);
         
-        
         ctrlP = new ControlAreaPanel(this,simulation);
+        timerP = new TimerPanel(this, simulation);
+        simulation.setTimerP(timerP);
                 
         initMainWindow();
         simulation.start();
@@ -116,8 +119,13 @@ public final class FSAMS extends JFrame implements ActionListener {
         controlP.add(ctrlP, JSplitPane.BOTTOM);
         add(controlP, BorderLayout.CENTER);
         
+        JSplitPane timeP = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        timeP.add(controlP, JSplitPane.TOP);
+        timeP.add(timerP, JSplitPane.BOTTOM);
+        add(timeP, BorderLayout.CENTER);
+        
         JSplitPane splitP = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        splitP.add(controlP, JSplitPane.LEFT);
+        splitP.add(timeP, JSplitPane.LEFT);
         splitP.add(editP, JSplitPane.RIGHT);
         add(splitP, BorderLayout.CENTER);
         
@@ -363,6 +371,7 @@ public final class FSAMS extends JFrame implements ActionListener {
                 editP.setGrid(sim_grid);
                 simulation.startSim(sim_grid);
                 ctrlP.startSim();
+                
                 break;
             case "stop":
                 doorLockMI.setEnabled(false);
@@ -375,6 +384,8 @@ public final class FSAMS extends JFrame implements ActionListener {
                 equipmentDisableMI.setEnabled(false);
                 masterResetMI.setEnabled(false);
                 callEmergencyMI.setEnabled(false);
+                
+                timerP.stop();
                 
                 sim_grid = null;
                 editP.setGrid(grid);

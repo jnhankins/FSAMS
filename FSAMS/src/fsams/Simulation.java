@@ -5,13 +5,16 @@
 package fsams;
 
 import fsams.grid.*;
+import fsams.gui.TimerPanel;
 import fsams.pathfinding.AStarPathFinder;
 import fsams.pathfinding.Path;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Simulation extends Thread{
     // Simulation State Flags
+    private boolean timerUsed;
     private boolean startFlag;
     private boolean isProgRunning;
     private boolean isSimRunning;
@@ -21,6 +24,7 @@ public class Simulation extends Thread{
     private Grid grid;
     // GUI Component
     private final JPanel panel;
+    private TimerPanel timerP;
     private ArrayList<Tile> exits;
     
     public Simulation(JPanel panel) {
@@ -28,15 +32,32 @@ public class Simulation extends Thread{
         startFlag = false;
         isProgRunning = true;
         isSimRunning = false;
+        timerUsed = false;
+    }
+    
+    public void setTimerP(TimerPanel timerP) {
+        this.timerP = timerP;
     }
     
     public boolean isSimRunning(){
         return isSimRunning;
     }
+    
+    public void timeOut() {
+        setSuppressionAll(true);
+        setAlarmAll(true);
+        setEquipmentAll(false);
+        JOptionPane.showMessageDialog(panel, "Emergency services have been notified.\n"
+                + "All alarms have been activated.\n"
+                + "All sprinklers are engaged.\n"
+                + "All equipment has been shutdown.");
+    }
 
     public void startSim(Grid grid) {
+        
         startFlag = !isSimRunning;
         if(startFlag) {
+            timerUsed = false;
             System.out.println("hello I'm starting");
             Tile[][] tiles = grid.getTiles();
             exits = new ArrayList<>();
@@ -77,6 +98,7 @@ public class Simulation extends Thread{
                 long lastTime = System.currentTimeMillis();
                 while(isSimRunning){
                     long currTime = System.currentTimeMillis();
+                    System.out.println(currTime);
                     if((currTime-lastTime)<10) {
                         try {
                             Thread.sleep(10-(currTime-lastTime));
@@ -334,6 +356,11 @@ public class Simulation extends Thread{
                 if(x >=0 && x < Grid.grid_width && y >= 0 && y < Grid.grid_height) {
                     if (grid.getTiles()[x][y].getFire()) {
                         fireDetected(grid_x, grid_y);
+                        if(!timerUsed){
+                            timerP.start();
+                            timerUsed = true;
+                        }
+                        
                     }
                 }
             }
