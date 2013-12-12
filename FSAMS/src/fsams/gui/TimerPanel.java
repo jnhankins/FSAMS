@@ -9,14 +9,8 @@ package fsams.gui;
 import fsams.FSAMS;
 import fsams.Simulation;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Timer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -26,20 +20,24 @@ import javax.swing.JPanel;
  * @author FSAMS Team
  */
 public final class TimerPanel extends JPanel {
-    private final FSAMS fsams;
+    //private final FSAMS fsams;
     private final Simulation sim;
     private JLabel label;
     private TimerThread timer;
-    
-    
+
+    /**
+     * Creates a new TimerPanel to display a timer when the simulation begins
+     * @param sim
+     */
     public TimerPanel(FSAMS fsams, Simulation sim) {
-        this.fsams = fsams;
+        //this.fsams = fsams;
         this.sim = sim;
         timer = new TimerThread(this);
         initComponents();
     }
     
-    public void initComponents(){
+
+    private void initComponents(){
         
         label = new JLabel("00:00:000");//the start timer
         label.setFont(new Font("Serif", Font.PLAIN, 36));
@@ -55,12 +53,19 @@ public final class TimerPanel extends JPanel {
         add(label, gridBagConstraints);
     }
     
+    /**
+     * Starts the timer
+     */
     public void start() {
         if(!timer.isAlive()){
             timer = new TimerThread(this);
             timer.start();
         }
     }
+
+    /**
+     * Stops the timer
+     */
     public void stop() {
         if(timer.isAlive())
             timer.shouldStop = true;

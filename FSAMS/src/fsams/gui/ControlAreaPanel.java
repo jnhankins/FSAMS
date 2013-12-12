@@ -17,10 +17,9 @@ import javax.swing.JPanel;
 
 /**
  *
- * @author Hector
+ * @author FSAMS Team
  */
 public class ControlAreaPanel extends JPanel implements ActionListener {
-    private final FSAMS fsams;
     private final Simulation sim;
     
     private JButton doorLock;
@@ -34,8 +33,13 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
     private JButton masterReset;
     private JButton callEmergency;
     
+    /**
+     * Creates a new ControlAreaPanel to control the simulation after the
+     * simulation begins.
+     * @param fsams
+     * @param sim
+     */
     public ControlAreaPanel(FSAMS fsams, Simulation sim) {
-        this.fsams = fsams;
         this.sim = sim;
         initComponents();
     }
@@ -205,6 +209,9 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
         }
      }
     
+    /**
+     * Enables the buttons when the simulation starts
+     */
     public void startSim() {
         doorLock.setEnabled(true);
         doorUnlock.setEnabled(true);
@@ -217,6 +224,10 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
         masterReset.setEnabled(true);
         callEmergency.setEnabled(true);
     }
+
+    /**
+     * Disables the buttons when the simulation stops
+     */
     public void stopSim() {
         doorLock.setEnabled(false);
         doorUnlock.setEnabled(false);

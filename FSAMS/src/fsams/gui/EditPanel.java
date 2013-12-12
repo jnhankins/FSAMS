@@ -5,7 +5,6 @@ import fsams.grid.ComponentType;
 import fsams.grid.Grid;
 import fsams.grid.Tile;
 import java.awt.Graphics;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -15,6 +14,10 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import javax.swing.JPanel;
 
+/**
+ *
+ * @author FSAMS Team
+ */
 public class EditPanel extends JPanel implements MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
     private final FSAMS fsams;
     private double centerX;
@@ -28,6 +31,10 @@ public class EditPanel extends JPanel implements MouseListener, MouseMotionListe
     
     private ComponentType nextComponentType;
     
+    /**
+     * Constructs a new EditPanel to render the simulation and edit area
+     * @param fsams Needs FSAMS to communicate with other GUI objects
+     */
     public EditPanel(FSAMS fsams) {
         this.fsams = fsams;
         centerX = 0;
@@ -42,9 +49,19 @@ public class EditPanel extends JPanel implements MouseListener, MouseMotionListe
         mouseDrag = false;
     }
     
+    /**
+     * 
+     * @param grid
+     */
     public void setGrid(Grid grid) {
         this.grid = grid;
     }
+
+    /**
+     * Sets the nextComponentType from FSAMS to the selected component type
+     * button, otherwise sets it to null.
+     * @param type setNextComponentType from ComponentsPanel to FSAMS to EditPanel
+     */
     public void setNextComponentType(ComponentType type) {
         nextComponentType = type;
     }
@@ -62,13 +79,24 @@ public class EditPanel extends JPanel implements MouseListener, MouseMotionListe
         return (int)((y-getHeight()/2.0+centerY-grid_height*scale/2.0)/(-scale));
     }
     
+    /**
+     * Gets the scale of the world
+     * @return returns scale
+     */
     public double getScale() {
         return scale;
     }
+
+    /**
+     * Zooms In the world
+     */
     public void zoomIn() {
         scale *= zoomFactor;
     }
     
+    /**
+     * Zooms Out the world
+     */
     public void zoomOut() {
         scale /= zoomFactor;
     }

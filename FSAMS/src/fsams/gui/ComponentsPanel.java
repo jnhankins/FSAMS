@@ -4,11 +4,18 @@ import fsams.FSAMS;
 import fsams.grid.ComponentType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
-import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
+import javax.swing.AbstractAction;
+import javax.swing.Box;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JToggleButton;
+import javax.swing.KeyStroke;
 /**
- *
+ * 
  * @author FSAMS Team
  */
 public class ComponentsPanel extends JPanel implements ActionListener {
@@ -27,6 +34,11 @@ public class ComponentsPanel extends JPanel implements ActionListener {
     private JToggleButton cancelHidden;
     private JToggleButton intruderB;
     
+    /**
+     * Constructs a new ComponentsPanel with JToggle buttons of available
+     * ComponentType for FSAMS
+     * @param fsams Takes in a new argument
+     */
     public ComponentsPanel(FSAMS fsams) {
         this.fsams = fsams;
         initComponents();
@@ -225,73 +237,83 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         alarmB.setToolTipText("");
         cancelB.setToolTipText("Cancels the simulation, reverting the simulation to it's previous state before it began running. Shortcut is ' c ' to cancel the simuluation.");
 
-            wallB.doClick();
+        wallB.doClick();
 
     }
 
     AbstractAction fireA = new AbstractAction() {                
+         @Override
          public void actionPerformed(ActionEvent ae) {
              fireB.doClick();
          }
      };
-   AbstractAction doorA = new AbstractAction() {                
+    AbstractAction doorA = new AbstractAction() {                
+         @Override
          public void actionPerformed(ActionEvent ae) {
              doorB.doClick();
          }
      };   
-   AbstractAction exitA = new AbstractAction() {
+    AbstractAction exitA = new AbstractAction() {
+         @Override
          public void actionPerformed(ActionEvent ae) {
              exitB.doClick();
          }
      };   
 
-   AbstractAction wallA = new AbstractAction() {
+    AbstractAction wallA = new AbstractAction() {
+         @Override
          public void actionPerformed(ActionEvent ae) {
              wallB.doClick();
          }
      };
-   AbstractAction humanA = new AbstractAction() {
+    AbstractAction humanA = new AbstractAction() {
+         @Override
          public void actionPerformed(ActionEvent ae) {
              humanAgentB.doClick();
          }
      };
-   AbstractAction sensorA = new AbstractAction() {
+    AbstractAction sensorA = new AbstractAction() {
+         @Override
          public void actionPerformed(ActionEvent ae) {
              fireSensorB.doClick();
          }
      };  
-   AbstractAction sprinklerA = new AbstractAction() {
+    AbstractAction sprinklerA = new AbstractAction() {
+         @Override
          public void actionPerformed(ActionEvent ae) {
              sprinklerB.doClick();
          }
     }; 
-   AbstractAction equipmentA = new AbstractAction() {
+    AbstractAction equipmentA = new AbstractAction() {
+        @Override
         public void actionPerformed(ActionEvent ae) {
             equipmentB.doClick();
         }
    };
-   AbstractAction alarmA = new AbstractAction() {
+    AbstractAction alarmA = new AbstractAction() {
+        @Override
         public void actionPerformed(ActionEvent ae) {
             alarmB.doClick();
         }
     };    
-   AbstractAction intruderA = new AbstractAction() {
+    AbstractAction intruderA = new AbstractAction() {
+        @Override
         public void actionPerformed(ActionEvent ae) {
             intruderB.doClick();
         }
     };    
     AbstractAction cancelA = new AbstractAction() {
+        @Override
         public void actionPerformed(ActionEvent ae) {
             cancelB.doClick();
             cancelHidden.doClick();
         }
     };  
           
+    @Override
     public void actionPerformed(ActionEvent ae) {
         if(fsams.isSimulationRunning())
             return;
-        
-        Object src = ae.getSource();
 
         fireB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_F, 0), "fire");
         fireB.getActionMap().put("fire", fireA);
@@ -351,13 +373,5 @@ public class ComponentsPanel extends JPanel implements ActionListener {
                 cancelHidden.setSelected(true);
                 break;
         }
-        
-//        switch(src){
-//            case "aa":
-//                 fireB.doClick();
-//        }
-        
-        
     }
-    
 }
