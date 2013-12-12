@@ -12,10 +12,17 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 /**
- *
- * @author scottygomez
+ * Handles all rendering for the simulation.
+ * @author FSAMS Team
  */
 public class Render {
+
+    /**
+     *
+     * @param editP the panel to render the simulation.
+     * @param g the graphics to draw for the components.
+     * @param grid the tile grid on which the simulation runs.
+     */
     public static void draw(EditPanel editP, Graphics g, Grid grid) {
         // Clear the drawing area
             g.setColor(Color.black);

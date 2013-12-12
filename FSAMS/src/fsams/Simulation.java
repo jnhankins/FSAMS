@@ -12,6 +12,10 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+/**
+ * Handles all of the logic for FSAMS
+ * @author FSAMS Team
+ */
 public class Simulation extends Thread{
     // Simulation State Flags
     private boolean timerUsed;
@@ -28,6 +32,10 @@ public class Simulation extends Thread{
     private ArrayList<Tile> exits;
     private ArrayList<Tile> equipments;
     
+    /**
+     * Constructs a new Simulation in the specified panel.
+     * @param panel the panel used to display the Simulation.
+     */
     public Simulation(JPanel panel) {
         this.panel = panel;
         startFlag = false;
@@ -36,14 +44,21 @@ public class Simulation extends Thread{
         timerUsed = false;
     }
     
-    public void setTimerP(TimerPanel timerP) {
+    protected void setTimerP(TimerPanel timerP) {
         this.timerP = timerP;
     }
     
+    /**
+     * Checks to see if Simulation is running.
+     * @return true if Simulation is running.
+     */
     public boolean isSimRunning(){
         return isSimRunning;
     }
     
+    /**
+     * Displays a default message when no action has been taken before the timer has run out.
+     */
     public void timeOut() {
         setSuppressionAll(true);
         setAlarmAll(true);
@@ -54,6 +69,10 @@ public class Simulation extends Thread{
                 + "All equipment has been shutdown.");
     }
 
+    /**
+     * Starts the simulation.
+     * @param grid the grid to be used for the Simulation.
+     */
     public void startSim(Grid grid) {
         
         startFlag = !isSimRunning;
@@ -84,6 +103,9 @@ public class Simulation extends Thread{
         }
     }
     
+    /**
+     * Stops the simulation
+     */
     public void stopSim(){
         isSimRunning = false;
         System.out.println("goodbye I'm stopping");
@@ -154,7 +176,10 @@ public class Simulation extends Thread{
         }
     }
     
-    public void simFire(int grid_x, int grid_y, double elapTime) {
+    /*
+    if 
+    */
+    private void simFire(int grid_x, int grid_y, double elapTime) {
         Tile t = grid.getTiles()[grid_x][grid_y];
         // Left
         if(grid_x-1>=0 && !t.getWallL() && !t.getLockL()) {
@@ -182,9 +207,9 @@ public class Simulation extends Thread{
         }
     }
     
-    public void simBurnTile(int grid_x, int grid_y, double elapTime) {
+    private void simBurnTile(int grid_x, int grid_y, double elapTime) {
         // There is a burn_probability % chance of the tile catching fire in burn_timeframe seconds.
-        final double burn_probability = 0.10;
+        final double burn_probability = 0.99;
         final double burn_timeframe = 10.0;
         double prob = 1 - Math.pow(1.0-burn_probability,elapTime/burn_timeframe); // p'=1-(1-p)^(t'/t)
         if(Math.random()<prob) {
@@ -269,7 +294,7 @@ public class Simulation extends Thread{
     }
             
    
-    void simIntruder(int grid_x, int grid_y, double elapTime, long currTime) {
+    private void simIntruder(int grid_x, int grid_y, double elapTime, long currTime) {
         Tile tiles[][] = grid.getTiles();
         final double speed = 1; //Tiles per second
         for (int x = -1; x < 2; x++) {
@@ -317,7 +342,7 @@ public class Simulation extends Thread{
     }
 
     
-    void simHumanAgent(int grid_x, int grid_y, double elapTime, long currTime) {
+    private void simHumanAgent(int grid_x, int grid_y, double elapTime, long currTime) {
         Tile tiles[][] = grid.getTiles();
         final double speed = 1; //Tiles per second
         
@@ -440,7 +465,7 @@ public class Simulation extends Thread{
         }
     }
 
-    public void moveIntruder(int oldX, int oldY, int newX, int newY, long currTime, Tile tiles[][]){
+    private void moveIntruder(int oldX, int oldY, int newX, int newY, long currTime, Tile tiles[][]){
         if(!tiles[newX][newY].getExit()) {
             grid.addComponent(ComponentType.Intruder, newX, newY);
             tiles[newX][newY].setIntruderFleeing(tiles[oldX][oldY].getIntruderFleeing());
@@ -451,7 +476,7 @@ public class Simulation extends Thread{
         tiles[oldX][oldY].setLastMoveTime(0);
     }
     
-    public void moveHumanAgent(int oldX, int oldY, int newX, int newY, long currTime, Tile tiles[][]){
+    private void moveHumanAgent(int oldX, int oldY, int newX, int newY, long currTime, Tile tiles[][]){
         if(!tiles[newX][newY].getExit()) {
             grid.addComponent(ComponentType.HumanAgent, newX, newY);
             tiles[newX][newY].setHumanAgentActive(true);
@@ -462,7 +487,7 @@ public class Simulation extends Thread{
         tiles[oldX][oldY].setLastMoveTime(0);
     }
     
-    public void simFireSensor(int grid_x, int grid_y, double elapTime) {
+    private void simFireSensor(int grid_x, int grid_y, double elapTime) {
         final int sensorRadius = 3;
         for (int x = grid_x - sensorRadius; x <= grid_x + sensorRadius; x++) {
             for (int y = grid_y - sensorRadius; y <= grid_y + sensorRadius; y++) {
@@ -480,7 +505,7 @@ public class Simulation extends Thread{
         }
     }
     
-    public void fireDetected(int sensorX, int sensorY) {
+    private void fireDetected(int sensorX, int sensorY) {
         System.out.println("Fire detected by sensor at (" + sensorX + ", " + sensorY + ")");
         for (int x = 0; x < grid.grid_width; x++) {
             for (int y = 0; y < grid.grid_height; y++) {
@@ -491,7 +516,7 @@ public class Simulation extends Thread{
         }
     }
     
-    public void simSuppressor(int grid_x, int grid_y, double elapTime, boolean turnOn){
+    private void simSuppressor(int grid_x, int grid_y, double elapTime, boolean turnOn){
         final int activationRadius = 2;
         Tile[][] tiles = grid.getTiles();
         for (int x = grid_x - activationRadius; x <= grid_x + activationRadius && !tiles[grid_x][grid_y].getSuppressorActive(); ++x) {
@@ -526,8 +551,11 @@ public class Simulation extends Thread{
             }
         }
     }
-    
-    
+
+    /**
+     * Sets all doors to be locked or unlocked.
+     * @param locked true for locked, false for unlocked.
+     */
     public void setLockAll(boolean locked) {
         if(grid!=null) {
             synchronized(grid) {
@@ -535,6 +563,11 @@ public class Simulation extends Thread{
             }
         }
     }
+
+    /**
+     * Sets all fire suppression to be active or inactive.
+     * @param active true for active, false for inactive.
+     */
     public void setSuppressionAll(boolean active) {
         if(grid!=null) {
             synchronized(grid) {
@@ -542,6 +575,11 @@ public class Simulation extends Thread{
             }
         }
     }
+
+    /**
+     * Sets all alarms to be active or inactive
+     * @param active true for active, false for inactive.
+     */
     public void setAlarmAll(boolean active) {
         if(grid!=null) {
             synchronized(grid) {
@@ -549,6 +587,11 @@ public class Simulation extends Thread{
             }
         }
     }
+
+    /**
+     * Sets all equipment to be active or inactive.
+     * @param active true for active, false for inactive.
+     */
     public void setEquipmentAll(boolean active) {
         if(grid!=null) {
             synchronized(grid) {
@@ -556,6 +599,11 @@ public class Simulation extends Thread{
             }
         }
     }
+
+    /**
+     * Sets all sensors to be active or inactive.
+     * @param active true for active, false for inactive.
+     */
     public void setSensorsAll(boolean active) {
         if(grid!=null) {
             synchronized(grid) {

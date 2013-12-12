@@ -27,18 +27,22 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.xml.sax.SAXException;
 
+/**
+ * Starts the program
+ * @author FSAMS Team
+ */
 public final class FSAMS extends JFrame implements ActionListener {
     // GUI Components
-    private JToolBar toolBar;
-    private EditPanel editP;
-    private ComponentsPanel compP;
-    private ControlAreaPanel ctrlP;
-    private TimerPanel timerP;
+    private final JToolBar toolBar;
+    private final EditPanel editP;
+    private final ComponentsPanel compP;
+    private final ControlAreaPanel ctrlP;
+    private final TimerPanel timerP;
 
     // World State
-    public Grid grid;
+    private final Grid grid;
     private Grid sim_grid;
-    private Simulation simulation;
+    private final Simulation simulation;
     
     // Project File
     String workingDirectory = null;
@@ -57,6 +61,9 @@ public final class FSAMS extends JFrame implements ActionListener {
     JMenuItem masterResetMI;
     JMenuItem callEmergencyMI;
     
+    /**
+     * Creates a new FSAMS
+     */
     public FSAMS() {
         grid = new Grid();
         sim_grid = null;
@@ -287,6 +294,10 @@ public final class FSAMS extends JFrame implements ActionListener {
         setVisible(true);
     }
     
+    /**
+     * Sets the next component to the specified type
+     * @param type The type to set the next component
+     */
     public void setNextComponentType(ComponentType type) {
         editP.setNextComponentType(type);
     }
@@ -405,21 +416,37 @@ public final class FSAMS extends JFrame implements ActionListener {
         }
     }
     
+    /**
+     * Starts the program
+     * @param args Command line arguments. FSAMS does not take command line arguments.
+     */
     public static void main(String[] args) {
         new FSAMS();
     }
     
+    @Override
     public void repaint() {
         editP.repaint();
     }
     
+    /**
+     * Increases the viewing scale of the grid.
+     */
     public void zoomIn() {
         editP.zoomIn();
     }
+
+    /**
+     * Decreases the viewing scale of the grid.
+     */
     public void zoomOut() {
         editP.zoomOut();
     }
     
+    /**
+     * Checks to see if simulation is currently running
+     * @return true if simulation is running.
+     */
     public boolean isSimulationRunning() {
         return simulation.isSimRunning();
     }

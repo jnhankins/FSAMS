@@ -20,7 +20,20 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+/**
+ * Handles file input and output for saving and loading building layouts.
+ * @author FSAMS Team
+ */
 public class ProjectIO {
+
+    /**
+     * Saves a file representing the building layout.
+     * @param grid the grid that displays the building layout.
+     * @param fileName the name of the file to save.
+     * @throws ParserConfigurationException indicates error parsing the file.
+     * @throws TransformerConfigurationException indicates a serious configuration error
+     * @throws TransformerException specifies an exceptional condition that occurred during the transformation process.
+     */
     public static void saveProject(Grid grid, String fileName) 
         throws ParserConfigurationException, TransformerConfigurationException, TransformerException
     {
@@ -70,6 +83,14 @@ public class ProjectIO {
         transformer.transform(new DOMSource(doc), new StreamResult(file));
     }
     
+    /**
+     * Opens a file representing a building layout and places the layout onto the grid.
+     * @param grid the grid used to display the building layout.
+     * @param fileName the name of the file to open.
+     * @throws ParserConfigurationException indicates error parsing the file.
+     * @throws SAXException indicates an error in XML parsing.
+     * @throws IOException indicates an error in opening the file.
+     */
     public static void openProject(Grid grid, String fileName) throws ParserConfigurationException, SAXException, IOException {
         File file = new File(fileName);
         Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
