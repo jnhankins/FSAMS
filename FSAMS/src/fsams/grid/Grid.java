@@ -4,16 +4,32 @@ import fsams.pathfinding.AStarPathFinder;
 import fsams.pathfinding.Path;
 import fsams.pathfinding.TileBasedMap;
 
+/**
+ * The Grid class stores information about the building in a 2D grid of tiles.
+ * Each tile is specified by its column, x, and row, y, and keeps track of what
+ * kind of components are in the tile and whether or not the tile has walls
+ * and doors.
+ * @author FSAMS Team
+ */
 public class Grid implements TileBasedMap {
-    public static final int grid_width = 20;
-    public static final int grid_height = 20;
+
+    /**
+     * The number of columns in the grid.
+     */
+    public static final int grid_width = 100;
     
-    private Tile tiles[][];
-    private boolean[][] visited = new boolean[grid_width][grid_height];
-    private Path path;
+    /**
+     * The number of rows in the grid.
+     */
+    public static final int grid_height = 100;
+    
+    private final Tile tiles[][];
+    private final boolean[][] visited = new boolean[grid_width][grid_height];;
     private AStarPathFinder finder;
 
-    
+    /**
+     * Constructs a new empty grid.
+     */
     public Grid() {
         tiles = new Tile[grid_width][grid_height];
         for(int grid_x=0; grid_x<tiles.length; grid_x++) {
@@ -22,6 +38,11 @@ public class Grid implements TileBasedMap {
             }
         }
     }
+
+    /**
+     * Constructs a new grid by copying the specified grid.
+     * @param grid The grid to copy.
+     */
     public Grid(Grid grid) {
         tiles = new Tile[grid_width][grid_height];
         for(int grid_x=0; grid_x<tiles.length; grid_x++) {
@@ -45,8 +66,6 @@ public class Grid implements TileBasedMap {
     public void pathFinderVisited(int x, int y) {
         visited[x][y] = true;
     }
-
-    
     
     //0 up 1 down 2 left 3 right
     @Override
@@ -72,7 +91,6 @@ public class Grid implements TileBasedMap {
         return false;
         
     }
-
     
     @Override
     public boolean blocked(int x, int y) {
@@ -103,6 +121,12 @@ public class Grid implements TileBasedMap {
         return 1;
     }
     
+    /**
+     * Adds the specified component to the tile at the specified coordinates.
+     * @param comp The type of component to add.
+     * @param x The column of the tile.
+     * @param y The row of the tile.
+     */
     public void addComponent(ComponentType comp, int x, int y) {
         if(x<0 || grid_width<=x || y<0 || grid_height<=y)
             throw new IllegalArgumentException("Illegal grid position: "+x+","+y);
@@ -135,6 +159,11 @@ public class Grid implements TileBasedMap {
         }
     }
     
+    /**
+     * Removes all components from the specified tile.
+     * @param x The column of the tile.
+     * @param y The row of the tile.
+     */
     public void removeComponents(int x, int y) {
         if(x<0 || grid_width<=x || y<0 || grid_height<=y)
             throw new IllegalArgumentException("Illegal grid position: "+x+","+y);
@@ -150,6 +179,16 @@ public class Grid implements TileBasedMap {
         t.setIntruder(false);
     }
     
+    /**
+     * Adds a wall at the specified grid coordinates.
+     * The location of the wall is given by two tile corner coordinates (x1,y1) 
+     * and (x2,y2). Note that smallest corner coordinate of a tile is in its
+     * lower left corner.
+     * @param x1 The column of the first corner.
+     * @param y1 The row of the second corner.
+     * @param x2 The column of the first corner.
+     * @param y2 The row of the second corner.
+     */
     public void addWall(int x1, int y1, int x2, int y2) {
         if((x1!=x2) && (y2!=y2))
             throw new IllegalArgumentException("Walls must be horizontal or vertical");
@@ -187,6 +226,16 @@ public class Grid implements TileBasedMap {
         }
     }
     
+    /**
+     * Adds a door at the specified grid coordinates.
+     * The location of the door  is given by two tile corner coordinates (x1,y1) 
+     * and (x2,y2). Note that smallest corner coordinate of a tile is in its
+     * lower left corner.
+     * @param x1 The column of the first corner.
+     * @param y1 The row of the second corner.
+     * @param x2 The column of the first corner.
+     * @param y2 The row of the second corner.
+     */
     public void addDoor(int x1, int y1, int x2, int y2) {
         if((x1!=x2) && (y2!=y2))
             throw new IllegalArgumentException("Walls must be horizontal or vertical");
@@ -223,8 +272,17 @@ public class Grid implements TileBasedMap {
             }
         }
     }
-    
-    
+
+    /**
+     * Removes any walls at the specified grid coordinates.
+     * The location of the wall is given by two tile corner coordinates (x1,y1) 
+     * and (x2,y2). Note that smallest corner coordinate of a tile is in its
+     * lower left corner.
+     * @param x1 The column of the first corner.
+     * @param y1 The row of the second corner.
+     * @param x2 The column of the first corner.
+     * @param y2 The row of the second corner.
+     */
     public void removeWall(int x1, int y1, int x2, int y2) {
         if((x1!=x2) && (y2!=y2))
             throw new IllegalArgumentException("Walls must be horizontal or vertical");
@@ -262,6 +320,16 @@ public class Grid implements TileBasedMap {
         }
     }
     
+    /**
+     * Removes any doors at the specified grid coordinates.
+     * The location of the door  is given by two tile corner coordinates (x1,y1) 
+     * and (x2,y2). Note that smallest corner coordinate of a tile is in its
+     * lower left corner.
+     * @param x1 The column of the first corner.
+     * @param y1 The row of the second corner.
+     * @param x2 The column of the first corner.
+     * @param y2 The row of the second corner.
+     */
     public void removeDoor(int x1, int y1, int x2, int y2) {
         if((x1!=x2) && (y2!=y2))
             throw new IllegalArgumentException("Walls must be horizontal or vertical");
@@ -299,6 +367,10 @@ public class Grid implements TileBasedMap {
         }
     }
     
+    /**
+     * Sets all of the doors in the grid to be either locked or unlocked.
+     * @param locked If true, all doors will be locked, otherwise unlocked.
+     */
     public void setLockAll(boolean locked) {
         for(int grid_x=0; grid_x<tiles.length; grid_x++) {
             for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
@@ -310,6 +382,11 @@ public class Grid implements TileBasedMap {
             }
         }
     }
+
+    /**
+     * Turns on or off all of the sprinklers in the grid.
+     * @param active If true, all sprinklers will be turned on, otherwise off.
+     */
     public void setSuppressionAll(boolean active) {
         for(int grid_x=0; grid_x<tiles.length; grid_x++) {
             for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
@@ -320,6 +397,11 @@ public class Grid implements TileBasedMap {
             }   
         }
     }
+
+    /**
+     * Turns on or off all of the alarms in the grid.
+     * @param active If true, all alarms will be turned on, otherwise off.
+     */
     public void setAlarmAll(boolean active) {
         for(int grid_x=0; grid_x<tiles.length; grid_x++) {
             for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
@@ -330,6 +412,11 @@ public class Grid implements TileBasedMap {
             }   
         }
     }
+
+    /**
+     * Turns on or off all of the equipment in the grid.
+     * @param active If true, all equipment will be turned on, otherwise off.
+     */
     public void setEquipmentAll(boolean active) {
         for(int grid_x=0; grid_x<tiles.length; grid_x++) {
             for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
@@ -341,6 +428,11 @@ public class Grid implements TileBasedMap {
         }
     }
     
+    /**
+     * Activates or deactivates all of the sensors in the grid.
+     * Activating a sensor simulates that the sensor has detected a fire. 
+     * @param active If true, all sensors will be activated, otherwise deactivated.
+     */
     public void setSensorsAll(boolean active) {
         for(int grid_x=0; grid_x<tiles.length; grid_x++) {
             for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
@@ -352,8 +444,11 @@ public class Grid implements TileBasedMap {
         }
     }
     
+    /**
+     * Returns a 2D array of every tiles in this grid.
+     * @return A 2D array of every tiles in the grid.
+     */
     public Tile[][] getTiles() {
         return tiles;
     }
-
 }

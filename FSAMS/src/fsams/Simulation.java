@@ -176,9 +176,16 @@ public class Simulation extends Thread{
         }
     }
     
-    /*
-    if 
-    */
+/*
+if left adjacent tile is open
+    spread to top tile
+if bottom adjacent tile is open
+    spread to bottom tile
+if right adjacent tile is open
+    spread to right tile
+if top adjacent tile is open
+    spread to top tile
+*/
     private void simFire(int grid_x, int grid_y, double elapTime) {
         Tile t = grid.getTiles()[grid_x][grid_y];
         // Left
@@ -206,10 +213,19 @@ public class Simulation extends Thread{
             simBurnTile(x,y,elapTime);
         }
     }
+
+/*
+stochastically add fire to a tile
+if the tile has a human agent
+    destroy the human agent
+if the tile has an intruder
+    destroy the intruder
+
+*/
     
     private void simBurnTile(int grid_x, int grid_y, double elapTime) {
         // There is a burn_probability % chance of the tile catching fire in burn_timeframe seconds.
-        final double burn_probability = 0.99;
+        final double burn_probability = 0.10;
         final double burn_timeframe = 10.0;
         double prob = 1 - Math.pow(1.0-burn_probability,elapTime/burn_timeframe); // p'=1-(1-p)^(t'/t)
         if(Math.random()<prob) {
@@ -228,7 +244,11 @@ public class Simulation extends Thread{
         }
     }
     
-    //ideal is to find closest exit...for now just find one
+/*
+if there is at least one exit
+    find the closest exit to the tile with the given coordinates
+    
+*/
     Tile closestExit(int grid_x, int grid_y) {
         if(!exits.isEmpty()) {
             int index = -1;
