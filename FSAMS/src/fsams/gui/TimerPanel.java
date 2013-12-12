@@ -20,7 +20,6 @@ import javax.swing.JPanel;
  * @author FSAMS Team
  */
 public final class TimerPanel extends JPanel {
-    //private final FSAMS fsams;
     private final Simulation sim;
     private JLabel label;
     private TimerThread timer;
@@ -29,8 +28,7 @@ public final class TimerPanel extends JPanel {
      * Creates a new TimerPanel to display a timer when the simulation begins
      * @param sim
      */
-    public TimerPanel(FSAMS fsams, Simulation sim) {
-        //this.fsams = fsams;
+    public TimerPanel(Simulation sim) {
         this.sim = sim;
         timer = new TimerThread(this);
         initComponents();

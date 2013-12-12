@@ -39,7 +39,7 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
      * @param fsams
      * @param sim
      */
-    public ControlAreaPanel(FSAMS fsams, Simulation sim) {
+    public ControlAreaPanel(Simulation sim) {
         this.sim = sim;
         initComponents();
     }
