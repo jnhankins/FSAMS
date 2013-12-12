@@ -335,6 +335,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         alarmB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_A, 0), "alarm");
         alarmB.getActionMap().put("alarm", alarmA);
         intruderB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_I, 0), "intruder");
+        intruderB.getActionMap().put("intruder", intruderA);
         cancelB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_C, 0), "cancel");
         cancelB.getActionMap().put("cancel", cancelA);
        
