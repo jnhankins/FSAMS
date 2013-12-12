@@ -181,6 +181,7 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
         
         stopSim();
     }
+    
 
     public void actionPerformed(ActionEvent ae) {
         switch(ae.getActionCommand()) {
@@ -219,7 +220,10 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
                 JOptionPane.showMessageDialog(new JFrame(), "Emergency services have been notified.");
                 break;
             case "callSecurity":
-                JOptionPane.showMessageDialog(new JFrame(), "Security has been notified.");
+                if (sim.getCameraSees())
+                    JOptionPane.showMessageDialog(new JFrame(), "Security has been notified about suspicious activity.");
+                if (!sim.getCameraSees()) 
+                    JOptionPane.showMessageDialog(new JFrame(), "No suspicious activity to report.");
                 break;        
         }
      }
@@ -238,7 +242,7 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
         equipmentDisable.setEnabled(true);
         masterReset.setEnabled(true);
         callEmergency.setEnabled(true);
-        callSecurity.setEnabled(false);
+        callSecurity.setEnabled(true);
     }
 
     /**
@@ -262,7 +266,4 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
      * Enables or disables the callSecurity button.
      * @param status true to enable, false to disable.
      */
-    public void enableSecurity(boolean status) {
-        callSecurity.setEnabled(status);
-    }
 }

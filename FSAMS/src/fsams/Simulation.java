@@ -31,6 +31,7 @@ public class Simulation extends Thread{
     private TimerPanel timerP;
     private ArrayList<Tile> exits;
     private ArrayList<Tile> equipments;
+    private boolean cameraSees;
     
     /**
      * Constructs a new Simulation in the specified panel.
@@ -159,6 +160,9 @@ public class Simulation extends Thread{
                                 }
                                 if(tile.getIntruder()){
                                     simIntruder(grid_x,grid_y,elapTime,currTime);
+                                }
+                                if(tile.getCamera()){
+                                    simCamera(grid_x,grid_y,elapTime);
                                 }
                             }
                         }
@@ -591,7 +595,7 @@ for each tile within 3 tiles of the sensor
         final int sensorRadius = 3;
         for (int x = grid_x - sensorRadius; x <= grid_x + sensorRadius; x++) {
             for (int y = grid_y - sensorRadius; y <= grid_y + sensorRadius; y++) {
-                if(x >=0 && x < Grid.grid_width && y >= 0 && y < Grid.grid_height) {
+                if((x >=0) && (x < Grid.grid_width) && (y >= 0) && (y < Grid.grid_height)) {
                     if (grid.getTiles()[x][y].getFire()) {
                         fireDetected(grid_x, grid_y);
                         if(!timerUsed){
@@ -600,6 +604,21 @@ for each tile within 3 tiles of the sensor
                         }
                         
                     }
+                }
+            }
+        }
+    }
+    
+    private void simCamera(int grid_x, int grid_y, double elapTime) {
+        final int sensorRadius = 3;
+        cameraSees = false;
+        for (int x = grid_x - sensorRadius; x <= grid_x + sensorRadius; x++) {
+            for (int y = grid_y - sensorRadius; y <= grid_y + sensorRadius; y++) {
+                if((x >=0) && (x < Grid.grid_width) && (y >= 0) && (y < Grid.grid_height)) {  
+                    if ((grid.getTiles()[x][y].getHumanAgent()) || (grid.getTiles()[x][y].getIntruder())) {
+                            cameraSees = true;
+                    }
+                    
                 }
             }
         }
@@ -723,5 +742,9 @@ IF the sprinker is active
                 grid.setSensorsAll(active);
             }
         }
+    }
+    
+    public boolean getCameraSees() {
+        return cameraSees;
     }
 }

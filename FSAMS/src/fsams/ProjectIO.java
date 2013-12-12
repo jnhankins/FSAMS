@@ -77,6 +77,7 @@ public class ProjectIO {
                 if(t.getEquipment()) tileNode.setAttribute("equipment", "true");
                 if(t.getFire()) tileNode.setAttribute("fire", "true");
                 if(t.getExit()) tileNode.setAttribute("exit", "true");
+                if(t.getCamera()) tileNode.setAttribute("camera", "true");
             }
         }
         
@@ -127,6 +128,7 @@ public class ProjectIO {
                 t.setEquipment(tileNode.getAttribute("equipment").equalsIgnoreCase("true"));
                 t.setFire(tileNode.getAttribute("fire").equalsIgnoreCase("true"));
                 t.setExit(tileNode.getAttribute("exit").equalsIgnoreCase("true"));
+                t.setCamera(tileNode.getAttribute("camera").equalsIgnoreCase("true"));
             }
         }
     }

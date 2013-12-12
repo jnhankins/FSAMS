@@ -327,6 +327,8 @@ public final class FSAMS extends JFrame implements ActionListener {
                         t.setEquipment(false);
                         t.setFire(false);
                         t.setExit(false);
+                        t.setIntruder(false);
+                        t.setCamera(false);
                     }
                 }
                 repaint();
