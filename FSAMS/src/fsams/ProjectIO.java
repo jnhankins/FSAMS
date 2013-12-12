@@ -60,6 +60,7 @@ public class ProjectIO {
                 if(t.getFireAlarm()) tileNode.setAttribute("alarm", "true");
                 if(t.getSprinkler()) tileNode.setAttribute("sprinkler", "true");
                 if(t.getHumanAgent()) tileNode.setAttribute("person", "true");
+                if(t.getIntruder()) tileNode.setAttribute("intruder", "true");
                 if(t.getEquipment()) tileNode.setAttribute("equipment", "true");
                 if(t.getFire()) tileNode.setAttribute("fire", "true");
                 if(t.getExit()) tileNode.setAttribute("exit", "true");
@@ -101,6 +102,7 @@ public class ProjectIO {
                 t.setFireAlarm(tileNode.getAttribute("alarm").equalsIgnoreCase("true"));
                 t.setSprinkler(tileNode.getAttribute("sprinkler").equalsIgnoreCase("true"));
                 t.setHumanAgent(tileNode.getAttribute("person").equalsIgnoreCase("true"));
+                t.setIntruder(tileNode.getAttribute("intruder").equalsIgnoreCase("true"));
                 t.setEquipment(tileNode.getAttribute("equipment").equalsIgnoreCase("true"));
                 t.setFire(tileNode.getAttribute("fire").equalsIgnoreCase("true"));
                 t.setExit(tileNode.getAttribute("exit").equalsIgnoreCase("true"));
