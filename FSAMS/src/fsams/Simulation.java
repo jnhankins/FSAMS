@@ -74,7 +74,6 @@ public class Simulation extends Thread{
                     }
                 }
             }
-            System.out.println("number of exits = " + exits.size());
             for(int grid_x=0; grid_x<tiles.length; grid_x++) {
                 for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
                     tiles[grid_x][grid_y].reset();
@@ -442,7 +441,7 @@ public class Simulation extends Thread{
     }
 
     public void moveIntruder(int oldX, int oldY, int newX, int newY, long currTime, Tile tiles[][]){
-        if(!tiles[newX][newY].getEquipment()) {
+        if(!tiles[newX][newY].getExit()) {
             grid.addComponent(ComponentType.Intruder, newX, newY);
             tiles[newX][newY].setIntruderFleeing(tiles[oldX][oldY].getIntruderFleeing());
             tiles[newX][newY].setLastMoveTime(currTime);
