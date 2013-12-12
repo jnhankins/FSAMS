@@ -95,6 +95,13 @@ public class Render {
                         int y1 = (int)(y-human_radius);
                         g.drawOval(x1,y1,(int)(2*human_radius),(int)(2*human_radius));
                     }
+                    // Draw Intruders
+                    if(tile.getIntruder()) {
+                        g.setColor(tile.getIntruderFleeing()?Color.yellow:Color.red);
+                        int x1 = (int)(x-human_radius);
+                        int y1 = (int)(y-human_radius);
+                        g.drawOval(x1,y1,(int)(2*human_radius),(int)(2*human_radius));
+                    }
                     // Draw Fires
                     if(tile.getFire()) {
                         g.setColor(Color.red);

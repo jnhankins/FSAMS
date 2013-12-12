@@ -23,6 +23,8 @@ public class Tile {
     private long lastMoveTime;
     // Equipment
     private boolean equipment, equipmentActive;
+    // Intruders
+    private boolean intruder, intruderFleeing;
     
     public Tile(int grid_x, int grid_y) {
         // Grid Coordinates
@@ -49,6 +51,9 @@ public class Tile {
         // Equipment
         equipment = false;
         equipmentActive = true;
+        // Intruder
+        intruder = false;
+        intruderFleeing = false;
     }
     public Tile(Tile tile) {
         // Grid Coordinates
@@ -88,6 +93,9 @@ public class Tile {
         // Equipment
         this.equipment = tile.equipment;
         this.equipmentActive = tile.equipmentActive;
+        // Intruder
+        this.intruder = tile.intruder;
+        this.intruderFleeing = tile.intruderFleeing;
     }
 
     public void reset() {
@@ -108,6 +116,8 @@ public class Tile {
         lastMoveTime = 0;
         // Equipment
         equipmentActive = true;
+        // Intruder
+        intruderFleeing = false;
     }
     
     public boolean getWallU() { return wallU; }
@@ -142,6 +152,8 @@ public class Tile {
     public long getLastMoveTime() { return lastMoveTime; }
     public boolean getEquipment() { return equipment; }
     public boolean getEquipmentActive() { return equipmentActive; }
+    public boolean getIntruder() { return intruder; }
+    public boolean getIntruderFleeing() { return intruderFleeing; }
     
     public void setWallU(boolean status) { 
         wallU = status;
@@ -216,6 +228,10 @@ public class Tile {
     }
     public void setHumanAgent(boolean status) { 
         humanAgent = status;
+        if (status) {
+            equipment = false;
+            intruder = false;
+        }
     }
     public void setHumanAgentActive(boolean status) {
         if(humanAgent) humanAgentActive = status;
@@ -225,9 +241,22 @@ public class Tile {
     }
     public void setEquipment(boolean status) {
         equipment = status;
-        if(status) humanAgent = false;
+        if(status) {
+            humanAgent = false;
+            intruder = false;
+        }
     }
     public void setEquipmentActive(boolean status) {
         if(equipment) equipmentActive = status;
+    }
+    public void setIntruder(boolean status) {
+        intruder = status;
+        if (status) {
+            humanAgent = false;
+            equipment = false;
+        }
+    }
+    public void setIntruderFleeing(boolean status) {
+        if (intruder) intruderFleeing = status;
     }
 }

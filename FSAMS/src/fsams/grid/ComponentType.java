@@ -10,4 +10,5 @@ public enum ComponentType {
     FireAlarm,
     Door,
     Equipment,
+    Intruder,
 }

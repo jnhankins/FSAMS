@@ -26,6 +26,7 @@ public class Simulation extends Thread{
     private final JPanel panel;
     private TimerPanel timerP;
     private ArrayList<Tile> exits;
+    private ArrayList<Tile> equipments;
     
     public Simulation(JPanel panel) {
         this.panel = panel;
@@ -61,11 +62,15 @@ public class Simulation extends Thread{
             System.out.println("hello I'm starting");
             Tile[][] tiles = grid.getTiles();
             exits = new ArrayList<>();
+            equipments = new ArrayList<>();
             for(int grid_x=0; grid_x<tiles.length; grid_x++) {
                 for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
                     Tile tile = tiles[grid_x][grid_y];
                     if(tile.getExit()) {
                         exits.add(tile);                    
+                    }
+                    if(tile.getEquipment()) {
+                        equipments.add(tile);
                     }
                 }
             }
@@ -131,6 +136,9 @@ public class Simulation extends Thread{
                                 if(tile.getSprinkler()) {
                                     simSuppressor(grid_x, grid_y, elapTime, true);
                                 }
+                                if(tile.getIntruder()){
+                                    simIntruder(grid_x,grid_y,elapTime,currTime);
+                                }
                             }
                         }
                     }
@@ -187,6 +195,11 @@ public class Simulation extends Thread{
                 tile.setHumanAgentActive(false);
                 System.out.println("Someone died (x_x)");
             }
+            if(tile.getIntruder()) {
+                tile.setIntruder(false);
+                tile.setIntruderFleeing(false);
+                System.out.println("Congratulations! Intruder is no longer a threat.");
+            }
             tile.setFire(true);
         }
     }
@@ -214,6 +227,95 @@ public class Simulation extends Thread{
         }
         return null; 
    }
+    
+    Tile closestEquipment(int grid_x, int grid_y) {
+        if(!equipments.isEmpty()) {
+            int index = -1;
+            float lowestCost = Float.MAX_VALUE;
+            int xIndex = 0;
+            int yIndex = 0;
+            for(Tile equipment : equipments) {
+                for (int x = -1; x < 2; x++) {
+                    for (int y = -1; y < 2; y++) {
+                        if ((x == 0) && (y == 0)) {
+                            continue;
+                        }
+                        if ((x != 0) && (y != 0)) {
+                            continue;
+                        }
+                             
+                        if((equipment.grid_x + x >=0) && (equipment.grid_x + x < Grid.grid_width) && (equipment.grid_y + y >= 0) && (equipment.grid_y + y < Grid.grid_height)) {
+                            Path path = finder.findPath(grid_x, grid_y, equipment.grid_x + x, equipment.grid_y + y);
+                            if (path == null) {
+                                continue;
+                            }
+                            float cost = path.getLength();
+                            if(cost < lowestCost) {
+                                index = equipments.indexOf(equipment);
+                                lowestCost = cost;
+                                xIndex = equipment.grid_x + x;
+                                yIndex = equipment.grid_y + y;
+                            }
+                        }
+                    }
+                }
+                if (index == -1) {
+                    return null;
+                }
+            }
+            Tile tile = new Tile(grid.getTiles()[xIndex][yIndex]);
+            return tile;
+            
+        }
+        return null;
+    }
+            
+   
+    void simIntruder(int grid_x, int grid_y, double elapTime, long currTime) {
+        Tile tiles[][] = grid.getTiles();
+        final double speed = 1; //Tiles per second
+        for (int x = -1; x < 2; x++) {
+            for (int y = -1; y < 2; y++) {
+                if ((x == 0) && (y == 0)) {
+                    continue;
+                }
+                if ((x != 0) && (y != 0)) {
+                    continue;
+                }
+                if (tiles[grid_x + x][grid_y + y].getEquipment()) {
+                    tiles[grid_x][grid_y].setIntruderFleeing(true);
+                }
+            }
+        }
+        if((currTime - tiles[grid_x][grid_y].getLastMoveTime()) < 1000.0/speed)
+            return;
+        if (!tiles[grid_x][grid_y].getIntruderFleeing()) {
+            Tile closestEquipment = closestEquipment(grid_x, grid_y);
+                //locate closest equipment first if any, else path = null
+            path = null;
+            if(closestEquipment != null) {
+                    path = finder.findPath(grid_x, grid_y, closestEquipment.grid_x, closestEquipment.grid_y);
+            }
+                //There exist a path to an exit
+            if (path != null) {
+                moveIntruder(grid_x, grid_y, path.getX(1), path.getY(1), currTime, tiles);
+            }
+        }
+        else {
+            Tile exit = closestExit(grid_x, grid_y);
+            //locate closest exits first if any, else path = null
+            path = null;
+            if(exit!=null) {
+                path = finder.findPath(grid_x, grid_y, exit.grid_x, exit.grid_y);
+            }
+            //There exist a path to an exit
+            if (path != null) {
+                moveIntruder(grid_x, grid_y, path.getX(1), path.getY(1), currTime, tiles);
+            }
+            //cannot reach exit - no exit in building
+        }
+    }
+
     
     void simHumanAgent(int grid_x, int grid_y, double elapTime, long currTime) {
         Tile tiles[][] = grid.getTiles();
@@ -338,6 +440,17 @@ public class Simulation extends Thread{
         }
     }
 
+    public void moveIntruder(int oldX, int oldY, int newX, int newY, long currTime, Tile tiles[][]){
+        if(!tiles[newX][newY].getEquipment()) {
+            grid.addComponent(ComponentType.Intruder, newX, newY);
+            tiles[newX][newY].setIntruderFleeing(tiles[oldX][oldY].getIntruderFleeing());
+            tiles[newX][newY].setLastMoveTime(currTime);
+        }
+        tiles[oldX][oldY].setIntruderFleeing(false);
+        tiles[oldX][oldY].setIntruder(false);//use new method
+        tiles[oldX][oldY].setLastMoveTime(0);
+    }
+    
     public void moveHumanAgent(int oldX, int oldY, int newX, int newY, long currTime, Tile tiles[][]){
         if(!tiles[newX][newY].getExit()) {
             grid.addComponent(ComponentType.HumanAgent, newX, newY);
