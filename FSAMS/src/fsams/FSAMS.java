@@ -345,7 +345,7 @@ public final class FSAMS extends JFrame implements ActionListener {
                 }
                 if(projectFileName==null) break;
                 try {
-                    ProjectIO.saveProject(grid, projectFileName);
+                    ProjectIO.saveProject(grid, workingDirectory + projectFileName);
                 } catch (ParserConfigurationException | TransformerException ex) {
                     JOptionPane.showMessageDialog(this, "An error was encoutned while saving the project file.");
                 }
@@ -360,7 +360,7 @@ public final class FSAMS extends JFrame implements ActionListener {
                 workingDirectory = fd.getDirectory();
                 if(projectFileName==null) break;
                 try {
-                    ProjectIO.openProject(grid, projectFileName);
+                    ProjectIO.openProject(grid, workingDirectory + projectFileName);
                 } catch (ParserConfigurationException | SAXException | IOException ex) {
                     JOptionPane.showMessageDialog(this, "An error was encoutned while opening the project file.");
                 } catch (IllegalArgumentException ex) {
