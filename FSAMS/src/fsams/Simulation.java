@@ -185,7 +185,7 @@ public class Simulation extends Thread{
     
     public void simBurnTile(int grid_x, int grid_y, double elapTime) {
         // There is a burn_probability % chance of the tile catching fire in burn_timeframe seconds.
-        final double burn_probability = 0.75;
+        final double burn_probability = 0.10;
         final double burn_timeframe = 10.0;
         double prob = 1 - Math.pow(1.0-burn_probability,elapTime/burn_timeframe); // p'=1-(1-p)^(t'/t)
         if(Math.random()<prob) {
