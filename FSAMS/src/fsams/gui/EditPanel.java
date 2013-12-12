@@ -108,7 +108,7 @@ public class EditPanel extends JPanel implements MouseListener, MouseMotionListe
     @Override
     public void paint(Graphics g) {
         synchronized(grid) {
-            Render.draw(this, g, grid);
+            Render.draw(this, g, grid, fsams.isSimulationRunning());
         }
     }
     
