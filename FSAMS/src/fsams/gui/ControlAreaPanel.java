@@ -184,6 +184,7 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
     
 
     public void actionPerformed(ActionEvent ae) {
+        sim.stopTimer();
         switch(ae.getActionCommand()) {
             case "doorLock":
                 sim.setLockAll(true);
@@ -261,9 +262,4 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
         callEmergency.setEnabled(false);
         callSecurity.setEnabled(false);
     }
-    
-    /**
-     * Enables or disables the callSecurity button.
-     * @param status true to enable, false to disable.
-     */
 }

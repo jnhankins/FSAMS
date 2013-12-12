@@ -165,7 +165,7 @@ public static void draw(EditPanel editP, Graphics g, Grid grid, boolean isSimRun
                     RenderingHints.VALUE_ANTIALIAS_ON);
                     double fontsize = scale/2.0;
                     g2.setFont(new Font("Ariel", Font.PLAIN, (int)fontsize));
-                    g2.drawString("S",x-(int)(fontsize/4.0),y+(int)(fontsize/3.0));
+                    g2.drawString("S",x-(int)(fontsize/3.0),y+(int)(fontsize/3.0));
                 }
 
                 // Draw FireAlarms

@@ -9,7 +9,9 @@ import static fsams.grid.ComponentType.Camera;
 import fsams.gui.TimerPanel;
 import fsams.pathfinding.AStarPathFinder;
 import fsams.pathfinding.Path;
+import static java.awt.image.ImageObserver.WIDTH;
 import java.util.ArrayList;
+import static javax.swing.JComponent.TOOL_TIP_TEXT_KEY;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -607,8 +609,7 @@ for each tile within 3 tiles of the sensor
                         if(!timerUsed){
                             timerP.start();
                             timerUsed = true;
-                        }
-                        
+                        }                        
                     }
                 }
             }
@@ -755,5 +756,9 @@ IF the sprinker is active
     
     public boolean getCameraSees() {
         return cameraSees;
+    }
+    
+    public void stopTimer() {
+        timerP.stop();
     }
 }
