@@ -89,7 +89,7 @@ public final class TimerPanel extends JPanel {
             SET TIMER TO 00:00:00
             IF(!shouldStop)
                 calls the simulation function timeOut()
-            set shoultStop to false
+            set shouldStop to false
             */
             while(System.currentTimeMillis()<endTime && !shouldStop) {
                 Date date = new Date(endTime - System.currentTimeMillis());

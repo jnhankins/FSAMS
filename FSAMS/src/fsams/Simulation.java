@@ -5,6 +5,7 @@
 package fsams;
 
 import fsams.grid.*;
+import static fsams.grid.ComponentType.Camera;
 import fsams.gui.TimerPanel;
 import fsams.pathfinding.AStarPathFinder;
 import fsams.pathfinding.Path;
@@ -30,6 +31,7 @@ public class Simulation extends Thread{
     private final JPanel panel;
     private TimerPanel timerP;
     private ArrayList<Tile> exits;
+    private ArrayList<Tile> cameras;
     private ArrayList<Tile> equipments;
     private boolean cameraSees;
     
@@ -82,12 +84,16 @@ public class Simulation extends Thread{
             System.out.println("hello I'm starting");
             Tile[][] tiles = grid.getTiles();
             exits = new ArrayList<>();
+            cameras = new ArrayList<>();
             equipments = new ArrayList<>();
             for(int grid_x=0; grid_x<tiles.length; grid_x++) {
                 for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
                     Tile tile = tiles[grid_x][grid_y];
                     if(tile.getExit()) {
                         exits.add(tile);                    
+                    }
+                    if(tile.getCamera()) {
+                        cameras.add(tile);                    
                     }
                     if(tile.getEquipment()) {
                         equipments.add(tile);
@@ -125,7 +131,7 @@ public class Simulation extends Thread{
                 long lastTime = System.currentTimeMillis();
                 while(isSimRunning){
                     long currTime = System.currentTimeMillis();
-                    System.out.println(currTime);
+                    //System.out.println(currTime);
                     if((currTime-lastTime)<10) {
                         try {
                             Thread.sleep(10-(currTime-lastTime));
@@ -141,6 +147,7 @@ public class Simulation extends Thread{
                     synchronized(grid) {
                         Tile[][] tiles = grid.getTiles();
                         // Update components
+                        simCamera();
                         for(int grid_x=0; grid_x<tiles.length; grid_x++) {
                             for(int grid_y=0; grid_y<tiles[grid_x].length; grid_y++) {
                                 // Get the tile
@@ -161,9 +168,7 @@ public class Simulation extends Thread{
                                 if(tile.getIntruder()){
                                     simIntruder(grid_x,grid_y,elapTime,currTime);
                                 }
-                                if(tile.getCamera()){
-                                    simCamera(grid_x,grid_y,elapTime);
-                                }
+                                
                             }
                         }
                     }
@@ -267,13 +272,14 @@ if there are no entries in a list of exits
                 if (path == null) {
                     continue;
                 }
-                float cost = finder.getMovementCost(grid_x, grid_y, exit.grid_x, exit.grid_y);
+                float cost = path.getLength();
+                System.out.println(cost);
                 if(cost < lowestCost) {
                     index = exits.indexOf(exit);
                     lowestCost = cost;
                 }
             }
-            if (index == -1) {
+            if (index == -1) {               
                 return null;
             }
             return exits.get(index);
@@ -313,7 +319,7 @@ if there are no entries in a list of exits
                             if (path == null) {
                                 continue;
                             }
-                            float cost = finder.getMovementCost(grid_x, grid_y, equipment.grid_x + x, equipment.grid_y + y);
+                            float cost = path.getLength();
                             if(cost < lowestCost) {
                                 index = equipments.indexOf(equipment);
                                 lowestCost = cost;
@@ -609,19 +615,22 @@ for each tile within 3 tiles of the sensor
         }
     }
     
-    private void simCamera(int grid_x, int grid_y, double elapTime) {
+    private void simCamera() {
         final int sensorRadius = 3;
-        cameraSees = false;
-        for (int x = grid_x - sensorRadius; x <= grid_x + sensorRadius; x++) {
-            for (int y = grid_y - sensorRadius; y <= grid_y + sensorRadius; y++) {
-                if((x >=0) && (x < Grid.grid_width) && (y >= 0) && (y < Grid.grid_height)) {  
-                    if ((grid.getTiles()[x][y].getHumanAgent()) || (grid.getTiles()[x][y].getIntruder())) {
-                            cameraSees = true;
+        boolean sees = false;
+        for (Tile camera : cameras) {
+            for (int x = camera.grid_x - sensorRadius; x <= camera.grid_x + sensorRadius; x++) {
+                for (int y = camera.grid_y - sensorRadius; y <= camera.grid_y + sensorRadius; y++) {
+                    if((x >=0) && (x < Grid.grid_width) && (y >= 0) && (y < Grid.grid_height)) {  
+                        if ((grid.getTiles()[x][y].getHumanAgent()) || (grid.getTiles()[x][y].getIntruder())) {
+                                sees = true;
+                        }
+
                     }
-                    
                 }
             }
         }
+        cameraSees = sees;
     }
     
 /*

@@ -334,7 +334,7 @@ public final class FSAMS extends JFrame implements ActionListener {
                 repaint();
                 break;
             case "save":
-                if(projectFileName==null) {
+                {
                     FileDialog fd = new FileDialog(this, "Choose a file", FileDialog.SAVE);
                     if(workingDirectory!=null)
                         fd.setDirectory(workingDirectory);
@@ -342,31 +342,33 @@ public final class FSAMS extends JFrame implements ActionListener {
                     fd.setVisible(true);
                     projectFileName = fd.getFile();
                     workingDirectory = fd.getDirectory();
-                }
-                if(projectFileName==null) break;
-                try {
-                    ProjectIO.saveProject(grid, workingDirectory + projectFileName);
-                } catch (ParserConfigurationException | TransformerException ex) {
-                    JOptionPane.showMessageDialog(this, "An error was encoutned while saving the project file.");
+                    if(projectFileName==null) break;
+                    try {
+                        ProjectIO.saveProject(grid, workingDirectory + projectFileName);
+                    } catch (ParserConfigurationException | TransformerException ex) {
+                        JOptionPane.showMessageDialog(this, "An error was encoutned while saving the project file.");
+                    }
                 }
                 break;
             case "open":
-                FileDialog fd = new FileDialog(this, "Choose a file", FileDialog.LOAD);
-                if(workingDirectory!=null)
-                    fd.setDirectory(workingDirectory);
-                fd.setFile("*.fsams");
-                fd.setVisible(true);
-                projectFileName = fd.getFile();
-                workingDirectory = fd.getDirectory();
-                if(projectFileName==null) break;
-                try {
-                    ProjectIO.openProject(grid, workingDirectory + projectFileName);
-                } catch (ParserConfigurationException | SAXException | IOException ex) {
-                    JOptionPane.showMessageDialog(this, "An error was encoutned while opening the project file.");
-                } catch (IllegalArgumentException ex) {
-                    JOptionPane.showMessageDialog(this, ex.getMessage());
+                {
+                    FileDialog fd = new FileDialog(this, "Choose a file", FileDialog.LOAD);
+                    if(workingDirectory!=null)
+                        fd.setDirectory(workingDirectory);
+                    fd.setFile("*.fsams");
+                    fd.setVisible(true);
+                    projectFileName = fd.getFile();
+                    workingDirectory = fd.getDirectory();
+                    if(projectFileName==null) break;
+                    try {
+                        ProjectIO.openProject(grid, workingDirectory + projectFileName);
+                    } catch (ParserConfigurationException | SAXException | IOException ex) {
+                        JOptionPane.showMessageDialog(this, "An error was encoutned while opening the project file.");
+                    } catch (IllegalArgumentException ex) {
+                        JOptionPane.showMessageDialog(this, ex.getMessage());
+                    }
+                    repaint();
                 }
-                repaint();
                 break;
             case "start":
                 doorLockMI.setEnabled(true);
