@@ -1,9 +1,9 @@
 package fsams.grid;
 
 /**
- * ComponentType is an enumeration that sepecifies the type of component.
+ * ComponentType is an enumeration that specifies the type of component.
  * There are component types available for walls, fire sensors, fires, people,
- * exits, sprinklers, fire alarms, doors, equipment, and intruders.
+ * exits, sprinklers, fire alarms, doors, equipment, intruders, and camera.
  * @author FSAMS Team
  */
 public enum ComponentType {
@@ -17,4 +17,5 @@ public enum ComponentType {
     Door,
     Equipment,
     Intruder,
+    Camera,
 }

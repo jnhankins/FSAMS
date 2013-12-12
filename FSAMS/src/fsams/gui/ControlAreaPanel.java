@@ -31,6 +31,7 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
     private JButton equipmentDisable;
     private JButton masterReset;
     private JButton callEmergency;
+    private JButton callSecurity;
     
     /**
      * Creates a new ControlAreaPanel to control the simulation after the
@@ -53,6 +54,7 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
         equipmentDisable = new JButton();
         masterReset = new JButton();
         callEmergency = new JButton();
+        callSecurity = new JButton();
         
         
         doorLock.addActionListener(this);
@@ -65,6 +67,7 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
         equipmentDisable.addActionListener(this);
         masterReset.addActionListener(this);
         callEmergency.addActionListener(this);
+        callSecurity.addActionListener(this);
         
         setLayout(new java.awt.GridBagLayout());
         java.awt.GridBagConstraints gridBagConstraints;
@@ -143,6 +146,15 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(callEmergency, gridBagConstraints);
         
+        row++;
+        callSecurity.setText("Call Security");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = row;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        add(callSecurity, gridBagConstraints);
+        
         doorLock.setToolTipText("Lock all doors.");
         doorUnlock.setToolTipText("Unlock all doors.");
         sprinklerEnable.setToolTipText("Activate all sprinklers.");
@@ -153,6 +165,7 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
         equipmentDisable.setToolTipText("Disable all equipment.");
         masterReset.setToolTipText("Reset all system components to their initial state.");
         callEmergency.setToolTipText("Call emergency services.");
+        callSecurity.setToolTipText("Call security.");
         
         doorLock.setActionCommand("doorLock");
         doorUnlock.setActionCommand("doorUnlock");
@@ -164,6 +177,7 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
         equipmentDisable.setActionCommand("equipmentDisable");
         masterReset.setActionCommand("masterReset");
         callEmergency.setActionCommand("callEmergency");
+        callSecurity.setActionCommand("callSecurity");
         
         stopSim();
     }
@@ -204,6 +218,9 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
             case "callEmergency":
                 JOptionPane.showMessageDialog(new JFrame(), "Emergency services have been notified.");
                 break;
+            case "callSecurity":
+                JOptionPane.showMessageDialog(new JFrame(), "Security has been notified.");
+                break;        
         }
      }
     
@@ -221,6 +238,7 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
         equipmentDisable.setEnabled(true);
         masterReset.setEnabled(true);
         callEmergency.setEnabled(true);
+        callSecurity.setEnabled(false);
     }
 
     /**
@@ -237,5 +255,14 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
         equipmentDisable.setEnabled(false);
         masterReset.setEnabled(false);
         callEmergency.setEnabled(false);
+        callSecurity.setEnabled(false);
+    }
+    
+    /**
+     * Enables or disables the callSecurity button.
+     * @param status true to enable, false to disable.
+     */
+    public void enableSecurity(boolean status) {
+        callSecurity.setEnabled(status);
     }
 }

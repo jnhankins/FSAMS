@@ -154,6 +154,11 @@ public class Render {
                         g.setColor(Color.green);
                         g.fillRect(xL, yU, (int)editP.getScale(), (int)editP.getScale());
                     }
+                    // Draw Cameras
+                    if(tile.getCamera()) {
+                        g.setColor(Color.blue);
+                        g.drawRoundRect(xL, yU, (int)editP.getScale(), (int)editP.getScale(), (int)sensor_radius, (int)sensor_radius);
+                    }
                 }
             }
     }

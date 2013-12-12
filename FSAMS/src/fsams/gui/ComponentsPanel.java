@@ -33,6 +33,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
     private JToggleButton wallB;
     private JToggleButton cancelHidden;
     private JToggleButton intruderB;
+    private JToggleButton cameraB;
     
     /**
      * Constructs a new ComponentsPanel with JToggle buttons of available
@@ -63,6 +64,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         cancelHidden = new JToggleButton();
         equipmentB = new JToggleButton();
         intruderB = new JToggleButton();
+        cameraB = new JToggleButton();
         Box.Filler bottomFiller = new Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0));
         
         wallB.setActionCommand("wall");
@@ -76,6 +78,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         cancelB.setActionCommand("cancel");
         equipmentB.setActionCommand("equipment");
         intruderB.setActionCommand("intruder");
+        cameraB.setActionCommand("camera");
         
         wallB.addActionListener(this);
         doorB.addActionListener(this);
@@ -88,6 +91,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         cancelB.addActionListener(this);
         equipmentB.addActionListener(this);
         intruderB.addActionListener(this);
+        cameraB.addActionListener(this);
         
         ButtonGroup toggleGroup = new ButtonGroup();
         toggleGroup.add(wallB);
@@ -102,6 +106,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         toggleGroup.add(cancelHidden);
         toggleGroup.add(equipmentB);
         toggleGroup.add(intruderB);
+        toggleGroup.add(cameraB);
               
         setLayout(new java.awt.GridBagLayout());
         java.awt.GridBagConstraints gridBagConstraints;
@@ -208,16 +213,22 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = ++row;
-        gridBagConstraints.gridwidth = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(intruderB, gridBagConstraints);
 
-        cancelB.setText("<html><u>C</u>ancel</html>");
+        cameraB.setText("<html>Ca<u>m</u>era</html>");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = row;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        add(cameraB, gridBagConstraints);
+
+        
+        cancelB.setText("<html>Cancel</html>");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = row;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(cancelB, gridBagConstraints);
         
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -303,6 +314,12 @@ public class ComponentsPanel extends JPanel implements ActionListener {
             intruderB.doClick();
         }
     };    
+    AbstractAction cameraA = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            cameraB.doClick();
+        }
+    };    
     AbstractAction cancelA = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent ae) {
@@ -336,6 +353,8 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         alarmB.getActionMap().put("alarm", alarmA);
         intruderB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_I, 0), "intruder");
         intruderB.getActionMap().put("intruder", intruderA);
+        cameraB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_M, 0), "camera");
+        cameraB.getActionMap().put("camera", cameraA);
         cancelB.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_C, 0), "cancel");
         cancelB.getActionMap().put("cancel", cancelA);
        
@@ -369,6 +388,9 @@ public class ComponentsPanel extends JPanel implements ActionListener {
                 break;
             case "intruder":  
                 fsams.setNextComponentType(ComponentType.Intruder);
+                break;
+            case "camera":  
+                fsams.setNextComponentType(ComponentType.Camera);
                 break;
             case "cancel": 
                 fsams.setNextComponentType(null);

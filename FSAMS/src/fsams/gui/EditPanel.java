@@ -244,7 +244,10 @@ public class EditPanel extends JPanel implements MouseListener, MouseMotionListe
                                 grid.addComponent(ComponentType.Intruder, grid_x, grid_y);
                                 repaint();
                                 break;
-                        }
+                            case Camera:
+                                grid.addComponent(ComponentType.Camera, grid_x, grid_y);
+                                repaint();
+                                break;                        }
                     }
                 }
             }

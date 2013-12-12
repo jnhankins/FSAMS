@@ -38,6 +38,8 @@ public class Tile {
     private boolean equipment, equipmentActive;
     // Intruders
     private boolean intruder, intruderFleeing;
+    // Cameras
+    private boolean camera;
     
     /**
      * Constructs a new tile at the specified coordinates.
@@ -72,6 +74,7 @@ public class Tile {
         // Intruder
         intruder = false;
         intruderFleeing = false;
+        camera = false;
     }
 
     /**
@@ -119,6 +122,8 @@ public class Tile {
         // Intruder
         this.intruder = tile.intruder;
         this.intruderFleeing = tile.intruderFleeing;
+        // Camera
+        this.camera = tile.camera;
     }
 
     /**
@@ -329,6 +334,7 @@ public class Tile {
      */
     public boolean getIntruderFleeing() { return intruderFleeing; }
     
+    public boolean getCamera() { return camera; }
     /**
      * Adds or removes a wall at the top of this tile.
      * If a wall is added on top of a door, then the door will be removed.
@@ -579,5 +585,9 @@ public class Tile {
      */
     public void setIntruderFleeing(boolean status) {
         if (intruder) intruderFleeing = status;
+    }
+    
+    public void setCamera(boolean status) {
+        camera = status;
     }
 }

@@ -156,6 +156,9 @@ public class Grid implements TileBasedMap {
             case Intruder:
                 t.setIntruder(true);
                 break;
+            case Camera:
+                t.setCamera(true);
+                break;
         }
     }
     
@@ -177,6 +180,7 @@ public class Grid implements TileBasedMap {
         t.setEquipment(false);
         t.setHumanAgent(false);
         t.setIntruder(false);
+        t.setCamera(false);
     }
     
     /**
