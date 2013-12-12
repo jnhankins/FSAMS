@@ -74,8 +74,8 @@ public final class FSAMS extends JFrame implements ActionListener {
         editP.setGrid(grid);
         compP = new ComponentsPanel(this);
         
-        ctrlP = new ControlAreaPanel(this,simulation);
-        timerP = new TimerPanel(this, simulation);
+        ctrlP = new ControlAreaPanel(simulation);
+        timerP = new TimerPanel(simulation);
         simulation.setTimerP(timerP);
                 
         initMainWindow();
