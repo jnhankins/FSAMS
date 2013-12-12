@@ -177,13 +177,13 @@ public class Simulation extends Thread{
     }
     
 /*
-if left adjacent tile is open
+IF left adjacent tile is open
     spread to top tile
-if bottom adjacent tile is open
+IF bottom adjacent tile is open
     spread to bottom tile
-if right adjacent tile is open
+IF right adjacent tile is open
     spread to right tile
-if top adjacent tile is open
+IF top adjacent tile is open
     spread to top tile
 */
     private void simFire(int grid_x, int grid_y, double elapTime) {
@@ -220,9 +220,7 @@ if the tile has a human agent
     destroy the human agent
 if the tile has an intruder
     destroy the intruder
-
 */
-    
     private void simBurnTile(int grid_x, int grid_y, double elapTime) {
         // There is a burn_probability % chance of the tile catching fire in burn_timeframe seconds.
         final double burn_probability = 0.10;
@@ -245,8 +243,15 @@ if the tile has an intruder
     }
     
 /*
-if there is at least one exit
-    find the closest exit to the tile with the given coordinates
+if there is at least one entry in a list of exits
+    set lowest cost to get to an ext to maximum value
+    for each entry in the list of exits
+        calculate the cost to get to that exit
+        if this cost is lower than the lowest cost
+            set lowest cost to this new cost
+    return the exit with the lowest cost
+if there are no entries in a list of exits
+    return null
     
 */
     Tile closestExit(int grid_x, int grid_y) {
@@ -271,7 +276,19 @@ if there is at least one exit
         }
         return null; 
    }
-    
+ 
+/*
+if there is at least one entry in a list of exits
+    set lowest cost to get to an exit to maximum value
+    for each entry in the list of exits
+        for each tile adjacent tile to this entry
+            calculate the cost to get to that tile
+            if this cost is lower than the lowest cost
+                set lowest cost to this new cost
+    return the tile with the lowest cost
+if there are no entries in a list of exits
+    return null    
+*/
     Tile closestEquipment(int grid_x, int grid_y) {
         if(!equipments.isEmpty()) {
             int index = -1;
@@ -313,7 +330,30 @@ if there is at least one exit
         return null;
     }
             
-   
+/*
+if an intruder has not yet visited equipment
+    if there is at least one entry in a list of equipment
+        set lowest cost to get to an equipment to maximum value
+        for each entry in the list of equipment
+            for each tile adjacent tile to this entry
+                calculate the cost to get to that tile
+                if this cost is lower than the lowest cost
+                    set lowest cost to this new cost
+        return the tile with the lowest cost
+    if there are no entries in a list of exits
+        return null
+if an intruder has already visited equipment
+    if there is at least one entry in a list of exits
+        set lowest cost to get to an ext to maximum value
+        for each entry in the list of exits
+            for each tile adjacent tile to this entry
+                calculate the cost to get to that tile
+                if this cost is lower than the lowest cost
+                    set lowest cost to this new cost
+        return the tile with the lowest cost
+    if there are no entries in a list of exits
+        return null
+*/   
     private void simIntruder(int grid_x, int grid_y, double elapTime, long currTime) {
         Tile tiles[][] = grid.getTiles();
         final double speed = 1; //Tiles per second
@@ -361,7 +401,21 @@ if there is at least one exit
         }
     }
 
-    
+/*
+if a human agent is near a fire, activated alarm, active suppressor, or another running human agent
+    set the first human agent to start running
+if a human agent is set to running
+    find a path to the closest exit
+    if there is no path available to an exit
+        if fire spreads to the tile above the human agent
+            move down
+        if fire spreads to the tile to the left of the human agent
+            move right
+        if fire spreads to the tile to the right of the human agent
+            move left
+        if fire spreads to the tile below the human agent
+            move up
+*/        
     private void simHumanAgent(int grid_x, int grid_y, double elapTime, long currTime) {
         Tile tiles[][] = grid.getTiles();
         final double speed = 1; //Tiles per second
@@ -485,6 +539,16 @@ if there is at least one exit
         }
     }
 
+/*
+if the tile the intruder is moving to does not contain an exit
+    add new intruder to the grid
+    set new tile to contain an intruder
+    if the intruder was fleeing
+        set new tile intruder to fleeing
+remove intruder from old tile
+remove fleeing boolean from old tile
+set the time since last move to 0 in old tile
+*/    
     private void moveIntruder(int oldX, int oldY, int newX, int newY, long currTime, Tile tiles[][]){
         if(!tiles[newX][newY].getExit()) {
             grid.addComponent(ComponentType.Intruder, newX, newY);
@@ -496,6 +560,15 @@ if there is at least one exit
         tiles[oldX][oldY].setLastMoveTime(0);
     }
     
+/*
+if the tile the human agent is moving to does not contain an exit
+    add new human agent to the grid
+    set new tile to contain a human agent
+    flag new tile to have human agent active
+remove intruder from old tile
+remove fleeing boolean from old tile
+set the time since last move to 0 in old tile
+*/
     private void moveHumanAgent(int oldX, int oldY, int newX, int newY, long currTime, Tile tiles[][]){
         if(!tiles[newX][newY].getExit()) {
             grid.addComponent(ComponentType.HumanAgent, newX, newY);
@@ -507,6 +580,13 @@ if there is at least one exit
         tiles[oldX][oldY].setLastMoveTime(0);
     }
     
+/*
+for each tile within 3 tiles of the sensor
+    if the tiles are within the grid
+        if a tile has a fire
+            call actions for fire detected
+            start timer
+*/
     private void simFireSensor(int grid_x, int grid_y, double elapTime) {
         final int sensorRadius = 3;
         for (int x = grid_x - sensorRadius; x <= grid_x + sensorRadius; x++) {
@@ -525,8 +605,12 @@ if there is at least one exit
         }
     }
     
+/*
+for each tile in grid
+    if the tile contains a fire alarm
+        set alarm to activate
+*/
     private void fireDetected(int sensorX, int sensorY) {
-        System.out.println("Fire detected by sensor at (" + sensorX + ", " + sensorY + ")");
         for (int x = 0; x < grid.grid_width; x++) {
             for (int y = 0; y < grid.grid_height; y++) {
                 if (grid.getTiles()[x][y].getFireAlarm()) {
@@ -535,9 +619,18 @@ if there is at least one exit
             }
         }
     }
-    
+/*
+SET activationRadius
+FOR each tile within the activation radius around the suppressor
+    IF the tile has a fire
+        SET the sprinkler to activate
+SET suppression radius
+IF the sprinker is active
+    supress in all tiles within supression radius
+    set fire in supressed tiles to false
+*/
     private void simSuppressor(int grid_x, int grid_y, double elapTime, boolean turnOn){
-        final int activationRadius = 2;
+        final int activationRadius = 1;
         Tile[][] tiles = grid.getTiles();
         for (int x = grid_x - activationRadius; x <= grid_x + activationRadius && !tiles[grid_x][grid_y].getSuppressorActive(); ++x) {
             for (int y = grid_y - activationRadius; y <= grid_y + activationRadius && !tiles[grid_x][grid_y].getSuppressorActive(); ++y) {

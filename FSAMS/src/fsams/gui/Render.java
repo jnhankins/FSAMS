@@ -18,7 +18,7 @@ import java.awt.Graphics;
 public class Render {
 
     /**
-     *
+     * renders each tile and its components
      * @param editP the panel to render the simulation.
      * @param g the graphics to draw for the components.
      * @param grid the tile grid on which the simulation runs.
