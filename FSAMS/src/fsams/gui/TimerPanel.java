@@ -1,12 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package fsams.gui;
 
-import fsams.FSAMS;
 import fsams.Simulation;
 import java.awt.Font;
 import java.text.SimpleDateFormat;
@@ -86,6 +79,18 @@ public final class TimerPanel extends JPanel {
             final long timerLengthSec = 30;
             endTime = System.currentTimeMillis() + 1000*timerLengthSec;
             
+            /*
+            WHILE Systems CurrentTimeInMilliseconds < endTime AND !shouldStop
+                format the (endTime - CurrentTimeInMilliseconds) to mm:ss:SSS
+                where mm are minutes and ss are seconds and SSS are microseconds
+                display the time
+                sleep for 100 to allow other threads access data
+            END WHILE
+            SET TIMER TO 00:00:00
+            IF(!shouldStop)
+                calls the simulation function timeOut()
+            set shoultStop to false
+            */
             while(System.currentTimeMillis()<endTime && !shouldStop) {
                 Date date = new Date(endTime - System.currentTimeMillis());
                 SimpleDateFormat dt1 = new SimpleDateFormat("mm:ss:SSS");

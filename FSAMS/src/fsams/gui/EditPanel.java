@@ -50,7 +50,7 @@ public class EditPanel extends JPanel implements MouseListener, MouseMotionListe
     }
     
     /**
-     * 
+     * sets the 
      * @param grid
      */
     public void setGrid(Grid grid) {
@@ -66,6 +66,10 @@ public class EditPanel extends JPanel implements MouseListener, MouseMotionListe
         nextComponentType = type;
     }
     
+    /*
+    The following toScreenX/YfromGridX/Y and toGridX/YfromScreenX/Y does a
+    translation of the grid world to screen coordinates.
+    */
     int toScreenXfromGridX(int grid_x, int grid_width) {
         return (int)(grid_x*scale+getWidth()/2.0-centerX-grid_width*scale/2.0);
     }
@@ -116,7 +120,29 @@ public class EditPanel extends JPanel implements MouseListener, MouseMotionListe
         mouseX = me.getX();
         mouseY = me.getY();
     }
+    /*
+    IF moused was dragged
+        do nothing
+    ELSE IF simulation is not running
+        IF left mouse button was pressed
+            get the grid coordinates
+            IF coordinates are on the grid AND a componentType is selected
+                add the component to the grid coordinates
+        ELSE IF right mouse button was pressed
+            get the grid coordinates
+            IF coordinates are on the grid
+                remove all components from the grid coordinates
+    ELSE IF simulation is running
+        IF left mouse button is pressed
+            get the grid coordinates
+            IF coordinates are on the grid
+                get the tile at the grid coordinates
+                IF tile has a door, equipment, alarm, sprinkler
+                    toggle the componenets
+                    repaint
+    */
     @Override public void mouseReleased(MouseEvent me) {
+        
         if(mouseDrag)
             return;
         if(!fsams.isSimulationRunning()) {

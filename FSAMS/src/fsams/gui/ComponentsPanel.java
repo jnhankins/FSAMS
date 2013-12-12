@@ -36,7 +36,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
     
     /**
      * Constructs a new ComponentsPanel with JToggle buttons of available
-     * ComponentType for FSAMS
+     * ComponentType for FSAMS.
      * @param fsams Takes in a new argument
      */
     public ComponentsPanel(FSAMS fsams) {
@@ -44,6 +44,7 @@ public class ComponentsPanel extends JPanel implements ActionListener {
         initComponents();
     }
     
+    //Initializes all Components GUI Panel
     private void initComponents() {
 
         JLabel buildingL = new JLabel();

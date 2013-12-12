@@ -6,7 +6,6 @@
 
 package fsams.gui;
 
-import fsams.FSAMS;
 import fsams.Simulation;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,7 +35,6 @@ public class ControlAreaPanel extends JPanel implements ActionListener {
     /**
      * Creates a new ControlAreaPanel to control the simulation after the
      * simulation begins.
-     * @param fsams
      * @param sim
      */
     public ControlAreaPanel(Simulation sim) {
