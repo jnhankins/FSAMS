@@ -1,5 +1,7 @@
 package fsams.grid;
 
+import fsams.pathfinding.AStarPathFinder;
+import fsams.pathfinding.Path;
 import fsams.pathfinding.TileBasedMap;
 
 public class Grid implements TileBasedMap {
@@ -8,6 +10,8 @@ public class Grid implements TileBasedMap {
     
     private Tile tiles[][];
     private boolean[][] visited = new boolean[grid_width][grid_height];
+    private Path path;
+    private AStarPathFinder finder;
 
     
     public Grid() {
@@ -81,6 +85,21 @@ public class Grid implements TileBasedMap {
 
     @Override
     public float getCost(int sx, int sy, int tx, int ty) {
+        for (int x = -1; x < 2; x++) {
+            for (int y = -1; y < 2; y++) {
+                if ((x == 0) && (y == 0)) {
+                    continue;
+                }
+                if ((x != 0) && (y != 0)) {
+                    continue;
+                }      
+                if((tx + x >=0) && (tx + x < grid_width) && (ty + y >= 0) && (ty + y < grid_height)) {
+                    if (tiles[tx + x][ty + y].getFire()) {
+                        return 5;
+                    }
+                }
+            }
+        }
         return 1;
     }
     

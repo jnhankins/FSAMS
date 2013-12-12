@@ -214,7 +214,7 @@ public class Simulation extends Thread{
                 if (path == null) {
                     continue;
                 }
-                float cost = path.getLength();
+                float cost = finder.getMovementCost(grid_x, grid_y, exit.grid_x, exit.grid_y);
                 if(cost < lowestCost) {
                     index = exits.indexOf(exit);
                     lowestCost = cost;
@@ -242,14 +242,13 @@ public class Simulation extends Thread{
                         }
                         if ((x != 0) && (y != 0)) {
                             continue;
-                        }
-                             
+                        }      
                         if((equipment.grid_x + x >=0) && (equipment.grid_x + x < Grid.grid_width) && (equipment.grid_y + y >= 0) && (equipment.grid_y + y < Grid.grid_height)) {
                             Path path = finder.findPath(grid_x, grid_y, equipment.grid_x + x, equipment.grid_y + y);
                             if (path == null) {
                                 continue;
                             }
-                            float cost = path.getLength();
+                            float cost = finder.getMovementCost(grid_x, grid_y, equipment.grid_x + x, equipment.grid_y + y);
                             if(cost < lowestCost) {
                                 index = equipments.indexOf(equipment);
                                 lowestCost = cost;
@@ -282,8 +281,10 @@ public class Simulation extends Thread{
                 if ((x != 0) && (y != 0)) {
                     continue;
                 }
-                if (tiles[grid_x + x][grid_y + y].getEquipment()) {
-                    tiles[grid_x][grid_y].setIntruderFleeing(true);
+                if((grid_x + x >=0) && (grid_x + x < Grid.grid_width) && (grid_y + y >= 0) && (grid_y + y < Grid.grid_height)) {
+                    if (tiles[grid_x + x][grid_y + y].getEquipment()) {
+                        tiles[grid_x][grid_y].setIntruderFleeing(true);
+                    }
                 }
             }
         }

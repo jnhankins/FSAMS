@@ -330,8 +330,7 @@ public class AStarPathFinder implements PathFinder {
      * @return The cost of movement through the given tile
      */
     public float getMovementCost(int sx, int sy, int tx, int ty) {
-        
-        return 1;
+        return map.getCost(sx, sy, tx, ty);
     }
 
     /**
