@@ -33,7 +33,8 @@ public static void draw(EditPanel editP, Graphics g, Grid grid, boolean isSimRun
         g.fillRect(0,0,editP.getWidth(),editP.getHeight());
 
         // Draw the grid
-        g.setColor(new Color(145,145,145));
+        int grayscale = 50;
+        g.setColor(new Color(grayscale,grayscale,grayscale));
         int left = editP.toScreenXfromGridX(0,Grid.grid_width);
         int right = editP.toScreenXfromGridX(Grid.grid_width,Grid.grid_width);
         int bottom = editP.toScreenYfromGridY(0,Grid.grid_height);
