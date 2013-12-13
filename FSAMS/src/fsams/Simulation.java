@@ -234,7 +234,7 @@ if the tile has an intruder
 */
     private void simBurnTile(int grid_x, int grid_y, double elapTime) {
         // There is a burn_probability % chance of the tile catching fire in burn_timeframe seconds.
-        final double burn_probability = 0.10;
+        final double burn_probability = 0.75;
         final double burn_timeframe = 10.0;
         double prob = 1 - Math.pow(1.0-burn_probability,elapTime/burn_timeframe); // p'=1-(1-p)^(t'/t)
         if(Math.random()<prob) {
@@ -435,7 +435,7 @@ if a human agent is set to running
         if((currTime - tiles[grid_x][grid_y].getLastMoveTime()) < 1000.0/speed)
             return;
 
-        final int activationRadius = 2;
+        final int activationRadius = 5;
         for (int x = grid_x - activationRadius; x <= grid_x + activationRadius && !tiles[grid_x][grid_y].getHumanAgentActive(); x++) {
            for (int y = grid_y - activationRadius; y <= grid_y + activationRadius && !tiles[grid_x][grid_y].getHumanAgentActive(); y++) {
                if(x >=0 && x < Grid.grid_width && y >= 0 && y < Grid.grid_height) {
